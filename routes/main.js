@@ -40,7 +40,7 @@ router.post('/login', function(req,res,next){
 	
 	pool.getConnection(function (err, connection)
 	{
-		var sql = "SELECT * FROM login WHERE email=?";
+		var sql = "SELECT * FROM user WHERE email=?";
 		connection.query(sql, [email], function(err, result){
 			if(err) console.error(err);
 			

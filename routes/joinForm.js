@@ -48,7 +48,7 @@ router.post('/', function(req,res,next){
 	
 	pool.getConnection(function (err, connection)
 	{
-		var sql = "SELECT * FROM login WHERE email=?";
+		var sql = "SELECT * FROM user WHERE email=?";
 		connection.query(sql, [email], function(err, result){
 			if(err) console.error(err);
 			
@@ -59,7 +59,7 @@ router.post('/', function(req,res,next){
 			else{
 				pool.getConnection(function (err, connection)
 				{
-					var sql = "INSERT INTO login(email, passwd, date, username, address, phone, gender) values(?,?,?,?,?,?,?)";
+					var sql = "INSERT INTO user(email, passwd, date, username, address, phone, gender) values(?,?,?,?,?,?,?)";
 					connection.query(sql, [email, passwd, date, username, address, phone, gender], function(err, result){
 						if(err) console.error(err);
 						
