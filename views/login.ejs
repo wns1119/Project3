@@ -9,87 +9,8 @@
   <link rel="stylesheet" href="theme.css" type="text/css"> </head>
 
 <body class="Head_nav">
-  <nav class="navbar navbar-expand-md bg-secondary navbar-dark">
-    <a class="navbar-brand" href="/">쇼핑몰
-      <br> </a>
-    <div class="container">
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form class="form-inline m-0">
-          <input class="form-control mr-2" type="text" placeholder="Search">
-          <button class="btn btn-primary btn-sm" type="submit">
-            <i class="fa fa-fw fa-search d-block"></i>
-          </button>
-        </form>
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="fa fa-fw fa-shopping-cart"></i>장바구니
-              <br> </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">배송조회
-              <br> </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">공지사항
-              <br> </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">1:1 문의
-              <br> </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/login">
-              <i class="fa fa-fw fa-user"></i>로그인
-              <br> </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/join">
-              <i class="fa fa-fw fa-user-plus"></i>회원가입
-              <br> </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <div class="">
-    <div class="container-fluid">
-      <div class="row bg-light">
-        <div class="">
-          <ul class="nav nav-tabs">
-            <li class="nav-item">
-              <a href="#" class="active nav-link">
-                <i class="fa fa-home fa-home"></i>&nbsp;메인&nbsp;
-                <br> </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">전체
-                <br> </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">세일상품
-                <br> </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">운동기구
-                <br> </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">의류
-                <br> </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">보충제
-                <br> </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
+  <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
+
   <div class="py-5 text-white opaque-overlay h-75 w-100" style="background-image: url(&quot;login.jpg&quot;); background-position: center bottom;">
     <div class="container">
       <div class="row">

@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
 
 /* GET login page. */
 router.get('/login', function(req, res, next) {
-  res.render('login', { title: 'Express' });
+  res.render('login', { title: 'Express', username:req.session.username });
 });
 
 // 로그인 DB 확인
@@ -40,7 +40,7 @@ router.post('/login', function(req,res,next){
 	
 	pool.getConnection(function (err, connection)
 	{
-		var sql = "SELECT * FROM login WHERE email=?";
+		var sql = "SELECT * FROM user WHERE email=?";
 		connection.query(sql, [email], function(err, result){
 			if(err) console.error(err);
 			
