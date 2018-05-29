@@ -15,6 +15,7 @@ var pool = mysql.createPool({
 });
 
 router.get('/', function(req, res) {
+  console.log(req.query.page);
   var CurrPage  = Number(req.query.page);   // 현재 페이지 인덱스
   if(!CurrPage)CurrPage = 1;
 	var TotalPage;  // 총 페이지 수
@@ -31,6 +32,7 @@ router.get('/', function(req, res) {
         connection.query(sql, function(err, result){
           if(err) console.error(err);
           TotalPage = Math.ceil(result[0].count / pageArticleNum);
+          connection.release();
           callback(null, TotalPage);
         });
       });
@@ -45,6 +47,7 @@ router.get('/', function(req, res) {
             articles: articles,
             total: totalpage
           }
+          connection.release();
           callback(null, temp);
         });
       });
@@ -76,9 +79,9 @@ router.get('/', function(req, res) {
         res.render('notice',{
           title: 'notice',
           articles: Articles,
-					username:req.session.username
+            username:req.session.username
         });
-        console.log(Articles.idx);
+        console.log(Articles);
       }
     }
   );
