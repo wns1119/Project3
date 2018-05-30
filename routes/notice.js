@@ -59,7 +59,6 @@ router.get('/', function(req, res) {
       });
     },
     function(data, callback){
-         console.log(data.Curr);
       // 현재 페이지의 페이지네이션 시작 번호
       startPage = ((Math.ceil(data.Curr/pageListNum)-1) * pageListNum) + 1;
       // 현재 페이지의 페이지네이션 끝 번호
@@ -82,8 +81,6 @@ router.get('/', function(req, res) {
       if (err) {
         throw err;
       } else {
-        console.log(Articles.Start);
-        console.log(Articles.End);
         res.render('notice',{
           title: 'notice',
           articles: Articles,
@@ -112,11 +109,11 @@ router.get('/write', function(req, res){
 
 router.post('/write', function(req, res){
   pool.getConnection(function(err, connection){
-    var sql = "INSERT INTO board1(title, date, content, hit) VALUES(?, CURRENT_TIMESTAMP, ?, ?, ?)";
-    var data=[req.body.title, content, 0];
-    connection.query(sql, [data], function(err, result){
+    var data=[req.body.title, req.body.content];
+    var sql = "INSERT INTO board1(title, content, date) VALUES(?, ?, CURRENT_TIMESTAMP)";
+    connection.query(sql, data, function(err, result){
           if(err) console.error(err);
-          res.render('noticeRead', {username:req.session.username, row:result[0]});
+          res.redirect('/notice');
           connection.release();
         });
   });
