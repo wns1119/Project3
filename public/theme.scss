@@ -61,24 +61,7 @@ html,body {
    height:100%;
 }
 
-.navbar-brand {
-	font-size:1.0rem;
-}
 
-.nav-item {
-  font-size:0.8rem;
-}
-
-.form-control {
-  height:25px;
-}
-
-.carousel-item {
-	width: 600px;
-  height: auto;
-  margin-left: auto;
-  margin-right: auto;
-}
 
 .cover {
 	min-height:100%;
@@ -99,7 +82,24 @@ html,body {
   color: color-yiq(map-get($theme-colors, 'dark'));
 	&:before {
     position: absolute;
-    top:0px;
+    top:0px;.navbar-brand {
+	font-size:1.0rem;
+}
+
+.nav-item {
+  font-size:0.8rem;
+}
+
+.form-control {
+  height:25px;
+}
+
+.carousel-item {
+	width: 600px;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
     left:0px;
     width:100%;
     height: 100%;
