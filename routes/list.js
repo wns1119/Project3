@@ -62,7 +62,7 @@ router.get('/', function(req, res) {
     },
     function(totalpage, callback){
        pool.getConnection(function (err, connection) {
-        var sql = "SELECT * FROM product ORDER BY name desc LIMIT ?, ?";
+        var sql = "SELECT * FROM product ORDER BY name asc LIMIT ?, ?";
         connection.query(sql, [(totalpage.Curr-1)*pageArticleNum, pageArticleNum], function(err, result){
           if(err) console.error(err);
           articles = result;
