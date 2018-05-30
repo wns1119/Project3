@@ -9,6 +9,8 @@ var joinForm = require('./routes/joinForm');
 var user = require('./routes/user');
 var notice = require('./routes/notice');
 var list = require('./routes/list');
+var delivery = require('./routes/delivery');
+//var kart = require('./routes/kart');
 
 var app = express();
 
@@ -29,6 +31,8 @@ app.use('/join', joinForm);
 app.use('/user', user);
 app.use('/notice', notice);
 app.use('/list', list);
+app.use('/delivery', delivery);
+//app.use('/kart', kart);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
