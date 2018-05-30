@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>상품정보</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/theme.css" type="text/css"> </head>
+
+<body class="Head_nav" onload="init();">
+  <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>       
+  <div class="py-5 text-white bg-secondary">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 p-0">
+          <img class="d-block mx-auto" src="/image/<%=row.code%>.jpg" width="400" height="400"> </div>
+        <div class="align-self-center col-md-6">
+          <h2 class="mb-4 text-left"><strong><%=row.name%></strong></h2>
+          <p class="mb-3"><%=row.spec%></p>
+          <p class="mb-3">상품 가격 : <%=row.price%>원</p>
+          <p class="mb-5">배송 가격 : 2500원 (5만원 이상 구매시 무료)</p>
+          <form name="form" action="" method="post">
+            <p class="mb">수량 :
+              <input type="hidden" name="sell_price" value="<%=row.price%>">
+              <input type="text" name="amount" value="1" onchange="change();" size="3">
+              <input type="button" value=" - " onclick="del();">
+              <input type="button" value=" + " onclick="add();">
+              <br> </p>
+            <p class="mb">전체금액 :
+              <input type="text" name="sum" size="11" readonly="">원</p>
+            <div class="" align="left">
+              <a class="btn btn-lg btn-outline-light" href="#">상품구매</a>
+              <a class="btn btn-lg btn-outline-light" href="#">장바구니</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script language="JavaScript">
+    var sell_price;
+    var amount;
+  
+    function init () {
+      sell_price = document.form.sell_price.value;
+      amount = document.form.amount.value;
+      document.form.sum.value = sell_price;
+      change();
+    }
+  
+    function add () {
+      hm = document.form.amount;
+      sum = document.form.sum;
+      hm.value ++ ;
+  
+      change();
+    }
+  
+    function del () {
+      hm = document.form.amount;
+      sum = document.form.sum;
+        if (hm.value > 1) {
+          hm.value -- ;
+          change();
+        }
+    }
+  
+    function change () {
+      hm = document.form.amount;
+      sum = document.form.sum;
+  
+        if (hm.value < 0) {
+          hm.value = 0;
+        }
+		
+		if(parseInt(hm.value) * sell_price >= 50000){	// 배송비 할인
+			sum.value = parseInt(hm.value) * sell_price;
+		}
+		else{
+			sum.value = (parseInt(hm.value) * sell_price)+2500;
+		}
+      
+    }
+  </script>
+</body>
+
+</html>
