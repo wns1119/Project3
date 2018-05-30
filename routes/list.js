@@ -143,6 +143,7 @@ router.get('/read/:code', function(req, res, next) {
 	pool.getConnection(function (err, connection) {
 	  if (err) throw err;
 	  // Use the connection
+
 	  var sql = "SELECT * FROM product WHERE code=?";
 	  connection.query(sql,[code], function (err, row) {
 		  if(err) console.error(err);
@@ -154,5 +155,6 @@ router.get('/read/:code', function(req, res, next) {
 	  });
 	});
 });
+
 
 module.exports = router;
