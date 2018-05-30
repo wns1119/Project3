@@ -48,32 +48,31 @@
         <div class="col-md-6 col-md-offset-3" id="colForm">
           <form role="form" method="post" action="/join" onsubmit="return onSubmit()" >
             <div class="form-group">
-              <label for="InputEmail" >이메일 주소</label>
+              <label for="InputEmail"><strong>이메일 주소</strong></label>
               <input type="email" class="form-control" id="email" name="email" placeholder="이메일 주소" maxlength="50" onkeydown="fn_press_han(this);" style="ime-mode:disabled;"/>
             </div>
             <div class="form-group">
-              <label for="InputPassword1">비밀번호</label>
+              <label for="InputPassword1"><strong>비밀번호</strong></label>
               <input type="password" class="form-control" id="passwd" name="passwd"  placeholder="비밀번호" maxlength="30"/>
             </div>
             <div class="form-group">
-              <label for="InputPassword2">비밀번호 확인</label>
+              <label for="InputPassword2"><strong>비밀번호 확인</strong></label>
               <input type="password" class="form-control" id="check_passwd" name="check_passwd" placeholder="비밀번호 확인" maxlength="30"/>
-              <p class="help-block">비밀번호 확인을 위해 다시한번 입력 해 주세요</p>
             </div>
             <div class="form-group">
-              <label for="username">이름</label>
+              <label for="username"><strong>이름</strong></label>
               <input type="text" class="form-control" id="username" name="username" placeholder="이름을 입력해 주세요" maxlength="20"/>
             </div>
 			<div class="form-group">
-              <label for="address">주소</label>
+              <label for="address"><strong>주소</strong></label>
               <input type="text" class="form-control" id="address" name="address" placeholder="주소" maxlength="100"/>
             </div>
 			<div class="form-group">
-              <label for="phone">전화번호(-없이 입력)</label>
+              <label for="phone"><strong>전화번호(-없이 입력)</strong</label>
               <input type="text" class="form-control" id="phone" name="phone" placeholder="전화번호" maxlength="15" onkeypress="return fn_press(event, 'numbers');" onkeydown="fn_press_han(this);" style="ime-mode:disabled;"/>
             </div>
 			<div class="form-group">
-              <label for="gender">성별</label><br>
+              <label for="gender"><strong>성별</strong></label><br>
               <input type="radio" name="gender" value="male" checked="checked"/>남
 			  <input type="radio" name="gender" value="female"/>여
             </div>
