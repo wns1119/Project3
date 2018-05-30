@@ -1,37 +1,98 @@
 <!DOCTYPE html>
 <html>
-
+<style>
+.well {
+ height: 100px;
+ width: 100%;
+ color: black;
+ background-color: #e9ecef;
+ padding: 30px 0px 30px 10px;
+}
+.container{
+  margin: 20px 0px 20px 10px;
+}
+</style>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MyPage</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="theme.css" type="text/css"> </head>
+  <link rel="stylesheet" href='/theme.css' type="text/css"> 
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
 
 <body class="Head_nav">
   <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
   <div class="row">
     <div class="col-2">
-      <div class="list-group">
-      <li class="list-group-item font-weight-bold"> MyPage</li>
-      <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">나의정보</a>
-      <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">주문정보</a>
-      <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">회원정보수정</a>
-      <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">판매자권한요청</a>
+
+      <li class="list-group-item font-weight-bold" style="background-color: rgb(240, 240, 240)"> MyPage</li>
+      <a class="list-group-item" href="/user" style="background-color: rgb(240, 240, 240)">나의정보</a>
+      <a class="list-group-item" href="/user/order" style="background-color: rgb(240, 240, 240)">주문정보</a>
+      <a class="list-group-item" href="/user/modify"  style="background-color: rgb(240, 240, 240)">회원정보수정</a>
+      <a class="list-group-item" href="/user/saleauth" style="background-color: rgb(240, 240, 240)">판매자권한요청</a>
+
+    </div>
+    <div class="col-9">
+      <div class="jumbotron">
+        <h1>My Page</h1>
+        <p>회원정보관리 페이지</p>      
+      </div> 
+      <div class="well"><h2>기본정보</h2></div>
+      <div class="container">       
+        <table class="table">
+          <tbody>
+            <tr>
+              <th>아이디(email)</th>
+              <td><%=rows[0].email%></td>
+            </tr>
+            <tr>
+              <th>가입일</th>
+              <td><%=rows[0].date%></td>
+            </tr>
+            <tr>
+              <th>이름</th>
+              <td><%=rows[0].username%></td>
+            </tr>
+            <tr>
+              <th>주소</th>
+              <td><%=rows[0].address%></td>
+            </tr>
+            <tr>
+              <th>전화번호</th>
+              <td><%=rows[0].phone%></td>
+            </tr>
+            <tr>
+              <th>성별</th>
+              <td><%=rows[0].gender%></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-    <div class="col-8">
-      <div class="tab-content" id="nav-tabContent">
-      <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list"><%=rows[0].email%></div>
-      <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">...</div>
-      <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
-      <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
-    </div>
+      <div class="well"><h2>배송정보</h2></div>
+      <div class="container">       
+        <table class="table">
+          <tbody>
+            <tr>
+              <th>기본배송지</th>
+              <td><%=rows[0].address1%></td>
+            </tr>
+            <tr>
+              <th>추가배송지1</th>
+              <td><%=rows[0].address2%></td>
+            </tr>
+            <tr>
+              <th>추가배송지2</th>
+              <td><%=rows[0].address3%></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
   </div>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 
 </html>
