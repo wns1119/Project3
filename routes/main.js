@@ -16,20 +16,20 @@ var pool = mysql.createPool({
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(session({
-  secret: '1q2w3e4r',
-  resave: false,
-  saveUninitialized: true
+	secret: '1q2w3e4r',
+	resave: false,
+	saveUninitialized: true
 }));
 
 /* GET main page. */
 router.get('/', function(req, res, next) {
 
-  res.render('main', { title: 'main', username:req.session.username});
+	res.render('main', { title: 'main', username:req.session.username});
 });
 
 /* GET login page. */
 router.get('/login', function(req, res, next) {
-  res.render('login', { title: 'Express', username:req.session.username });
+	res.render('login', { title: 'login', username:req.session.username });
 });
 
 // 로그인 DB 확인
@@ -46,33 +46,56 @@ router.post('/login', function(req,res,next){
 			
 			console.log(result);
 			if(result != ""){	// 이메일이 존재하는 경우
-			
-				  var DB_PW = result[0].passwd;
+
+				var DB_PW = result[0].passwd;
 				  if(DB_PW == passwd){	// 입력한 passwd가 일치하는 경우
 					  req.session.username = result[0].username;	// 세션에 정보 저장
 					  req.session.email= result[0].email;
 					  res.redirect('/');
 					  connection.release();
-				  }
-				  else{
-					  res.send("<script>alert('패스워드가 일치하지 않습니다.');history.back();</script>");
-					  connection.release();
-				  }
-			}
-			else{
-				res.send("<script>alert('아이디가 존재하지 않습니다.');history.back();</script>");
-				connection.release();
-			}
-			
-		});
+					}
+					else{
+						res.send("<script>alert('패스워드가 일치하지 않습니다.');history.back();</script>");
+						connection.release();
+					}
+				}
+				else{
+					res.send("<script>alert('아이디가 존재하지 않습니다.');history.back();</script>");
+					connection.release();
+				}
+
+			});
 	});
 	
 });
-
+router.get('/userauth', function(req,res,next){
+	res.render('userauth', {username: req.session.username});
+});
+router.post('/userauth', function(req,res,next){
+	
+	pool.getConnection(function (err, connection)
+	{
+		var sql = "SELECT passwd FROM user WHERE email=?";
+		connection.query(sql, [req.session.email], function(err, result){
+			if(err) console.error(err);
+			
+			console.log(result, req.body.password);
+			if(result[0].passwd == req.body.password){	// 입력한 passwd가 일치하는 경우
+				res.redirect('/user');
+				connection.release();
+			}
+			else{
+				res.send("<script>alert('패스워드가 일치하지 않습니다.');history.back();</script>");
+				connection.release();
+			}			
+		});
+	});
+});
 // logout 처리
 router.get('/logout', function(req,res,next){
 	delete req.session.username;
-    res.redirect('/');
+	delete req.session.email;
+	res.redirect('/');
 });
 
 
