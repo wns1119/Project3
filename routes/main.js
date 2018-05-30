@@ -50,6 +50,7 @@ router.post('/login', function(req,res,next){
 				  var DB_PW = result[0].passwd;
 				  if(DB_PW == passwd){	// 입력한 passwd가 일치하는 경우
 					  req.session.username = result[0].username;	// 세션에 정보 저장
+					  req.session.email= result[0].email;
 					  res.redirect('/');
 					  connection.release();
 				  }
