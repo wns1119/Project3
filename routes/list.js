@@ -32,12 +32,12 @@ router.get('/', function(req, res, next) {
 	});
 });*/
 
-router.get('/', function(req, res) {
-  var CurrPage  = Number(req.query.page);   // 현재 페이지 인덱스
+function listcall(req, res, maxnum_page, sort, render_page, titleinfo, username) {
+	var CurrPage  = Number(req.query.page);   // 현재 페이지 인덱스
   if(!CurrPage)CurrPage = 1;
 	var TotalPage;  // 총 페이지 수
 	var articles = "";     // 게시판 내용
-  var pageArticleNum = 12; // 한 페이지에 표시될 게시글의 개수
+  var pageArticleNum = maxnum_page; // 한 페이지에 표시될 게시글의 개수
   var pageListNum = 5;  // 한 화면에 표시될 페이지 인덱스의 수
   var startPage;  // 현재 화면 시작 인덱스
   var endPage;    // 현재 화면 끝 인덱스
@@ -62,7 +62,10 @@ router.get('/', function(req, res) {
     },
     function(totalpage, callback){
        pool.getConnection(function (err, connection) {
-        var sql = "SELECT * FROM product ORDER BY name asc LIMIT ?, ?";
+		if(sort == 0) var sql = "SELECT * FROM product ORDER BY name asc LIMIT ?, ?";		// 이름순
+        else if(sort == 1) var sql = "SELECT * FROM product ORDER BY price asc LIMIT ?, ?";		// 낮은가격순
+		else if(sort == 2) var sql = "SELECT * FROM product ORDER BY price desc LIMIT ?, ?";	// 높은가격순
+		else var sql = "SELECT * FROM product ORDER BY sales desc LIMIT ?, ?";	// 판매순
         connection.query(sql, [(totalpage.Curr-1)*pageArticleNum, pageArticleNum], function(err, result){
           if(err) console.error(err);
           articles = result;
@@ -102,14 +105,34 @@ router.get('/', function(req, res) {
       } else {
         console.log(Articles.Start);
         console.log(Articles.End);
-        res.render('list_all',{
-          title: 'notice',
+        res.render(render_page,{
+          title: titleinfo,
           articles: Articles,
           username:req.session.username
         });
       }
     }
   );
+}
+
+/* 이름순 정렬 (기본) */
+router.get('/', function(req, res) {
+	listcall(req, res, 12, 0, "list_all", "전체상품");
+});
+
+/* 낮은가격순 정렬 */
+router.get('/low_price', function(req, res) {
+	listcall(req, res, 12, 1, "list_all", "전체상품");
+});
+
+/* 높은가격순 정렬 */
+router.get('/high_price', function(req, res) {
+	listcall(req, res, 12, 2, "list_all", "전체상품");
+});
+
+/* 판매순 정렬 */
+router.get('/sales', function(req, res) {
+	listcall(req, res, 12, 3, "list_all", "전체상품");
 });
 
 /* 개별 상품 조회 (코드번호 이용) */
