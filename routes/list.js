@@ -27,13 +27,12 @@ router.get('/', function(req, res, next) {
 	  });
 	});
 });
-
 router.get('/machine', function(req, res, next) {
 	
 	pool.getConnection(function (err, connection) {
 	  if (err) throw err;
 	  // Use the connection
-	  var sqlForSelectList = "SELECT * FROM product where category='machine'";
+	  var sqlForSelectList = "SELECT * FROM product where category='0'";
 	  connection.query(sqlForSelectList, function (err, rows) {
 		  if(err) console.error(err);
 		  // console.log("rows : " + JSON.stringify(rows));
@@ -43,5 +42,22 @@ router.get('/machine', function(req, res, next) {
 	  });
 	});
 });
+
+router.get('/:id', function(req, res, next) {
+	
+	pool.getConnection(function (err, connection) {
+	  if (err) throw err;
+	  // Use the connection
+	  var sqlForSelectList = "SELECT * FROM product";
+	  connection.query(sqlForSelectList, function (err, rows) {
+		  if(err) console.error(err);
+		  // console.log("rows : " + JSON.stringify(rows));
+		  
+		  res.render('showitem', {username:req.session.username, title: '전체 글 조회', rows: rows, id:req.params.id});
+		  connection.release();  
+	  });
+	});
+});
+
 
 module.exports = router;
