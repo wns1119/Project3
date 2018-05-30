@@ -65,7 +65,9 @@ function listcall(req, res, maxnum_page, sort, render_page, titleinfo, username)
 		if(sort == 0) var sql = "SELECT * FROM product ORDER BY name asc LIMIT ?, ?";		// 이름순
         else if(sort == 1) var sql = "SELECT * FROM product ORDER BY price asc LIMIT ?, ?";		// 낮은가격순
 		else if(sort == 2) var sql = "SELECT * FROM product ORDER BY price desc LIMIT ?, ?";	// 높은가격순
-		else var sql = "SELECT * FROM product ORDER BY sales desc LIMIT ?, ?";	// 판매순
+		else if(sort == 3) var sql = "SELECT * FROM product ORDER BY sales desc LIMIT ?, ?";	// 판매순
+		else if(sort == -1) var sql = "SELECT * FROM product WHERE name LIKE '%"+req.query.Search+"%' ORDER BY name asc LIMIT ?, ?";	// 검색
+		
         connection.query(sql, [(totalpage.Curr-1)*pageArticleNum, pageArticleNum], function(err, result){
           if(err) console.error(err);
           articles = result;
@@ -115,6 +117,7 @@ function listcall(req, res, maxnum_page, sort, render_page, titleinfo, username)
   );
 }
 
+
 /* 이름순 정렬 (기본) */
 router.get('/', function(req, res) {
 	listcall(req, res, 12, 0, "list_all", "전체상품");
@@ -134,6 +137,13 @@ router.get('/high_price', function(req, res) {
 router.get('/sales', function(req, res) {
 	listcall(req, res, 12, 3, "list_all", "전체상품");
 });
+
+/* 검색 */
+router.get('/search', function(req, res) {
+	console.log(req.query);
+	listcall(req, res, 12, -1, "search", "검색결과");
+});
+
 
 /* 개별 상품 조회 (코드번호 이용) */
 router.get('/read/:code', function(req, res, next) {
