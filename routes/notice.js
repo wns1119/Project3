@@ -44,7 +44,7 @@ router.get('/', function(req, res) {
     },
     function(totalpage, callback){
        pool.getConnection(function (err, connection) {
-        var sql = "SELECT idx, title, date, creator, hit FROM board1 ORDER BY idx desc LIMIT ?, ?";
+        var sql = "SELECT idx, title, date, hit FROM board1 ORDER BY idx desc LIMIT ?, ?";
         connection.query(sql, [(totalpage.Curr-1)*pageArticleNum, pageArticleNum], function(err, result){
           if(err) console.error(err);
           articles = result;
@@ -59,7 +59,6 @@ router.get('/', function(req, res) {
       });
     },
     function(data, callback){
-         console.log(data.Curr);
       // 현재 페이지의 페이지네이션 시작 번호
       startPage = ((Math.ceil(data.Curr/pageListNum)-1) * pageListNum) + 1;
       // 현재 페이지의 페이지네이션 끝 번호
@@ -82,8 +81,6 @@ router.get('/', function(req, res) {
       if (err) {
         throw err;
       } else {
-        console.log(Articles.Start);
-        console.log(Articles.End);
         res.render('notice',{
           title: 'notice',
           articles: Articles,
@@ -97,7 +94,7 @@ router.get('/', function(req, res) {
 router.get('/read', function(req, res){
   var idx=req.query.idx;
   pool.getConnection(function(err, connection){
-    var sql = "SELECT idx, title, date, content, creator, hit FROM board1 WHERE idx = ?";
+    var sql = "SELECT idx, title, date, content, hit FROM board1 WHERE idx = ?";
     connection.query(sql, idx, function(err, result){
           if(err) console.error(err);
           res.render('noticeRead', {username:req.session.username, row:result[0]});
@@ -105,4 +102,20 @@ router.get('/read', function(req, res){
         });
   });
 });
+
+router.get('/write', function(req, res){
+  res.render('noticeWrite', {username:req.session.username});
+});
+
+router.post('/write', function(req, res){
+  pool.getConnection(function(err, connection){
+    var data=[req.body.title, req.body.content];
+    var sql = "INSERT INTO board1(title, content, date) VALUES(?, ?, CURRENT_TIMESTAMP)";
+    connection.query(sql, data, function(err, result){
+          if(err) console.error(err);
+          res.redirect('/notice');
+          connection.release();
+        });
+  });
+})
 module.exports = router;
