@@ -9,113 +9,24 @@
   <link rel="stylesheet" href="theme.css" type="text/css"> </head>
 
 <body class="Head_nav">
-  <nav class="navbar navbar-expand-md bg-secondary navbar-dark">
-    <a class="navbar-brand" href="/">쇼핑몰
-      <br> </a>
-    <div class="container">
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form class="form-inline m-0">
-          <input class="form-control mr-2" type="text" placeholder="Search">
-          <button class="btn btn-primary btn-sm" type="submit">
-            <i class="fa fa-fw fa-search d-block"></i>
-          </button>
-        </form>
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="fa fa-fw fa-shopping-cart"></i>장바구니
-              <br> </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">배송조회
-              <br> </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">공지사항
-              <br> </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">1:1 문의
-              <br> </a>
-          </li>
-          <li class="nav-item">
-      <% if( !username) {%>
-            <a class="nav-link" href="/login" id='login'>
-              <i class="fa fa-fw fa-user"></i>
-        로그인
-      <% } else { %>
-           <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%=username%>
-                <i class="fa fa-fw fa-user"></i>
-              </a>   
-            <div class="dropdown-menu">
-            <a class="dropdown-item" href="/user">MyPage</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/logout">로그아웃</a>
-            </div>
-            </li>
-         <% } %>
-              <br> </a>
-          </li>
-          <li class="nav-item">
-      <% if( !username) {%>
-            <a class="nav-link" href="/join">
-              <i class="fa fa-fw fa-user-plus"></i>회원가입
-        <% } else { %><a class="nav-link" href="/">
-        <%=username%>님 환영합니다! <% } %>
-              <br> </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <div class="">
-    <div class="container-fluid">
-      <div class="row bg-light">
-        <div class="">
-          <ul class="nav nav-tabs">
-            <li class="nav-item">
-              <a href="#" class="active nav-link">
-                <i class="fa fa-home fa-home"></i>&nbsp;메인&nbsp;
-                <br> </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">전체
-                <br> </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">세일상품
-                <br> </a>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">운동기구
-                <br> </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">의류
-                <br> </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">보충제
-                <br> </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
+  <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
   <div class="row">
     <div class="col-2">
       <div class="list-group">
       <li class="list-group-item font-weight-bold"> MyPage</li>
-      <a href="/user" class="list-group-item list-group-item-action">나의정보</a>
-      <a href="#" class="list-group-item list-group-item-action">주문정보</a>
-      <a href="#" class="list-group-item list-group-item-action">회원정보수정</a>
-      <a href="#" class="list-group-item list-group-item-action disabled">판매자권한요청</a>
+      <a class="list-group-item list-group-item-action" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">나의정보</a>
+      <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">주문정보</a>
+      <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">회원정보수정</a>
+      <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">판매자권한요청</a>
       </div>
+    </div>
+    <div class="col-8">
+      <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list"><%=rows[0].email%></div>
+      <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">...</div>
+      <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
+      <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
+    </div>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

@@ -33,34 +33,34 @@
         <div class="col-md-6 col-md-offset-3">
           <form role="form" method="post" action="/join" onsubmit="return onSubmit()" >
             <div class="form-group">
-              <label for="InputEmail">이메일 주소</label>
-              <input type="email" class="form-control" id="email" name="email" placeholder="이메일 주소">
+              <label for="InputEmail" >이메일 주소</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="이메일 주소" maxlength="50" onkeydown="fn_press_han(this);" style="ime-mode:disabled;"/>
             </div>
             <div class="form-group">
               <label for="InputPassword1">비밀번호</label>
-              <input type="password" class="form-control" id="passwd" name="passwd"  placeholder="비밀번호">
+              <input type="password" class="form-control" id="passwd" name="passwd"  placeholder="비밀번호" maxlength="30"/>
             </div>
             <div class="form-group">
               <label for="InputPassword2">비밀번호 확인</label>
-              <input type="password" class="form-control" id="check_passwd" name="check_passwd" placeholder="비밀번호 확인">
+              <input type="password" class="form-control" id="check_passwd" name="check_passwd" placeholder="비밀번호 확인" maxlength="30"/>
               <p class="help-block">비밀번호 확인을 위해 다시한번 입력 해 주세요</p>
             </div>
             <div class="form-group">
               <label for="username">이름</label>
-              <input type="text" class="form-control" id="username" name="username" placeholder="이름을 입력해 주세요">
+              <input type="text" class="form-control" id="username" name="username" placeholder="이름을 입력해 주세요" maxlength="20"/>
             </div>
 			<div class="form-group">
               <label for="address">주소</label>
-              <input type="text" class="form-control" id="address" name="address" placeholder="주소">
+              <input type="text" class="form-control" id="address" name="address" placeholder="주소" maxlength="100"/>
             </div>
 			<div class="form-group">
-              <label for="phone">전화번호</label>
-              <input type="text" class="form-control" id="phone" name="phone" placeholder="전화번호">
+              <label for="phone">전화번호(-없이 입력)</label>
+              <input type="text" class="form-control" id="phone" name="phone" placeholder="전화번호" maxlength="15" onkeypress="return fn_press(event, 'numbers');" onkeydown="fn_press_han(this);" style="ime-mode:disabled;"/>
             </div>
 			<div class="form-group">
               <label for="gender">성별</label><br>
-              <input type="radio" name="gender" value="male" checked="checked">남
-			  <input type="radio" name="gender" value="female">여
+              <input type="radio" name="gender" value="male" checked="checked"/>남
+			  <input type="radio" name="gender" value="female"/>여
             </div>
             <div class="form-group text-center">
               <button type="submit" class="btn btn-info">회원가입<i class="fa fa-check spaceLeft"></i></button>
@@ -142,6 +142,24 @@
 				return false;
 			}
 		}
+		
+		/* 숫자만 입력받기 */
+		function fn_press(event, type) {
+			if(type == "numbers") {
+				if(event.keyCode < 48 || event.keyCode > 57) return false;
+				//onKeyDown일 경우 좌, 우, tab, backspace, delete키 허용 정의 필요
+			}
+		}
+		/* 한글입력 방지 */
+		function fn_press_han(obj)
+		{
+			//좌우 방향키, 백스페이스, 딜리트, 탭키에 대한 예외
+			if(event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 39
+			|| event.keyCode == 46 ) return;
+			//obj.value = obj.value.replace(/[\a-zㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+			obj.value = obj.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+		}
+
 	</script>
   </body>
 </html>
