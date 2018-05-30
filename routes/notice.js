@@ -44,7 +44,7 @@ router.get('/', function(req, res) {
     },
     function(totalpage, callback){
        pool.getConnection(function (err, connection) {
-        var sql = "SELECT idx, title, date, creator, hit FROM board1 ORDER BY idx desc LIMIT ?, ?";
+        var sql = "SELECT idx, title, date, hit FROM board1 ORDER BY idx desc LIMIT ?, ?";
         connection.query(sql, [(totalpage.Curr-1)*pageArticleNum, pageArticleNum], function(err, result){
           if(err) console.error(err);
           articles = result;
@@ -97,7 +97,7 @@ router.get('/', function(req, res) {
 router.get('/read', function(req, res){
   var idx=req.query.idx;
   pool.getConnection(function(err, connection){
-    var sql = "SELECT idx, title, date, content, creator, hit FROM board1 WHERE idx = ?";
+    var sql = "SELECT idx, title, date, content, hit FROM board1 WHERE idx = ?";
     connection.query(sql, idx, function(err, result){
           if(err) console.error(err);
           res.render('noticeRead', {username:req.session.username, row:result[0]});
@@ -105,4 +105,20 @@ router.get('/read', function(req, res){
         });
   });
 });
+
+router.get('/write', function(req, res){
+  res.render('noticeWrite', {username:req.session.username});
+});
+
+router.post('/write', function(req, res){
+  pool.getConnection(function(err, connection){
+    var sql = "INSERT INTO board1(title, date, content, hit) VALUES(?, CURRENT_TIMESTAMP, ?, ?, ?)";
+    var data=[req.body.title, content, 0];
+    connection.query(sql, [data], function(err, result){
+          if(err) console.error(err);
+          res.render('noticeRead', {username:req.session.username, row:result[0]});
+          connection.release();
+        });
+  });
+})
 module.exports = router;
