@@ -66,7 +66,10 @@ function listcall(req, res, maxnum_page, sort, render_page, titleinfo, username)
         else if(sort == 1) var sql = "SELECT * FROM product ORDER BY price asc LIMIT ?, ?";		// 낮은가격순
 		else if(sort == 2) var sql = "SELECT * FROM product ORDER BY price desc LIMIT ?, ?";	// 높은가격순
 		else if(sort == 3) var sql = "SELECT * FROM product ORDER BY sales desc LIMIT ?, ?";	// 판매순
-		else if(sort == -1) var sql = "SELECT * FROM product WHERE name LIKE '%"+req.query.Search+"%' ORDER BY name asc LIMIT ?, ?";	// 검색
+		else if(sort == 4) var sql = "SELECT * FROM product WHERE name LIKE '%"+req.query.Search+"%' ORDER BY name asc LIMIT ?, ?";	// 검색(이름순) 
+		else if(sort == 5) var sql = "SELECT * FROM product WHERE name LIKE '%"+req.query.Search+"%' ORDER BY price asc LIMIT ?, ?";	// 검색(낮은가격순)
+		else if(sort == 6) var sql = "SELECT * FROM product WHERE name LIKE '%"+req.query.Search+"%' ORDER BY price desc LIMIT ?, ?";	// 검색(높은가격순)
+		else if(sort == 7) var sql = "SELECT * FROM product WHERE name LIKE '%"+req.query.Search+"%' ORDER BY sales desc LIMIT ?, ?";	// 검색(판매순)
 		
         connection.query(sql, [(totalpage.Curr-1)*pageArticleNum, pageArticleNum], function(err, result){
           if(err) console.error(err);
@@ -110,7 +113,8 @@ function listcall(req, res, maxnum_page, sort, render_page, titleinfo, username)
         res.render(render_page,{
           title: titleinfo,
           articles: Articles,
-          username:req.session.username
+          username:req.session.username,
+		  search:req.query.Search
         });
       }
     }
@@ -138,10 +142,28 @@ router.get('/sales', function(req, res) {
 	listcall(req, res, 12, 3, "list_all", "전체상품");
 });
 
-/* 검색 */
+/* 검색(이름순 정렬) */
 router.get('/search', function(req, res) {
 	console.log(req.query);
-	listcall(req, res, 12, -1, "search", "검색결과");
+	listcall(req, res, 12, 4, "search", "검색결과");
+});
+
+/* 검색(낮은가격순 정렬) */
+router.get('/search/low_price', function(req, res) {
+	console.log(req.query);
+	listcall(req, res, 12, 5, "search", "검색결과");
+});
+
+/* 검색(높은가격순 정렬) */
+router.get('/search/high_price', function(req, res) {
+	console.log(req.query);
+	listcall(req, res, 12, 6, "search", "검색결과");
+});
+
+/* 검색(판매순 정렬) */
+router.get('/search/sales', function(req, res) {
+	console.log(req.query);
+	listcall(req, res, 12, 7, "search", "검색결과");
 });
 
 

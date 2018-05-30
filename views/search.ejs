@@ -86,8 +86,23 @@
 
 <body class="Head_nav">
   <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
+  <div class="" align="right">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="btn-group">
+            <a href="/list/search?Search=<%=search%>" class="btn btn-primary">이름순</a>
+            <a href="/list/search/low_price?Search=<%=search%>" class="btn btn-primary">낮은가격순</a>
+            <a href="/list/search/high_price?Search=<%=search%>" class="btn btn-primary">높은가격순</a>
+			<a href="/list/search/sales?Search=<%=search%>" class="btn btn-primary">판매순</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="text-center">
-    <div class="container">
+  <div class="text-center">
+    <div class="container" onload="change()";>
 	  <strong>검색결과 : <%=articles.contents.length%>개</strong><br><br>
 	  <%
 		var count = 0;
