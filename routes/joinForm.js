@@ -64,6 +64,10 @@ router.post('/', function(req,res,next){
 						if(err) console.error(err);
 						
 						res.send("<script>alert('회원가입 되었습니다.');window.location.href='/'</script>");
+					});
+					sql="INSERT INTO shipaddress(email, address1) values(?,?)";
+					connection.query(sql, [email, address], function(err, result){
+						if(err) console.error(err);
 						connection.release();
 					});
 				});
