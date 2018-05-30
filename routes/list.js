@@ -33,12 +33,12 @@ router.get('/machine', function(req, res, next) {
 	pool.getConnection(function (err, connection) {
 	  if (err) throw err;
 	  // Use the connection
-	  var sqlForSelectList = "SELECT * FROM product";
+	  var sqlForSelectList = "SELECT * FROM product where category='machine'";
 	  connection.query(sqlForSelectList, function (err, rows) {
 		  if(err) console.error(err);
 		  // console.log("rows : " + JSON.stringify(rows));
 		  
-		  res.render('list_all', {username:req.session.username, title: '전체 글 조회', rows: rows});
+		  res.render('list_machine', {username:req.session.username, title: '운동기구 조회', rows: rows});
 		  connection.release();  
 	  });
 	});
