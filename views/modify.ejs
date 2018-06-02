@@ -40,39 +40,141 @@
         <h1>My Page</h1>
         <p>회원정보수정</p>      
       </div>
-      <form method="post" action="/user/modify">
-        <div class="form-group row">
-          <label for="staticEmail" class="col-md-1 col-form-label">Email</label>
-          <div class="col-md-11">
-            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value=<%=rows[0].email%>>
+      <div class="well"><h2>기본정보수정</h2></div>
+      <div class="container">
+        <form method="post" action="/user/modify/1">
+          <div class="form-group row">
+            <label for="staticEmail" class="col-md-1 col-form-label">Email</label>
+            <div class="col-md-11">
+              <input type="text" readonly class="form-control-plaintext" id="staticEmail" value=<%=rows[0].email%>>
+            </div>
+            <label for="staticName" class="col-md-1 col-form-label">이름</label>
+            <div class="col-md-11">
+              <input type="text" readonly class="form-control-plaintext" id="staticName" value=<%=rows[0].username%>>
+            </div>
+            <label for="staticName" class="col-md-1 col-form-label">성</label>
+            <div class="col-md-11">
+              <input type="text" readonly class="form-control-plaintext" id="staticName" value=<%=rows[0].gender%>>
+            </div>
           </div>
-          <label for="staticName" class="col-md-1 col-form-label">이름</label>
-          <div class="col-md-11">
-            <input type="text" readonly class="form-control-plaintext" id="staticName" value=<%=rows[0].username%>>
+          <div class="form-group">
+            <label for="Password1">비밀번호</label>
+            <input type="password" class="col-sm-2 form-control" name="password" placeholder="Password">
           </div>
-          <label for="staticName" class="col-md-1 col-form-label">성</label>
-          <div class="col-md-11">
-            <input type="text" readonly class="form-control-plaintext" id="staticName" value=<%=rows[0].gender%>>
+          <div class="form-group">
+            <label for="Password2">비밀번호 재입력</label>
+            <input type="password" class="col-sm-2 form-control" name="password2" placeholder="Retype Password">
           </div>
-        </div>
-        <div class="form-group">
-          <label for="Password1">비밀번호</label>
-          <input type="password" class="col-sm-2 form-control" name="password" placeholder="Password">
-        </div>
-        <div class="form-group">
-          <label for="Password2">비밀번호 재입력</label>
-          <input type="password" class="col-sm-2 form-control" name="password2" placeholder="Retype Password">
-        </div>
-        <div class="form-group">
-          <label for="Address">주소</label>
-          <input type="text" class="col-sm-2 form-control" name="address" value=<%=rows[0].address%>>
-          <label for="Phone">전화번호</label>
-          <input type="text" class="col-sm-2 form-control" name="phone" value=<%=rows[0].phone%>>
-        </div>
-        <button type="submit" class="btn btn-primary" style="background-color: lightgray">수정</button>
-      </form>
+          <div class="form-group">
+            <label for="Phone">전화번호</label>
+            <input type="text" class="col-sm-6 form-control" name="phone" value=<%=rows[0].phone%>>
+          </div>
+          <button type="submit" class="btn btn-primary" style="background-color: lightgray">수정</button>
+        </form>
+      </div>
+      <div class="well"><h2>배송정보수정</h2></div>
+      <div class="container">
+        <form method="post" action="/user/modify/2" onsubmit="return onSubmit()">
+          <div class="form-group row">
+            <label for="AddressSel" class="col-1">주소선택</label>
+            <select class="col-sm-3 form-control" id="addressSel" name="addressSel">
+              <option>기본주소</option>
+              <option>추가배송지1</option>
+              <option>추가배송지2</option>
+            </select>
+            <div class="form-check">
+              <input type="checkbox" class="col-2 form-check-input" name="check" id="check">
+              <label class="form-check-label">기존주소 삭제 시 체크</label>
+            </div>
+            <button type="submit" formaction="/user/modify/3" class="btn btn-primary" style="background-color: lightgray">주소삭제</button>
+          </div>
+          <div class="form-group row">
+            <input type="text" class="col-5 form-control" id="postcode" name="postcode1" placeholder="우편번호" readonly="readonly">
+            <input type="button" class="col-3 btn btn-primary" onclick="execDaumPostcode()" style="background-color: lightgray" value="우편번호 찾기"><br>
+            <input type="text" class="col-5 form-control" id="address1" name="address1" readonly="readonly" placeholder="주소">
+            <input type="text" class="col-5 form-control" id="address2" name="address2" placeholder="상세주소">
+            <button type="submit" formaction="/user/modify/2" class="btn btn-primary" style="background-color: lightgray">추가</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</body>
+  <script src="/js/bootstrap.min.js"></script>
+  <script>
+    function onSubmit()
+    {
+      if($('input:checkbox[id="check"]').is(":checked") != true){
+        if( $("#postcode").val().trim() == "")
+        {
+          var message = "우편번호를 입력해 주세요";
+          $("#postcode").val("");
+          $("#postcode").focus();
+          alert(message);
+          return false;
+        }
+        if( $("#address1").val().trim() == "")
+        {
+          var message = "주소를 입력해 주세요";
+          $("#address1").val("");
+          $("#address1").focus();
+          alert(message);
+          return false;
+        }
+        if( $("#address2").val().trim() == "")
+        {
+          var message = "상세주소를 입력해 주세요";
+          $("#address2").val("");
+          $("#address2").focus();
+          alert(message);
+          return false;
+        }
+      }
+    }
+  </script>
+  <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+  <script>
 
+    function execDaumPostcode() {
+      new daum.Postcode({
+        oncomplete: function(data) {
+          // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+          // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+          // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+          var fullAddr = ''; // 최종 주소 변수
+          var extraAddr = ''; // 조합형 주소 변수
+
+          // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+          if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+            fullAddr = data.roadAddress;
+
+          } else { // 사용자가 지번 주소를 선택했을 경우(J)
+            fullAddr = data.jibunAddress;
+          }
+
+          // 사용자가 선택한 주소가 도로명 타입일때 조합한다.
+          if(data.userSelectedType === 'R'){
+            //법정동명이 있을 경우 추가한다.
+            if(data.bname !== ''){
+              extraAddr += data.bname;
+            }
+            // 건물명이 있을 경우 추가한다.
+            if(data.buildingName !== ''){
+              extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+            fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+          }
+
+          // 우편번호와 주소 정보를 해당 필드에 넣는다.
+          document.getElementById('postcode').value = data.zonecode; //5자리 새우편번호 사용
+          document.getElementById('address1').value = fullAddr;
+
+          // 커서를 상세주소 필드로 이동한다.
+          document.getElementById('address2').focus();
+        }
+      }).open();
+    }
+  </script>
+</body>
 </html>
