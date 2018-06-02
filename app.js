@@ -11,7 +11,7 @@ var notice = require('./routes/notice');
 var list = require('./routes/list');
 var delivery = require('./routes/delivery');
 var admin = require('./routes/admin');
-//var kart = require('./routes/kart');
+var order = require('./routes/order');
 
 var app = express();
 
@@ -34,7 +34,7 @@ app.use('/notice', notice);
 app.use('/list', list);
 app.use('/delivery', delivery);
 app.use('/admin', admin);
-//app.use('/kart', kart);
+app.use('/order', order);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
