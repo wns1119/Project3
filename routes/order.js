@@ -16,7 +16,7 @@ router.post('/', function(req, res, next) {
 			product.push({code:req.body.code[index],name:req.body.product_name[index],amount:req.body.amount[index],sum:req.body.sum[index]});
 		}
 		console.log(product);
-		res.render('order', { title: '주문' , username:req.session.username, product:product});
+		res.render('order', { title: '주문' , username:req.session.username, product:product, admin:req.session.admin});
 	}
 	
 });
