@@ -13,6 +13,8 @@ var pool = mysql.createPool({
 	password: '1234qwer'
 });
 
+const cart = [];
+
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(session({
@@ -96,6 +98,48 @@ router.get('/logout', function(req,res,next){
 	delete req.session.username;
 	delete req.session.email;
 	res.redirect('/');
+});
+
+router.get('/cart', function(req,res,next){
+	req.session.cart = cart;
+	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart});
+});
+
+router.post('/cart_add', function(req,res,next){
+	var index;
+	var data = {code:req.body.code, product_name:req.body.product_name, amount:req.body.amount, sum:req.body.sum};
+	
+	if(cart.find( v => (v.code === req.body.code))){	// 장바구니에 있는 동일 상품 검색
+		index = cart.findIndex( v => (v.code === req.body.code));
+		cart.splice(index,1, data);	// 정보 갱신
+	}
+	else{
+		cart.push({code:req.body.code, product_name:req.body.product_name, amount:req.body.amount, sum:req.body.sum});
+	}
+
+	
+	
+	console.log(cart);
+	req.session.cart = cart;
+	
+	res.send("<script>history.back();</script>");
+});
+
+router.post('/cart', function(req,res,next){
+	var index;
+	var data = {code:req.body.code, product_name:req.body.product_name, amount:req.body.amount, sum:req.body.sum};
+	if(cart.find( v => (v.code === req.body.code))){	// 장바구니에 있는 동일 상품 검색
+		index = cart.findIndex( v => (v.code === req.body.code));
+		cart.splice(index,1, data);	// 정보 갱신
+	}
+	else{
+		cart.push({code:req.body.code, product_name:req.body.product_name, amount:req.body.amount, sum:req.body.sum});
+	}
+	
+	console.log(cart);
+	req.session.cart = cart;
+	
+	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart});
 });
 
 

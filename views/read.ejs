@@ -21,6 +21,8 @@
           <p class="mb-3">상품 가격 : <%=row.price%>원</p>
           <p class="mb-5">배송 가격 : 2500원 (5만원 이상 구매시 무료)</p>
           <form name="form" action="" method="post">
+			<input type="hidden" name="code" value="<%=row.code%>"/>
+			<input type="hidden" name="product_name" value="<%=row.name%>"/>
             <p class="mb">수량 :
               <input type="hidden" name="sell_price" value="<%=row.price%>">
               <input type="text" name="amount" value="1" onchange="change();" size="3">
@@ -31,7 +33,7 @@
               <input type="text" name="sum" size="11" readonly="">원</p>
             <div class="" align="left">
               <a class="btn btn-lg btn-outline-light" href="#">상품구매</a>
-              <a class="btn btn-lg btn-outline-light" href="#">장바구니</a>
+              <a class="btn btn-lg btn-outline-light" onclick="check()">장바구니</a>
             </div>
           </form>
         </div>
@@ -41,7 +43,7 @@
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  <script language="JavaScript">
+  <script type="text/javascript" >
     var sell_price;
     var amount;
   
@@ -85,6 +87,17 @@
 		}
       
     }
+
+	function check () {
+	   if(confirm("장바구니에 담겼습니다.\n장바구니로 이동하시겠습니까?")==true){
+		document.form.action = "/cart";
+	    document.form.submit();
+	   }
+	   else{
+		document.form.action = "/cart_add";
+	    document.form.submit();
+	   }
+	}
   </script>
 </body>
 
