@@ -46,7 +46,7 @@ router.get('/modify', function(req, res, next) {
 	});
 });
 
-router.post('/modify', function(req, res, next) {
+router.post('/modify/1', function(req, res, next) {
 	var sql="update user set passwd=?, address=?, phone=? where email=?";
 	var passwd=req.body.password;
 	var passwd2=req.body.password2;
@@ -54,7 +54,7 @@ router.post('/modify', function(req, res, next) {
 	var phone=req.body.phone;
 	var data=[passwd, address, phone, req.session.email];
 
-	console.log(req.body);
+	//console.log(req.body);
 	if(passwd==''){
 		sql="update user set address=?, phone=? where email=?";
 		data=[address, phone, req.session.email];
@@ -66,14 +66,71 @@ router.post('/modify', function(req, res, next) {
 	else{
 		pool.getConnection(function (err, connection) {
 			if (err) throw err;
-	  // Use the connection
-	  connection.query(sql, [passwd, address, phone, req.session.email], function (err, rows) {
-	  	if(err) console.error(err);
+			connection.query(sql, data, function (err, rows) {
+				if(err) console.error(err);
+				connection.release();
+			});
+		});
+	}
+	res.redirect('/user');
+});
 
-	  	connection.release();
-	  });
+router.post('/modify/2', function(req, res, next) {
+	var sql="update user set address=? where email=?";
+	var address=req.body.address1+" "+req.body.address2;
+	var addressSel=req.body.addressSel;
+	var data=[address, req.session.email];
+
+	if(addressSel=="기본주소"){
+		pool.getConnection(function (err, connection) {
+			if (err) throw err;
+			connection.query(sql, data, function (err, rows) {
+				if(err) console.error(err);
+				connection.release();
+				sql="update shipaddress set address1=? where email=?";
+			});
+		});
+	}
+	else if(addressSel=="추가배송지1")
+		sql="update shipaddress set address2=? where email=?";
+	else if(addressSel=="추가배송지2")
+		sql="update shipaddress set address3=? where email=?";
+	pool.getConnection(function (err, connection) {
+		if (err) throw err;
+		connection.query(sql, data, function (err, rows) {
+			if(err) console.error(err);
+			connection.release();
+		});
 	});
 	res.redirect('/user');
+});
+
+router.post('/modify/3', function(req, res, next) {
+	var sql="update user set address=? where email=?";
+	var addressSel=req.body.addressSel;
+	var data=[null, req.session.email];
+
+	if(addressSel=="기본주소"){
+		pool.getConnection(function (err, connection) {
+			if (err) throw err;
+			connection.query(sql, data, function (err, rows) {
+				if(err) console.error(err);
+				connection.release();
+			});
+			sql="update shipaddress set address1=? where email=?";
+		});
 	}
+	else if(addressSel=="추가배송지1")
+		sql="update shipaddress set address2=? where email=?";
+	else if(addressSel=="추가배송지2")
+		sql="update shipaddress set address3=? where email=?";
+	pool.getConnection(function (err, connection) {
+		if (err) throw err;
+		connection.query(sql, data, function (err, rows) {
+			if(err) console.error(err);
+			connection.release();
+		});
+	});
+	res.redirect('/user');
 });
 module.exports = router;

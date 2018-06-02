@@ -10,7 +10,8 @@ var user = require('./routes/user');
 var notice = require('./routes/notice');
 var list = require('./routes/list');
 var delivery = require('./routes/delivery');
-//var kart = require('./routes/kart');
+var admin = require('./routes/admin');
+var order = require('./routes/order');
 
 var app = express();
 
@@ -32,7 +33,8 @@ app.use('/user', user);
 app.use('/notice', notice);
 app.use('/list', list);
 app.use('/delivery', delivery);
-//app.use('/kart', kart);
+app.use('/admin', admin);
+app.use('/order', order);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -43,8 +43,11 @@ router.post('/', function(req,res,next){
 		leadingZeros(d.getMinutes(), 2) + ':' +
 		leadingZeros(d.getSeconds(), 2);
 	var address = req.body.address;
+	var address2 = req.body.address2;
 	var phone = req.body.phone
 	var gender = req.body.gender
+	
+	if(address2 != "") address = address+" "+address2;
 	
 	pool.getConnection(function (err, connection)
 	{

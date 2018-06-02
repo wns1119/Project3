@@ -91,20 +91,25 @@
       <div class="row">
         <div class="col-md-12">
           <div class="btn-group">
-            <a href="/list" class="btn btn-primary">이름순</a>
-            <a href="/list/low_price" class="btn btn-primary">낮은가격순</a>
-            <a href="/list/high_price" class="btn btn-primary">높은가격순</a>
-			<a href="/list/sales" class="btn btn-primary">판매순</a>
+            <a href="/list/search?Search=<%=search%>" class="btn btn-primary">이름순</a>
+            <a href="/list/search/low_price?Search=<%=search%>" class="btn btn-primary">낮은가격순</a>
+            <a href="/list/search/high_price?Search=<%=search%>" class="btn btn-primary">높은가격순</a>
+			<a href="/list/search/sales?Search=<%=search%>" class="btn btn-primary">판매순</a>
           </div>
         </div>
       </div>
     </div>
   </div>
   <div class="text-center">
-    <div class="container">
-	  <strong>상품수 : <%=articles.contents.length%>개</strong><br><br>
+  <div class="text-center">
+    <div class="container" onload="change()";>
+	  <strong>검색결과 : <%=articles.contents.length%>개</strong><br><br>
 	  <%
 		var count = 0;
+		if(articles.contents.length == 0){
+	  %>검색된 결과가 없습니다.
+	  <%
+		}
 		for(var i=0; i<articles.contents.length; i++)
 		{
 			var oneItem = articles.contents[i];
