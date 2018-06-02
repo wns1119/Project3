@@ -11,6 +11,7 @@
 .container{
   margin: 20px 0px 20px 10px;
 }
+textarea.autosize { min-height: 50px; }
 </style>
 <head>
   <meta charset="utf-8">
@@ -42,11 +43,11 @@
     <div class="col-9">
       <div class="jumbotron">
         <h1>My Page</h1>
-        <p>회원정보수정</p>      
+        <p>판매자 권한요청</p>      
       </div>
-      <div class="well"><h2>기본정보수정</h2></div>
+      <div class="well"><h2>판매자등록요청서 작성</h2></div>
       <div class="container">
-        <form method="post" action="/user/modify/1">
+        <form method="post" action="/user/saleauthreq" onsubmit="return onSubmit()">
           <div class="form-group row">
             <label for="staticEmail" class="col-md-1 col-form-label">Email</label>
             <div class="col-md-11">
@@ -56,82 +57,124 @@
             <div class="col-md-11">
               <input type="text" readonly class="form-control-plaintext" id="staticName" value=<%=rows[0].username%>>
             </div>
-            <label for="staticName" class="col-md-1 col-form-label">성</label>
-            <div class="col-md-11">
-              <input type="text" readonly class="form-control-plaintext" id="staticName" value=<%=rows[0].gender%>>
+          </div>
+          <div class="form-group">
+            <label for="company">회사명</label>
+            <input type="text" class="col-sm-6 form-control" id="company" name="company" placeholder="Company">
+          </div>
+          <div class="form-group row">
+            <label for="address" class="col-md-11">회사주소</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="postcode" name="postcode" placeholder="우편번호" readonly="readonly">
+            </div>
+            <div class="col-md-6">
+              <input type="button" class="btn btn-primary" onclick="execDaumPostcode()" style="background-color: lightgray" value="우편번호 찾기"><br>
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="address1" name="address1" readonly="readonly" placeholder="주소">
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" id="address2" name="address2" placeholder="상세주소">
             </div>
           </div>
           <div class="form-group">
-            <label for="Password1">비밀번호</label>
-            <input type="password" class="col-sm-2 form-control" name="password" placeholder="Password">
+            <label for="category">주력제품</label>
+            <input type="text" class="col-sm-6 form-control" id="category" name="category" placeholder="Main Product or Category">
           </div>
           <div class="form-group">
-            <label for="Password2">비밀번호 재입력</label>
-            <input type="password" class="col-sm-2 form-control" name="password2" placeholder="Retype Password">
+            <label for="manager">담당자명</label>
+            <input type="text" class="col-sm-6 form-control" id="manager" name="manager" placeholder="Manager">
           </div>
           <div class="form-group">
-            <label for="Phone">전화번호</label>
-            <input type="text" class="col-sm-6 form-control" name="phone" value=<%=rows[0].phone%>>
+            <label for="Phone1">전화번호</label>
+            <input type="text" class="col-sm-6 form-control" id="phone1" name="phone1" placeholder="Phone">
           </div>
-          <button type="submit" class="btn btn-primary" style="background-color: lightgray">수정</button>
-        </form>
-      </div>
-      <div class="well"><h2>배송정보수정</h2></div>
-      <div class="container">
-        <form method="post" action="/user/modify/2" onsubmit="return onSubmit()">
-          <div class="form-group row">
-            <label for="AddressSel" class="col-1">주소선택</label>
-            <select class="col-sm-3 form-control" id="addressSel" name="addressSel">
-              <option>기본주소</option>
-              <option>추가배송지1</option>
-              <option>추가배송지2</option>
-            </select>
-            <div class="form-check">
-              <input type="checkbox" class="col-2 form-check-input" name="check" id="check">
-              <label class="form-check-label">기존주소 삭제 시 체크</label>
-            </div>
-            <button type="submit" formaction="/user/modify/3" class="btn btn-primary" style="background-color: lightgray">주소삭제</button>
+          <div class="form-group">
+            <label for="Phone2">비상번호</label>
+            <input type="text" class="col-sm-6 form-control" id="phone2" name="phone2" placeholder="Extra Phone(Optional)">
           </div>
-          <div class="form-group row">
-            <input type="text" class="col-5 form-control" id="postcode" name="postcode1" placeholder="우편번호" readonly="readonly">
-            <input type="button" class="col-3 btn btn-primary" onclick="execDaumPostcode()" style="background-color: lightgray" value="우편번호 찾기"><br>
-            <input type="text" class="col-5 form-control" id="address1" name="address1" readonly="readonly" placeholder="주소">
-            <input type="text" class="col-5 form-control" id="address2" name="address2" placeholder="상세주소">
-            <button type="submit" formaction="/user/modify/2" class="btn btn-primary" style="background-color: lightgray">추가</button>
+          <div class="form-group">
+            <label for="content">내용</label>
+            <textarea onkeydown="resize(this)" onkeyup="resize(this)" class="col-10 form-control autosize" id="contents" name="contents" placeholder="신청목적, 주력상품소개 등 작성"></textarea>
           </div>
+          <button type="submit" class="btn btn-primary" style="background-color: lightgray">제출</button>
         </form>
       </div>
     </div>
   </div>
+  <script>
+    function resize(obj) {
+      obj.style.height = "1px";
+      obj.style.height = (12+obj.scrollHeight)+"px";
+    }
+  </script>
   <script src="/js/bootstrap.min.js"></script>
   <script>
     function onSubmit()
     {
-      if($('input:checkbox[id="check"]').is(":checked") != true){
-        if( $("#postcode").val().trim() == "")
-        {
-          var message = "우편번호를 입력해 주세요";
-          $("#postcode").val("");
-          $("#postcode").focus();
-          alert(message);
-          return false;
-        }
-        if( $("#address1").val().trim() == "")
-        {
-          var message = "주소를 입력해 주세요";
-          $("#address1").val("");
-          $("#address1").focus();
-          alert(message);
-          return false;
-        }
-        if( $("#address2").val().trim() == "")
-        {
-          var message = "상세주소를 입력해 주세요";
-          $("#address2").val("");
-          $("#address2").focus();
-          alert(message);
-          return false;
-        }
+      if( $("#company").val().trim() == "")
+      {
+        var message = "회사명을 입력해 주세요";
+        $("#company").val("");
+        $("#company").focus();
+        alert(message);
+        return false;
+      }
+      if( $("#postcode").val().trim() == "")
+      {
+        var message = "우편번호를 입력해 주세요";
+        $("#postcode").val("");
+        $("#postcode").focus();
+        alert(message);
+        return false;
+      }
+      if( $("#address1").val().trim() == "")
+      {
+        var message = "주소를 입력해 주세요";
+        $("#address1").val("");
+        $("#address1").focus();
+        alert(message);
+        return false;
+      }
+      if( $("#address2").val().trim() == "")
+      {
+        var message = "상세주소를 입력해 주세요";
+        $("#address2").val("");
+        $("#address2").focus();
+        alert(message);
+        return false;
+      }
+      if( $("#category").val().trim() == "")
+      {
+        var message = "주력상품을 입력해 주세요";
+        $("#category").val("");
+        $("#category").focus();
+        alert(message);
+        return false;
+      }
+      if( $("#manager").val().trim() == "")
+      {
+        var message = "담당자명을 입력해 주세요";
+        $("#manager").val("");
+        $("#manager").focus();
+        alert(message);
+        return false;
+      }
+      if( $("#phone1").val().trim() == "")
+      {
+        var message = "전화번호를 입력해 주세요";
+        $("#phone1").val("");
+        $("#phone1").focus();
+        alert(message);
+        return false;
+      }
+      if( $("#contents").val().trim() == "")
+      {
+        var message = "신청내용을 입력해 주세요";
+        $("#contents").val("");
+        $("#contents").focus();
+        alert(message);
+        return false;
       }
     }
   </script>

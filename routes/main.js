@@ -26,7 +26,7 @@ router.use(session({
 /* GET main page. */
 router.get('/', function(req, res, next) {
 
-	res.render('main', { title: 'main', username:req.session.username});
+	res.render('main', { title: 'main', username:req.session.username, admin:req.session.admin});
 });
 
 /* GET login page. */
@@ -53,6 +53,7 @@ router.post('/login', function(req,res,next){
 				  if(DB_PW == passwd){	// 입력한 passwd가 일치하는 경우
 					  req.session.username = result[0].username;	// 세션에 정보 저장
 					  req.session.email= result[0].email;
+					  req.session.admin=result[0].admin;
 					  res.redirect('/');
 					  connection.release();
 					}
@@ -71,7 +72,7 @@ router.post('/login', function(req,res,next){
 	
 });
 router.get('/userauth', function(req,res,next){
-	res.render('userauth', {username: req.session.username});
+	res.render('userauth', {username: req.session.username, admin:req.session.admin});
 });
 router.post('/userauth', function(req,res,next){
 	
@@ -97,12 +98,13 @@ router.post('/userauth', function(req,res,next){
 router.get('/logout', function(req,res,next){
 	delete req.session.username;
 	delete req.session.email;
+	delete req.session.admin;
 	res.redirect('/');
 });
 
 router.get('/cart', function(req,res,next){
 	req.session.cart = cart;
-	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart});
+	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart, admin:req.session.admin});
 });
 
 router.post('/cart_add', function(req,res,next){

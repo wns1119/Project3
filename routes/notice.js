@@ -84,7 +84,8 @@ router.get('/', function(req, res) {
         res.render('notice',{
           title: 'notice',
           articles: Articles,
-          username:req.session.username
+          username:req.session.username, 
+          admin:req.session.admin
         });
       }
     }
@@ -97,14 +98,14 @@ router.get('/read', function(req, res){
     var sql = "SELECT idx, title, date, content, hit FROM board1 WHERE idx = ?";
     connection.query(sql, idx, function(err, result){
           if(err) console.error(err);
-          res.render('noticeRead', {username:req.session.username, row:result[0]});
+          res.render('noticeRead', {username:req.session.username, row:result[0], admin:req.session.admin});
           connection.release();
         });
   });
 });
 
 router.get('/write', function(req, res){
-  res.render('noticeWrite', {username:req.session.username});
+  res.render('noticeWrite', {username:req.session.username, admin:req.session.admin});
 });
 
 router.post('/write', function(req, res){

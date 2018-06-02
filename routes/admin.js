@@ -24,7 +24,7 @@ router.use(session({
 /* GET main page. */
 router.get('/', function(req, res, next) {
 	
-		  res.render('admin', {username:req.session.username, title: '관리자용'});
+		  res.render('admin', {username:req.session.username, title: '관리자용', admin:req.session.admin});
 });
 
 
