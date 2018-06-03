@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>회원가입</title>
+    <title><%=title%></title>
 
     <!-- Bootstrap -->
     <!-- <link href="css/bootstrap.min.css" rel="stylesheet">-->
@@ -23,26 +23,133 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body class="Head_nav" style="font-size:100%;">
+  <body class="Head_nav" style="font-size:100%;" onload="init();">
       <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
-	  <h1 align="center"><strong>주문</strong></h1>
-	  <form method="post" action="/order" onsubmit="return onSubmit()" >
-	  
+	  <h1 align="center"><strong>주문/결제</strong></h1>
+	  <form method="post" action="/order/payment" onsubmit="return onSubmit()" >
+		<input type="hidden" name="length" value="<%=product.length%>"/>
+		<table width="1100px" bgcolor="transparent" cellpadding="15" cellspacing="1" border="1" style="margin:auto;">
+			<thead>
+			<tr>
+				<th width="750px">상품정보</th>
+				<th width="100px">수량</th>
+				<th>총가격</th>
+			</tr>
+		  </thead>
+		  <%
+			var count = 0;
+			var sum_all = 0;
+			
+			for(var i=0; i<product.length; i++)
+			{
+				var oneItem = product[i];
+				sum_all += 1*oneItem.sum;
+		  %>
+				<tr>
+				<input type="hidden" name="code" value="<%=oneItem.code%>"/>
+				<td><a href="/list/read/<%=oneItem.code%>"><img src="/image/<%=oneItem.code%>.jpg" width="50" height="50"><%=oneItem.name%></a></td>
+				<td><input name="amount" value="<%=oneItem.amount%>개" readonly="readonly"/></td>
+				<td><input name="sum" value="<%=oneItem.sum%>원" readonly="readonly"/></td>
+				</tr>
+		  <%  
+			}
+		  %>
+		</table>
+		<div style="margin-top:30px;"></div> 
+		<table width="500px" bgcolor="transparent" cellpadding="10" cellspacing="1" border="1" style="margin:auto;">
+		  <tr>
+			<td>전체가격</td>
+			<td><input name="sum_all" value="<%=sum_all%>원" readonly="readonly"/></td>
+		  </tr>
+		</table>
+		<div style="margin-top:50px; margin-bottom:10px; margin-left:90px;"><h4>배송지정보 입력</h4></div> 
+		<table width="1100px" bgcolor="transparent" cellpadding="15" cellspacing="1" border="1" style="margin:auto;">
+		  <tr>
+			<td width="250px" align="center">배송지선택</td>
+			<td>
+				<input type="radio" name="chk_info" value="기본주소" checked="checked" style="margin-left:50px;" onclick="radio_fun(1);"/>기본주소
+				<input type="radio" name="chk_info" value="기본주소" style="margin-left:50px;" onclick="radio_fun(0);"/>새로입력
+			</td>
+		  </tr>
+		  <input type="hidden" name="r_name" value="<%=user[0].username%>"/>
+		  <tr>
+			<td width="250px" align="center">받으시는 분</td>
+			<td><input type="text" id="r_name" value=""/></td>
+		  </tr>
+		  <tr>
+			<td width="250px" align="center">주소</td>
+			<td><input type="text" id="r_address" name="r_address" value="" /></td>
+		  </tr>
+		  <tr>
+			<td width="250px" align="center">휴대전화</td>
+			<td><input type="text" id="r_phone" name="r_phone" value=""/></td>
+		  </tr>
+		  <tr>
+			<td width="250px" align="center">결제방법</td>
+			<td><select name="payment">
+			  <option value="계좌이체" selected="selected">계좌이체</option>
+			  <option value="신용카드">신용카드</option>
+			  <option value="무통장입금">무통장입금</option>
+			  <option value="휴대폰결제">휴대폰결제</option>
+			</select></td>
+		  </tr>
+		</table>
+		<div align="center">
+			<button type="submit" class="btn" style="margin:10px;">결제하기<i class="fa fa-check spaceLeft"></i></button>
+			<button type="button" class="btn btn-warning" onclick="location.href='/'">취소하기<i class="fa fa-times spaceLeft"></i></button>
+		</div>
 	  </form>
 	
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	<script>
-		function checkAll(){
-		  if( $("#checkall").is(':checked') ){
-			$("input[id=checkRow]").prop("checked", true);
-		  }else{
-			$("input[id=checkRow]").prop("checked", false);
-		  }
+  <script>
+	function init(){
+		$('#r_name').val('<%=user[0].username%>');
+		$('#r_address').val('<%=user[0].address%>');
+		$('#r_phone').val('<%=user[0].phone%>');
+	}
+	
+	function radio_fun(val){
+		if(val == 1){
+			$('#r_name').val('<%=user[0].username%>');
+			$('#r_address').val('<%=user[0].address%>');
+			$('#r_phone').val('<%=user[0].phone%>');
 		}
-
-	</script>
+		else{
+			$('#r_name').val('');
+			$('#r_address').val('');
+			$('#r_phone').val('');
+		}
+	}
+	
+	function onSubmit(){
+		if( $("#r_name").val().trim() == "")
+		{
+			var message = "받으시는 분 항목을 입력해 주세요";
+			$("#r_name").val("");
+			$("#r_name").focus();
+			alert(message);
+			return false;
+		}
+		if( $("#r_address").val().trim() == "")
+		{
+			var message = "주소 항목을 입력해 주세요";
+			$("#r_address").val("");
+			$("#r_address").focus();
+			alert(message);
+			return false;
+		}
+		if( $("#r_phone").val().trim() == "")
+		{
+			var message = "휴대폰번호 항목을 입력해 주세요";
+			$("#r_phone").val("");
+			$("#r_phone").focus();
+			alert(message);
+			return false;
+		}
+	}
+  </script>
   </body>
 </html>
