@@ -25,8 +25,18 @@ router.use(session({
 
 /* GET main page. */
 router.get('/', function(req, res, next) {
+	
+	pool.getConnection(function (err, connection)
+	{
+		var sql = "SELECT * FROM product ORDER BY sales desc LIMIT 6";
+		connection.query(sql, function(err, result){
+			if(err) console.error(err);
+			
+			res.render('main', { title: 'main', username:req.session.username, admin:req.session.admin, row:result});
+			connection.release();
+		});
+	});
 
-	res.render('main', { title: 'main', username:req.session.username, admin:req.session.admin});
 });
 
 /* GET login page. */
@@ -120,7 +130,6 @@ router.post('/cart_add', function(req,res,next){
 	}
 
 	
-	
 	console.log(cart);
 	req.session.cart = cart;
 	
@@ -141,7 +150,7 @@ router.post('/cart', function(req,res,next){
 	console.log(cart);
 	req.session.cart = cart;
 	
-	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart});
+	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart, admin:req.session.admin});
 });
 
 
