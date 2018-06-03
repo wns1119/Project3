@@ -88,8 +88,14 @@ function order_func(req,res,i,count){
 			connection.query(sql, [code,name,payment,sum,amount,address,phone],function (err, rows) {
 				if(err) console.error(err);
 				i++;
-				connection.release();  
-				order_func(req,res,i,count);	
+				connection.release(); 
+				var sql = "UPDATE product set stock=stock-?, sales=sales+? WHERE code=?";
+				connection.query(sql, [amount,amount,code],function (err, rows) {
+					if(err) console.error(err);
+					
+					order_func(req,res,i,count);	
+				});
+				
 			});
 		});
 	}
