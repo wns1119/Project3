@@ -169,7 +169,7 @@ router.get('/admin', function(req, res) {
     },
     function(totalpage, callback){
        pool.getConnection(function (err, connection) {
-        var sql = "SELECT idx, title, content, answer, date_format(date, '%m-%d') as date FROM inquiry ORDER BY idx desc LIMIT ?, ?";
+        var sql = "SELECT idx, title, content, creator, answer, date_format(date, '%m-%d') as date FROM inquiry ORDER BY idx desc LIMIT ?, ?";
         connection.query(sql, [(totalpage.Curr-1)*pageArticleNum, pageArticleNum], function(err, result){
           if(err) console.error(err);
           articles = result;

@@ -124,7 +124,8 @@
           <thread>
             <tr>
               <th class="text-center" style="width:10%">번호</th>
-              <th >제목</th>
+              <th>제목</th>
+              <th class="text-center" style="width:10%">작성자</th>
               <th class="text-center" style="width:10%">처리상태</th>
               <th class="text-center" style="width:10%">날짜</th>
             </tr>
@@ -138,6 +139,7 @@
               <td class="text-center" style="width:10%"><%=oneItem.idx%></td>
               <!--td class="tb-title"><a href="/notice/read?idx=<%=oneItem.idx%>"><%=oneItem.title%></a></td-->
               <td><a href="javascript:doDisplay('<%=oneItem.idx%>');"><%=oneItem.title%></a></td>
+              <td class="text-center" style="width:10%"><%=oneItem.creator%></td>
               <td class="text-center" style="width:10%"><% if(!oneItem.answer){%>대기중<%}else{%>완료<%}%></td>
               <td class="text-center" style="width:10%"><%=oneItem.date%></td>
             </tr>
