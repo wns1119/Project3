@@ -48,7 +48,7 @@
 			<td><%=i+1%></td>
 			<td><input type="checkbox" name="checkRow" value="<%=i%>" checked></td>
 			<input type="hidden" name="code" value="<%=oneItem.code%>"/>
-			<td><img src="/image/<%=oneItem.code%>.jpg" width="50" height="50"><%=oneItem.product_name%></td>
+			<td><a href="/list/read/<%=oneItem.code%>"><img src="/image/<%=oneItem.code%>.jpg" width="50" height="50"><%=oneItem.product_name%></a></td>
 			<input type="hidden" name="product_name" value="<%=oneItem.product_name%>"/>
 			<td><input name="amount" value="<%=oneItem.amount%>" readonly="readonly"></td>
 			<td><input name="sum" value="<%=oneItem.sum%>" readonly="readonly"></td>
