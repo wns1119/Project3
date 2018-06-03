@@ -25,8 +25,18 @@ router.use(session({
 
 /* GET main page. */
 router.get('/', function(req, res, next) {
+	
+	pool.getConnection(function (err, connection)
+	{
+		var sql = "SELECT * FROM product ORDER BY sales desc LIMIT 6";
+		connection.query(sql, function(err, result){
+			if(err) console.error(err);
+			
+			res.render('main', { title: 'main', username:req.session.username, admin:req.session.admin, row:result});
+			connection.release();
+		});
+	});
 
-	res.render('main', { title: 'main', username:req.session.username, admin:req.session.admin});
 });
 
 /* GET login page. */
