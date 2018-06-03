@@ -47,13 +47,13 @@ function recursive_func(res,req,i,count,product){
 
 	if(length == 1) {
 		var code = req.body.code;
-		var amount = req.body.code;
+		var amount = req.body.amount;
 		var name = req.body.product_name;
 		var sum = req.body.sum;
 	}
 	else{
 		var code = req.body.code[index];
-		var amount = req.body.code[index];
+		var amount = req.body.amount[index];
 		var name = req.body.product_name[index];
 		var sum = req.body.sum[index];
 	}
