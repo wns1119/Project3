@@ -28,23 +28,23 @@
           <% if(admin){%>
           <input class="btn btn-dark" type="button" name="버튼" value="글쓰기" onclick="location.href='/notice/write'"; style="vertical-align: left;">
           <input class="btn btn-dark" type="button" name="버튼" value="수정하기" onclick="location.href='/notice/update?idx=<%=row.idx%>'"; style="vertical-align: left;">
-          <input class="btn btn-dark" type="button" name="버튼" value="삭제하기" onclick="location.href='/notice/delete?idx=<%=row.idx%>'"; style="vertical-align: left;">
+          <input class="btn btn-dark" type="button" name="버튼" value="삭제하기" data-toggle="modal" data-target="#myModal" style="vertical-align: left;">
           <%}%>
         </div>
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">삭제하기</h4>
                 <button type="button" class="close" data-dismiss="modal">
                   <span aria-hidden="true">×</span>
                   <span class="sr-only">Close</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
               </div>
-              <div class="modal-body"> ... </div>
+              <div class="modal-body"> 삭제하시겠습니까? </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-primary" onclick="location.href='/notice/delete?idx=<%=row.idx%>'">삭제</button>
               </div>
             </div>
           </div>
