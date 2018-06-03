@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>쇼핑몰</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/theme.css" type="text/css">
+  <style>
+	#textform {
+		height:350px;
+	}
+  </style>
+</head>
+<body class="Head_nav">
+  <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
+  <div class="row">
+    <td><!--사이드 메뉴 인클루드--><% include ./noticeSide.ejs %></td>
+      <div class="col-md-6">
+        <table class="table table-bordered">
+            <tbody>
+                <form action="/inquiry/write" method="post" encType="multiplart/form-data">
+                    <tr>
+                        <th>제목: </th>
+                        <td><input type="text" placeholder="제목을 입력하세요. " name="title" class="form-control"/></td>
+                    </tr>
+                    <tr>
+                        <th>내용: </th>
+                        <td><textarea cols="10" placeholder="내용을 입력하세요. " name="content" class="form-control" id="textform" style="resize:none;"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div align="right" style="margin:0 5%;">
+                            <input type="submit" class="btn btn-dark" type="button" name="버튼" value="등록하기" onclick="location.href='/inquiry/write'"; style="vertical-align: left;">
+                            <input class="btn btn-dark" type="button" name="버튼" value="이전으로" onclick="location.href='javascript:history.back();'"; style="vertical-align: left;">
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+            </tbody>
+        </table>
+      </div>
+  </div>
+</body>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</html>
