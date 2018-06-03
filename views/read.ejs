@@ -20,7 +20,7 @@
           <p class="mb-3"><%=row.spec%></p>
           <p class="mb-3">상품 가격 : <%=row.price%>원</p>
           <p class="mb-5">배송 가격 : 2500원 (5만원 이상 구매시 무료)</p>
-          <form name="form" action="" method="post">
+          <form name="form" action="/order" method="post">
 			<input type="hidden" name="code" value="<%=row.code%>"/>
 			<input type="hidden" name="product_name" value="<%=row.name%>"/>
             <p class="mb">수량 :
@@ -32,7 +32,7 @@
             <p class="mb">전체금액 :
               <input type="text" name="sum" size="11" readonly="">원</p>
             <div class="" align="left">
-              <a class="btn btn-lg btn-outline-light" href="#">상품구매</a>
+              <button type="submit" class="btn btn-lg btn-outline-light">상품구매</button>
               <a class="btn btn-lg btn-outline-light" onclick="check()">장바구니</a>
             </div>
           </form>

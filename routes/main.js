@@ -120,7 +120,6 @@ router.post('/cart_add', function(req,res,next){
 	}
 
 	
-	
 	console.log(cart);
 	req.session.cart = cart;
 	
@@ -141,7 +140,7 @@ router.post('/cart', function(req,res,next){
 	console.log(cart);
 	req.session.cart = cart;
 	
-	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart});
+	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart, admin:req.session.admin});
 });
 
 
