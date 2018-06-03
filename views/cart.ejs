@@ -27,6 +27,7 @@
       <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
 	  <h1 align="center"><strong>장바구니</strong></h1>
 	  <form method="post" action="/order" onsubmit="return onSubmit()" >
+	  <input type="hidden" name="length" value="<%=cart.length%>"/>
 	  <table width="1100px" bgcolor="transparent" cellpadding="15" cellspacing="1" border="1" style="margin:auto;">
 		  <thead>
 			<tr>
