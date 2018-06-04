@@ -23,8 +23,19 @@ router.use(session({
 
 /* GET main page. */
 router.get('/', function(req, res, next) {
-	
-		  res.render('admin', {username:req.session.username, title: '관리자용', admin:req.session.admin});
+	pool.getConnection(function (err, connection) {
+	  if (err) throw err;
+	  // Use the connection
+	  var sqlForSelectList = "SELECT * FROM product";
+	  connection.query(sqlForSelectList, function (err, rows) {
+		  if(err) console.error(err);
+		  console.log("rows : " + JSON.stringify(rows));
+		  
+		  res.render('admin', {username:req.session.username, title: '관리자용', rows: rows});
+		  connection.release();  
+	  });
+	});
+		  //res.render('admin', {username:req.session.username, title: '관리자용', admin:req.session.admin});
 });
 
 

@@ -30,24 +30,52 @@
       // Callback that creates and populates a data table,
       // instantiates the pie chart, passes in the data and
       // draws it.
+	  /*function loadData(){
+	  var mysql = require('mysql');
+	var pool = mysql.createPool({
+		connectionLimit: 5,
+		host: 'malid.cgvtbxiixr2x.ap-northeast-2.rds.amazonaws.com',
+		user: 'MALID',
+		database: 'SE',
+		password: '1234qwer'
+		});
+		
+		pool.getConnection(function (err, connection) {
+   if (err) throw err;
+	  // Use the connection
+
+	  var sql = "SELECT * FROM product";
+	  connection.query(sql,, function (err, row) {
+      if(err) console.error(err);
+      console.log("1개 글 조회 결과 확인 : ", row);
+      
+      //res.render('read', {username:req.session.username, title:"상품정보", row:row[0], admin:req.session.admin});
+      connection.release();
+      
+    });
+	});
+	}*/
       function drawChart() {
 
         // Create the data table.
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Topping');
         data.addColumn('number', 'Slices');
-        data.addRows([
-          ['Mushrooms', 3],
-          ['Onions', 1],
-          ['Olives', 1],
-          ['Zucchini', 1],
-          ['Pepperoni', 2]
+        
+		data.addRows([
+		<%
+		var count = 0;
+		for(var i=0; i<rows.length; i++)
+		{
+	    %>
+          ['<%=rows[i].name %>', <%=rows[i].sales%>],
+		  <%}%>
         ]);
 
         // Set chart options
-        var options = {'title':'How Much Pizza I Ate Last Night',
-                       'width':400,
-                       'height':300};
+        var options = {'title':'상품별 판매량',
+                       'width':1200,
+                       'height':800};
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
