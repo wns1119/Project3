@@ -6,7 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>상품정보</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="/theme.css" type="text/css"> </head>
+  <link rel="stylesheet" href="/theme.css" type="text/css"> 
+  <style>
+	#r_content {
+		height:100px;
+	}
+  </style>
+</head>
 
 <body class="Head_nav" onload="init();">
   <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>       
@@ -19,7 +25,19 @@
           <h2 class="mb-4 text-left"><strong><%=row.name%></strong></h2>
           <p class="mb-3"><%=row.spec%></p>
           <p class="mb-3">상품 가격 : <%=row.price%>원</p>
-          <p class="mb-5">배송 가격 : 2500원 (5만원 이상 구매시 무료)</p>
+          <p class="mb-4">배송 가격 : 2500원 (5만원 이상 구매시 무료)</p>
+		  <p class="">평점 : 
+		  <%   
+			  var total_score=0;
+			  for(var i=0; i<review.length; i++)
+			  {
+				var oneItem = review[i];
+				total_score += oneItem.score;
+			  }
+			  total_score = total_score/review.length;
+			  total_score = total_score.toFixed(2);
+		  %>
+		  <%=total_score%>점</p>
           <form name="form" action="/order" method="post">
 			<input type="hidden" name="code" value="<%=row.code%>"/>
 			<input type="hidden" name="product_name" value="<%=row.name%>"/>
@@ -40,6 +58,66 @@
       </div>
     </div>
   </div>
+  <div style="margin-top:50px; margin-bottom:10px; margin-left:90px;"><h5>리뷰 작성</h5></div> 
+  <form method="post" action="/list/review" onsubmit="return review_check()">
+	<input type="hidden" name="code" value="<%=row.code%>"/>
+	<table width="1100px" bgcolor="transparent" cellpadding="10" cellspacing="1" border="2" style="margin:auto;">
+		<thead>
+		  <tr>
+			<th width="200px">작성자</th>
+			<th width="700px">내용</th>
+			<th width="100px">평점</th>
+			<th>리뷰작성</th>
+		  </tr>
+		</thead>
+		<tr>
+			<td><input type="text" name="r_name" id="r_name" value="<%=username%>" style="width:150px;" onclick="fun_click();" readonly="readonly"/></td>
+			<td><textarea cols="10" placeholder="내용을 입력하세요." name="r_content" id="r_content" class="form-control" onclick="fun_click();" style="resize:none;"></textarea></td>
+			<td><select name="score" id="score" onclick="fun_click();" >
+				<option value="5" selected="selected">5</option>
+				<option value="4">4</option>
+				<option value="4">3</option>
+				<option value="4">2</option>
+				<option value="4">1</option>
+			</select></td>
+			<td><button type="submit" class="btn btn-lg btn-outline-dark"><i class="fa fa-fw fa-check"></i></button></td>
+		</tr>
+	</table>
+  </form>
+  <div style="margin-top:50px; margin-bottom:10px; margin-left:90px;"><h5>상품 리뷰</h5></div> 
+  <table width="1100px" bgcolor="transparent" cellpadding="10" cellspacing="1" border="2" style="margin:auto;">
+	<thead>
+	  <tr>
+		<th width="200px">작성자</th>
+		<th width="700px">내용</th>
+		<th width="100px">평점</th>
+		<th width="">날짜</th>
+	  </tr>
+	</thead>
+	<% 
+	  if(review.length == 0)
+	  {
+	%>
+	  <tr>
+		<td colspan="4" align="center"><strong>리뷰 정보가 없습니다.</strong></td>
+	  </tr>
+	<%   
+	  }
+	  for(var i=0; i<review.length; i++)
+	  {
+		var oneItem = review[i];
+	%>
+		<tr>
+			<td><%=oneItem.name%></td>
+			<td><%=oneItem.content%></td>
+			<td><%=oneItem.score%></td>
+			<td><%=oneItem.date%></td>
+		</tr>
+	<% 
+	  }
+	%>
+  </table>
+  <div style="margin-top:50px; margin-bottom:10px;">&nbsp;</div> 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -97,6 +175,42 @@
 		document.form.action = "/cart_add";
 	    document.form.submit();
 	   }
+	}
+	
+	function review_check() {
+		if(!'<%=username%>'){
+			var message = "로그인 해주세요";
+			alert(message);
+			location.href="/login";
+			return false;
+		}
+		if( $("#r_name").val().trim() == "")
+		{
+			var message = "작성자를 입력해 주세요";
+			$("#r_name").val("");
+			$("#r_name").focus();
+			alert(message);
+			return false;
+		}
+		if( $("#r_content").val().trim() == "")
+		{
+			var message = "내용을 입력해 주세요";
+			$("#r_content").val("");
+			$("#r_content").focus();
+			alert(message);
+			return false;
+		}
+		var message = "리뷰가 작성되었습니다.";
+		alert(message);
+	}
+	
+	function fun_click(){
+		if(!'<%=username%>'){
+			var message = "로그인 해주세요";
+			alert(message);
+			location.href="/login";
+			return false;
+		}
 	}
   </script>
 </body>

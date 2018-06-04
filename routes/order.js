@@ -87,7 +87,7 @@ function order_func(req,res,i,count){
 
 			
 	if(i==count){
-		res.send("<script>alert('주문이 완료되었습니다..');location.href='/';</script>");
+		res.send("<script>alert('주문이 완료되었습니다.');location.href='/';</script>");
 	}
 	else{
 		pool.getConnection(function (err, connection) {
