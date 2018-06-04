@@ -30,61 +30,34 @@
     <div class="col-9">
       <div class="jumbotron">
         <h1>My Page</h1>
-        <p>회원정보관리 페이지</p>      
+        <p>주문정보조회</p>      
       </div> 
-      <div class="well"><h2>기본정보</h2></div>
+      <div class="well"><h2>주문목록</h2></div>
       <div class="container">       
-        <table class="table">
+        <table class="table table-striped">
           <tbody>
             <tr>
-              <th>아이디(email)</th>
-              <td><%=rows[0].email%></td>
+              <th>받으시는분</th>
+              <th>상품명</th>
+              <th>가격</th>
+              <th>수량</th>
+              <th>배송지</th>
             </tr>
+            <%
+            for(var i=0; i<rows.length; i++){
+            %>
             <tr>
-              <th>가입일</th>
-              <td><%=rows[0].date%></td>
+              <td><%=rows[i].purchaser%></td>
+              <td class="tb-title"><a href="/list/read/<%=rows[i].code%>"><%=rows[i].name%></a></td>
+              <td><%=rows[i].price%></td>
+              <td><%=rows[i].amount%></td>
+              <td><%=rows[i].address%></td>
             </tr>
-            <tr>
-              <th>이름</th>
-              <td><%=rows[0].username%></td>
-            </tr>
-            <tr>
-              <th>주소</th>
-              <td><%=rows[0].address%></td>
-            </tr>
-            <tr>
-              <th>전화번호</th>
-              <td><%=rows[0].phone%></td>
-            </tr>
-            <tr>
-              <th>성별</th>
-              <td><%=rows[0].gender%></td>
-            </tr>
+            <%}%>
           </tbody>
         </table>
       </div>
-      <div class="well"><h2>배송정보</h2></div>
-      <div class="container">       
-        <table class="table">
-          <tbody>
-            <tr>
-              <th>기본배송지</th>
-              <td><%=rows[0].address1%></td>
-            </tr>
-            <tr>
-              <th>추가배송지1</th>
-              <td><%=rows[0].address2%></td>
-            </tr>
-            <tr>
-              <th>추가배송지2</th>
-              <td><%=rows[0].address3%></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
     </div>
-  </div>
-</body>
+  </body>
 
-</html>
+  </html>
