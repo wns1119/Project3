@@ -140,6 +140,7 @@ function listcall(req, res, maxnum_page, sort, render_page, titleinfo, username)
             username:req.session.username,
             search:req.query.Search, 
             admin:req.session.admin,
+						sale:req.session.sale,
 			total_count:total_count
           });
         }
@@ -297,7 +298,7 @@ router.get('/read/:code', function(req, res, next) {
 					
 					console.log("리뷰조회 : ", result);
 					connection.release();
-					res.render('read', {username:req.session.username, title:"상품정보", row:product, review:result, admin:req.session.admin, email:req.session.email});
+					res.render('read', {username:req.session.username, title:"상품정보", row:product, review:result, admin:req.session.admin, email:req.session.email, sale:req.session.sale});
 					
 				});
 			});
