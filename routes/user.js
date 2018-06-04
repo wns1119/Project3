@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
-
+var bodyParser = require('body-parser');
+var session = require('express-session');
+var async = require('async');
 // MySQL 로드
 var mysql = require('mysql');
 var pool = mysql.createPool({
@@ -214,5 +216,20 @@ router.post('/saleauthdel', function(req, res, next) {
 		});
 	});
 	res.redirect('/user');
+});
+
+router.get('/orderinquiry', function(req, res, next) {
+	var sql = "SELECT product.code, order_.purchaser, product.name as name, order_.price, order_.amount, order_.address FROM product, order_ where order_.email=? and product.code=order_.product_code";
+	pool.getConnection(function (err, connection) {
+		if (err) throw err;
+	  // Use the connection
+	  connection.query(sql, [req.session.email], function (err, rows) {
+	  	if(err) console.error(err);
+	  	console.log(rows);
+	  	res.render('orderinquiry', {username:req.session.username, title: '판매자등록삭제', rows: rows, admin:req.session.admin});
+	  	connection.release();
+	  	
+	  });
+	});
 });
 module.exports = router;
