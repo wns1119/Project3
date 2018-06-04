@@ -16,27 +16,81 @@ var pool = mysql.createPool({
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(session({
-  secret: '1q2w3e4r',
-  resave: false,
-  saveUninitialized: true
+	secret: '1q2w3e4r',
+	resave: false,
+	saveUninitialized: true
 }));
 
 /* GET main page. */
 router.get('/', function(req, res, next) {
+	if(req.session.admin==undefined || req.session.admin!=1)
+		res.redirect('/');
 	pool.getConnection(function (err, connection) {
-	  if (err) throw err;
+		if (err) throw err;
 	  // Use the connection
 	  var sqlForSelectList = "SELECT * FROM product";
 	  connection.query(sqlForSelectList, function (err, rows) {
-		  if(err) console.error(err);
-		  console.log("rows : " + JSON.stringify(rows));
-		  
-		  res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, admin:req.session.admin});
-		  connection.release();  
+	  	if(err) console.error(err);
+	  	console.log("rows : " + JSON.stringify(rows));
+
+	  	res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, admin:req.session.admin});
+	  	connection.release();  
 	  });
 	});
-		  //res.render('admin', {username:req.session.username, title: '관리자용', admin:req.session.admin});
 });
 
+router.get('/salereqmanage', function(req, res, next) {
+	if(req.session.admin==undefined || req.session.admin!=1)
+		res.redirect('/');
+	pool.getConnection(function (err, connection) {
+		if (err) throw err;
+	  // Use the connection
+	  var sqlForSelectList = "SELECT idx, email, company, manager, phone1 FROM SaleAuthReq where permitted=0";
+	  connection.query(sqlForSelectList, function (err, rows) {
+	  	if(err) console.error(err);
+	  	console.log("rows : " + JSON.stringify(rows));
 
+	  	res.render('salereqmanage', {username:req.session.username, title: '관리자용', rows: rows, admin:req.session.admin});
+	  	connection.release();  
+	  });
+	});
+});
+
+router.get('/salereqmanage/:idx', function(req, res, next){
+	if(req.session.admin==undefined || req.session.admin!=1)
+		res.redirect('/');
+	pool.getConnection(function(err, connection){
+		var sql="select * from SaleAuthReq where permitted=0 and idx=?";
+		connection.query(sql,[req.params.idx], function(err, rows){
+			if(err) console.error(err);
+			//console.log("1개 글 조회 결과 확인 : ", row);
+			res.render('salereqmanageread', {username:req.session.username, title: '관리자용', rows: rows, admin:req.session.admin});
+			connection.release();		
+		});
+	});
+});
+
+router.post('/salepermit/:idx', function(req, res, next) {
+	
+	var sql="update SaleAuthReq set permitted=1 where idx=?";
+	console.log(req.body);
+	pool.getConnection(function (err, connection) {
+		if (err) throw err;
+
+		connection.query(sql,[req.params.idx], function (err, rows) {
+			if(err) console.error(err);
+		});
+
+		sql="select email from SaleAuthReq where idx=?";
+		connection.query(sql,[req.params.idx], function (err, rows) {
+			if(err) console.error(err);
+			sql="update user set sale=1 where email=?"
+			connection.query(sql,[rows[0].email], function (err, rows) {
+				if(err) console.error(err);
+				connection.release();
+			});
+		});
+	});
+	res.redirect('/admin/salereqmanage');
+});
 module.exports = router;

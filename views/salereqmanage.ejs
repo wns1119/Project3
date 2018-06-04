@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<style>
+.well {
+ height: 100px;
+ width: 100%;
+ color: black;
+ background-color: #e9ecef;
+ padding: 30px 0px 30px 10px;
+}
+.container{
+  margin: 20px 0px 20px 10px;
+}
+</style>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminPage</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href='/theme.css' type="text/css"> 
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body class="Head_nav">
+  <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
+  <div class="row">
+
+    <td><!--상단 메뉴 인클루드--><% include ./adminside.ejs %></td>
+
+    <div class="col-9">
+      <div class="jumbotron">
+        <h1>Admin Page</h1>
+        <p>판매자요청관리</p>      
+      </div> 
+      <div class="well"><h2>판매자요청목록</h2></div>
+      <div class="container">       
+        <table class="table table-striped">
+          <tbody>
+            <tr>
+              <th></th>
+              <th>회사</th>
+              <th>담당자</th>
+              <th>전화번호</th>
+            </tr>
+            <% for(var i=0; i<rows.length; i++){ %>
+            <tr>
+              <td><a class="font-weight-bold" href="/admin/salereqmanage/<%=rows[i].idx%>"><%=rows[i].email%></a></td>
+              <td><%=rows[i].company%></td>
+              <td><%=rows[i].manager%></td>
+              <td><%=rows[i].phone1%></td>
+            </tr>
+            <%}%>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</body>
+
+</html>

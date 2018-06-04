@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
 
 	  	console.log("rows : " + JSON.stringify(rows));
 
-	  	res.render('user', {username:req.session.username, title: '회원정보 조회', rows: rows, admin:req.session.admin});
+	  	res.render('user', {username:req.session.username, title: '회원정보 조회', rows: rows, admin:req.session.admin, sale:req.session.sale});
 	  	connection.release();
 	  });
 	});
@@ -42,7 +42,7 @@ router.get('/modify', function(req, res, next) {
 
 	  	console.log("rows : " + JSON.stringify(rows));
 
-	  	res.render('modify', {username:req.session.username, title: '회원정보 수정', rows: rows, admin:req.session.admin});
+	  	res.render('modify', {username:req.session.username, title: '회원정보 수정', rows: rows, admin:req.session.admin, sale:req.session.sale});
 	  	connection.release();
 	  });
 	});
@@ -145,7 +145,7 @@ router.get('/saleauthreq', function(req, res, next) {
 	  connection.query(sql, [req.session.email], function (err, rows) {
 	  	if(err) console.error(err);
 
-	  	res.render('saleauthreq', {username:req.session.username, title: '판매자등록요청', rows: rows, admin:req.session.admin});
+	  	res.render('saleauthreq', {username:req.session.username, title: '판매자등록요청', rows: rows, admin:req.session.admin, sale:req.session.sale});
 	  	connection.release();
 	  	
 	  });
@@ -187,7 +187,7 @@ router.get('/saleauthdel', function(req, res, next) {
 	  connection.query(sql, [req.session.email], function (err, rows) {
 	  	if(err) console.error(err);
 
-	  	res.render('saleauthdel', {username:req.session.username, title: '판매자등록삭제', rows: rows, admin:req.session.admin});
+	  	res.render('saleauthdel', {username:req.session.username, title: '판매자등록삭제', rows: rows, admin:req.session.admin, sale:req.session.sale});
 	  	connection.release();
 	  	
 	  });
@@ -226,7 +226,7 @@ router.get('/orderinquiry', function(req, res, next) {
 	  connection.query(sql, [req.session.email], function (err, rows) {
 	  	if(err) console.error(err);
 	  	console.log(rows);
-	  	res.render('orderinquiry', {username:req.session.username, title: '판매자등록삭제', rows: rows, admin:req.session.admin});
+	  	res.render('orderinquiry', {username:req.session.username, title: '판매자등록삭제', rows: rows, admin:req.session.admin, sale:req.session.sale});
 	  	connection.release();
 	  	
 	  });
