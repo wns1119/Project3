@@ -97,6 +97,20 @@
     }
 -->
 </style>
+<script type="text/javascript">
+    var bDisplay = true;
+    function doDisplay(a){
+        var con = document.getElementById('a'+a);
+        var con2 = document.getElementById('b'+a);
+        if(con.style.display=='none'){
+            con.style.display = 'table-row';
+            con2.style.display = 'table-row';
+        }else{
+            con.style.display = 'none';
+            con2.style.display = 'none';
+        }
+    }
+</script>
 </head>
 <body class="Head_nav">
   <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
@@ -104,14 +118,14 @@
 
     <td><!--사이드 메뉴 인클루드--><% include ./noticeSide.ejs %></td>
     <div class="col-6" style="padding: 10px">
-        <h1>Notice</h1>
-        <p>공지사항</p>
-        <table class="table table-striped">
+        <h1>Inquiry</h1>
+        <p>1:1 문의</p>
+        <table class="table table-basic">
           <thread>
             <tr>
               <th class="text-center" style="width:10%">번호</th>
               <th >제목</th>
-              <th class="text-center" style="width:10%">조회수</th>
+              <th class="text-center" style="width:10%">처리상태</th>
               <th class="text-center" style="width:10%">날짜</th>
             </tr>
             <tbody>
@@ -122,9 +136,22 @@
       %>
             <tr>
               <td class="text-center" style="width:10%"><%=oneItem.idx%></td>
-              <td class="tb-title"><a href="/notice/read?idx=<%=oneItem.idx%>"><%=oneItem.title%></a></td>
-              <td class="text-center" style="width:10%"><%=oneItem.hit%></td>
+              <!--td class="tb-title"><a href="/notice/read?idx=<%=oneItem.idx%>"><%=oneItem.title%></a></td-->
+              <td><a href="javascript:doDisplay('<%=oneItem.idx%>');"><%=oneItem.title%></a></td>
+              <td class="text-center" style="width:10%"><% if(!oneItem.answer){%>대기중<%}else{%>완료<%}%></td>
               <td class="text-center" style="width:10%"><%=oneItem.date%></td>
+            </tr>
+            <tr id="a<%=oneItem.idx%>" style="display:none">
+                <th class="text-center">문의</th>
+                <td><%=oneItem.content%></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="b<%=oneItem.idx%>" style="display:none">
+                <th class="text-center">답변</th>
+                <td><%=oneItem.answer%></td>
+                <td></td>
+                <td></td>
             </tr>
       <%
             }
@@ -132,11 +159,9 @@
             </tbody>
           </thread>
         </table>
-        <% if(admin) {%>
         <div align="right" style="margin:0 5%;">
-          <input class="btn btn-dark" type="button" name="버튼" value="글쓰기" onclick="location.href='/notice/write'"; style="vertical-align: left;">
+          <input class="btn btn-dark" type="button" name="버튼" value="문의하기" onclick="location.href='/inquiry/write'"; style="vertical-align: left;">
         </div>
-        <%}%>
         <div class="text-center">
 
           <ul class="pagination" id="new_page">

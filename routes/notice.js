@@ -44,7 +44,7 @@ router.get('/', function(req, res) {
     },
     function(totalpage, callback){
        pool.getConnection(function (err, connection) {
-        var sql = "SELECT idx, title, date, hit FROM board1 ORDER BY idx desc LIMIT ?, ?";
+        var sql = "SELECT idx, title, date_format(date, '%m-%d') as date, hit FROM board1 ORDER BY idx desc LIMIT ?, ?";
         connection.query(sql, [(totalpage.Curr-1)*pageArticleNum, pageArticleNum], function(err, result){
           if(err) console.error(err);
           articles = result;
@@ -95,16 +95,21 @@ router.get('/', function(req, res) {
 router.get('/read', function(req, res){
   var idx=req.query.idx;
   pool.getConnection(function(err, connection){
-    var sql = "SELECT idx, title, date, content, hit FROM board1 WHERE idx = ?";
+    var sql = "update board1 set hit=hit+1 where idx=?"
     connection.query(sql, idx, function(err, result){
-          if(err) console.error(err);
-          res.render('noticeRead', {username:req.session.username, row:result[0], admin:req.session.admin});
-          connection.release();
-        });
+      if(err) console.error(err);
+    });
+    sql = "SELECT idx, title, date, content, hit FROM board1 WHERE idx = ?";
+    connection.query(sql, idx, function(err, result){
+      if(err) console.error(err);
+      res.render('noticeRead', {username:req.session.username, row:result[0], admin:req.session.admin});
+      connection.release();
+    });
   });
 });
 
 router.get('/write', function(req, res){
+  if(!req.session.username)res.redirect('/notice')
   res.render('noticeWrite', {username:req.session.username, admin:req.session.admin});
 });
 
@@ -119,4 +124,31 @@ router.post('/write', function(req, res){
         });
   });
 })
+
+router.get('/delete', function(req, res){
+  if(!req.session.username)res.redirect('/notice')
+  var idx=req.query.idx;
+  pool.getConnection(function(err, connection){
+    var sql = "delete from board1 WHERE idx = ?";
+    connection.query(sql, idx, function(err, result){
+      if(err) console.error(err);
+      res.redirect('/notice');
+      connection.release();
+    });
+  });
+});
+
+router.get('/update', function(req, res){
+  if(!req.session.username)res.redirect('/notice')
+  var idx=req.query.idx;
+  pool.getConnection(function(err, connection){
+    var sql = "SELECT idx, title, date, content, hit FROM board1 WHERE idx = ?";
+    connection.query(sql, idx, function(err, result){
+      if(err) console.error(err);
+      console.log(result[0])
+      res.render('noticeUpdate', {username:req.session.username, row:result[0], admin:req.session.admin});
+      connection.release();
+    });
+  });
+});
 module.exports = router;
