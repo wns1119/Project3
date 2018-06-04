@@ -109,6 +109,7 @@ router.get('/read', function(req, res){
 });
 
 router.get('/write', function(req, res){
+  if(!req.session.username)res.redirect('/notice')
   res.render('noticeWrite', {username:req.session.username, admin:req.session.admin});
 });
 
@@ -125,6 +126,7 @@ router.post('/write', function(req, res){
 })
 
 router.get('/delete', function(req, res){
+  if(!req.session.username)res.redirect('/notice')
   var idx=req.query.idx;
   pool.getConnection(function(err, connection){
     var sql = "delete from board1 WHERE idx = ?";
@@ -137,6 +139,7 @@ router.get('/delete', function(req, res){
 });
 
 router.get('/update', function(req, res){
+  if(!req.session.username)res.redirect('/notice')
   var idx=req.query.idx;
   pool.getConnection(function(err, connection){
     var sql = "SELECT idx, title, date, content, hit FROM board1 WHERE idx = ?";

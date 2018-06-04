@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:text-align="http://www.w3.org/1999/xhtml" xmlns:align="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>쇼핑몰</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/theme.css" type="text/css">
+
+<style>
+<!--
+	.btn {
+		font-size:0.8rem;
+	}
+#new_page {
+      display: inline-block;
+      padding-left: 0;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+    #new_page > li {
+      display: inline;
+    }
+    #new_page > li > a,
+    #new_page > li > span {
+      position: relative;
+      float: left;
+      padding: 6px 12px;
+      margin-left: -1px;
+      line-height: 1.42857143;
+      color: #337ab7;
+      text-decoration: none;
+      background-color: #fff;
+      border: 1px solid #ddd;
+    }
+   #new_page > li:first-child > a,
+    #new_page > li:first-child > span {
+      margin-left: 0;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+    #new_page > li:last-child > a,
+    #new_page > li:last-child > span {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+    #new_page > li > a:hover,
+    #new_page > li > span:hover,
+    #new_page > li > a:focus,
+    #new_page > li > span:focus {
+      color: #23527c;
+      background-color: #eee;
+      border-color: #ddd;
+    }
+    #new_page > .active > a,
+    #new_page > .active > span,
+    #new_page > .active > a:hover,
+    #new_page > .active > span:hover,
+    #new_page > .active > a:focus,
+    #new_page > .active > span:focus {
+      z-index: 2;
+      color: #fff;
+      cursor: default;
+      background-color: #337ab7;
+      border-color: #337ab7;
+    }
+    #new_page > .disabled > span,
+    #new_page > .disabled > span:hover,
+    #new_page > .disabled > span:focus,
+    #new_page > .disabled > a,
+    #new_page > .disabled > a:hover,
+    #new_page > .disabled > a:focus {
+      color: #777;
+      cursor: not-allowed;
+      background-color: #fff;
+      border-color: #ddd;
+    }
+
+.navbar-brand {
+	font-size:1.0rem;
+    }
+
+    .nav-item {
+      font-size:0.8rem;
+    }
+
+    .form-control {
+      height:25px;
+    }
+
+    .carousel-item {
+        width: 600px;
+      height: auto;
+      margin-left: auto;
+      margin-right: auto;
+    }
+-->
+</style>
+<script type="text/javascript">
+    var bDisplay = true;
+    function doDisplay(a){
+        var con = document.getElementById('a'+a);
+        var con2 = document.getElementById('b'+a);
+        if(con.style.display=='none'){
+            con.style.display = 'table-row';
+            con2.style.display = 'table-row';
+        }else{
+            con.style.display = 'none';
+            con2.style.display = 'none';
+        }
+    }
+</script>
+</head>
+<body class="Head_nav">
+  <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
+  <div class="row">
+
+    <td><!--사이드 메뉴 인클루드--><% include ./noticeSide.ejs %></td>
+    <div class="col-6" style="padding: 10px">
+        <h1>Inquiry</h1>
+        <p>1:1 문의</p>
+        <table class="table table-basic">
+          <thread>
+            <tr>
+              <th class="text-center" style="width:10%">번호</th>
+              <th>제목</th>
+              <th class="text-center" style="width:10%">작성자</th>
+              <th class="text-center" style="width:10%">처리상태</th>
+              <th class="text-center" style="width:10%">날짜</th>
+            </tr>
+            <tbody>
+      <%
+            for(var i=0;i<articles.contents.length;i++)
+            {
+              var oneItem = articles.contents[i];
+      %>
+            <tr>
+              <td class="text-center" style="width:10%"><%=oneItem.idx%></td>
+              <!--td class="tb-title"><a href="/notice/read?idx=<%=oneItem.idx%>"><%=oneItem.title%></a></td-->
+              <td><a href="javascript:doDisplay('<%=oneItem.idx%>');"><%=oneItem.title%></a></td>
+              <td class="text-center" style="width:10%"><%=oneItem.creator%></td>
+              <td class="text-center" style="width:10%"><% if(!oneItem.answer){%>대기중<%}else{%>완료<%}%></td>
+              <td class="text-center" style="width:10%"><%=oneItem.date%></td>
+            </tr>
+            <tr id="a<%=oneItem.idx%>" style="display:none">
+                <th class="text-center">문의</th>
+                <td><%=oneItem.content%></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="b<%=oneItem.idx%>" style="display:none">
+                <th class="text-center">
+                    <% if(!oneItem.answer){%><a href="/inquiry/answer?idx=<%=oneItem.idx%>">답변</a>
+                    <%}else{%><a href="/inquiry/update?idx=<%=oneItem.idx%>">수정</a><%}%>
+                </th>
+                <td><%=oneItem.answer%></td>
+                <td></td>
+                <td></td>
+            </tr>
+      <%
+            }
+      %>
+            </tbody>
+          </thread>
+        </table>
+        <div class="text-center">
+
+          <ul class="pagination" id="new_page">
+            <%if(articles.Start===1){%>
+              <li class="disabled"><a href="#"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+            <%}else{%>
+              <li><a href="/notice?page=<%=articles.Current-articles.ListCount%>"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a></li>
+            <%}
+            for(var i=articles.Start;i<=articles.End;i++)
+            {
+       %>
+            <li <%if(i===articles.Current){%>class="active"<%}%>><a href="/notice?page=<%=i%>"><%=i%></a></li>
+
+            <%
+            }
+            if(articles.End===articles.Total){
+       %>
+            <li class="disabled"><a href="#"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+            <%}else{%>
+            <li><a href="/notice?page=<%=articles.Current+articles.ListCount%>"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
+            <%}%>
+          </ul>
+      </div>
+      </div>
+    </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
