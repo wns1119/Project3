@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
 		  if(err) console.error(err);
 		  console.log("rows : " + JSON.stringify(rows));
 		  
-		  res.render('admin', {username:req.session.username, title: '관리자용', rows: rows});
+		  res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, admin:req.session.admin});
 		  connection.release();  
 	  });
 	});
