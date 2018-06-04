@@ -64,6 +64,7 @@ router.post('/login', function(req,res,next){
 					  req.session.username = result[0].username;	// 세션에 정보 저장
 					  req.session.email= result[0].email;
 					  req.session.admin=result[0].admin;
+					  req.session.sale=result[0].sale;
 					  res.redirect('/');
 					  connection.release();
 					}
@@ -109,6 +110,7 @@ router.get('/logout', function(req,res,next){
 	delete req.session.username;
 	delete req.session.email;
 	delete req.session.admin;
+	delete req.session.sale;
 	res.redirect('/');
 });
 

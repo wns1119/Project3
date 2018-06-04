@@ -28,37 +28,36 @@ textarea.autosize { min-height: 50px; }
   <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
   <div class="row">
     <td><% include ./userside.ejs %></td>
-  </div>
-  <div class="col-9">
-    <div class="jumbotron">
-      <h1>My Page</h1>
-      <p>판매자 권한삭제</p>      
+    <div class="col-9">
+      <div class="jumbotron">
+        <h1>My Page</h1>
+        <p>판매자 권한삭제</p>      
+      </div>
+      <div class="well"><h2>판매자권한삭제</h2></div>
+      <div class="container">
+        <form method="post" action="/user/saleauthdel">
+          <div class="form-group row">
+            <label for="staticEmail" class="col-md-1 col-form-label">Email</label>
+            <div class="col-md-11">
+              <input type="text" readonly class="form-control-plaintext" id="staticEmail" value=<%=rows[0].email%>>
+            </div>
+            <label for="company" class="col-md-1 col-form-label">회사명</label>
+            <div class="col-md-11">
+              <input type="text" readonly class="form-control-plaintext" id="staticName" value=<%=rows[0].company%>>
+            </div>
+            <label for="company" class="col-md-1 col-form-label">회사주소</label>
+            <div class="col-md-11">
+              <input type="text" readonly class="form-control-plaintext" id="staticName" value=<%=rows[0].address%>>
+            </div>
+            <label for="company" class="col-md-1 col-form-label">담당자명</label>
+            <div class="col-md-11">
+              <input type="text" readonly class="form-control-plaintext" id="staticName" value=<%=rows[0].manager%>>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="background-color: lightgray">권한 삭제</button>
+        </form>
+      </div>
     </div>
-    <div class="well"><h2>판매자권한삭제</h2></div>
-    <div class="container">
-      <form method="post" action="/user/saleauthdel">
-        <div class="form-group row">
-          <label for="staticEmail" class="col-md-1 col-form-label">Email</label>
-          <div class="col-md-11">
-            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value=<%=rows[0].email%>>
-          </div>
-          <label for="company" class="col-md-1 col-form-label">회사명</label>
-          <div class="col-md-11">
-            <input type="text" readonly class="form-control-plaintext" id="staticName" value=<%=rows[0].company%>>
-          </div>
-          <label for="company" class="col-md-1 col-form-label">회사주소</label>
-          <div class="col-md-11">
-            <input type="text" readonly class="form-control-plaintext" id="staticName" value=<%=rows[0].address%>>
-          </div>
-          <label for="company" class="col-md-1 col-form-label">담당자명</label>
-          <div class="col-md-11">
-            <input type="text" readonly class="form-control-plaintext" id="staticName" value=<%=rows[0].manager%>>
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary" style="background-color: lightgray">권한 삭제</button>
-      </form>
-    </div>
   </div>
-</div>
 </body>
 </html>
