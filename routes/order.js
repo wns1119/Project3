@@ -93,7 +93,7 @@ function order_func(req,res,i,count){
 		pool.getConnection(function (err, connection) {
 			if (err) throw err;
 			// Use the connection
-			var sql = "INSERT INTO order_(product_code,purchaser,payment,price,amount,address,phone) VALUE(?,?,?,?,?,?,?)";
+			var sql = "INSERT INTO order_(product_code,purchaser,email,payment,price,amount,address,phone) VALUE(?,?,?,?,?,?,?,?)";
 			var code = req.body.code[i];
 			if(count == 1) code = req.body.code;
 			var name = req.body.r_name;
@@ -106,7 +106,7 @@ function order_func(req,res,i,count){
 			var phone = req.body.r_phone;
 
 			
-			connection.query(sql, [code,name,payment,sum,amount,address,phone],function (err, rows) {
+			connection.query(sql, [code,name,req.session.email,payment,sum,amount,address,phone],function (err, rows) {
 				if(err) console.error(err);
 				i++;
 				connection.release(); 
