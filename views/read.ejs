@@ -36,6 +36,7 @@
 			  }
 			  total_score = total_score/review.length;
 			  total_score = total_score.toFixed(2);
+			  if(review.length == 0) total_score=0;
 		  %>
 		  <%=total_score%>점</p>
           <form name="form" action="/order" method="post">
@@ -90,8 +91,9 @@
 	  <tr>
 		<th width="200px">작성자</th>
 		<th width="700px">내용</th>
-		<th width="100px">평점</th>
+		<th width="70px">평점</th>
 		<th width="">날짜</th>
+		<th width="100px">리뷰삭제</th>
 	  </tr>
 	</thead>
 	<% 
@@ -99,7 +101,7 @@
 	  {
 	%>
 	  <tr>
-		<td colspan="4" align="center"><strong>리뷰 정보가 없습니다.</strong></td>
+		<td colspan="5" align="center"><strong>리뷰 정보가 없습니다.</strong></td>
 	  </tr>
 	<%   
 	  }
@@ -108,10 +110,24 @@
 		var oneItem = review[i];
 	%>
 		<tr>
-			<td><%=oneItem.name%></td>
+			<td><%=oneItem.name%> (<%=oneItem.email%>)</td>
 			<td><%=oneItem.content%></td>
 			<td><%=oneItem.score%></td>
 			<td><%=oneItem.date%></td>
+			<td>
+			<%
+				if(review[i].email == email || email == "admin@kw.ac.kr")
+				{
+			%>
+				<form action="/list/review/delete" method="post">
+					<input type="hidden" name="code" value="<%=row.code%>"/>
+					<input type="hidden" name="index" value="<%=oneItem.idx%>"/>
+					<button type="submit" class="btn btn-lg btn-outline-dark" onclick="delete_click();" style="width:50px; heigh:100px;">x</button>
+				</form>
+			<%
+				}
+			%>
+			</td>
 		</tr>
 	<% 
 	  }
@@ -207,6 +223,15 @@
 	function fun_click(){
 		if(!'<%=username%>'){
 			var message = "로그인 해주세요";
+			alert(message);
+			location.href="/login";
+			return false;
+		}
+	}
+	
+	function delete_click(){
+		if(!'<%=username%>'){
+			var message = "리뷰가 삭제되었습니다";
 			alert(message);
 			location.href="/login";
 			return false;
