@@ -26,7 +26,7 @@
   <body class="Head_nav" style="font-size:100%;">
       <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
 	  <h1 align="center"><strong>장바구니</strong></h1>
-	  <form method="post" action="/order" onsubmit="return onSubmit()" >
+	  <form method="post" action="/order" name="form" onsubmit="return onSubmit()" >
 	  <input type="hidden" name="length" value="<%=cart.length%>"/>
 	  <table width="1100px" bgcolor="transparent" cellpadding="15" cellspacing="1" border="1" style="margin:auto;">
 		  <thead>
@@ -36,6 +36,7 @@
 				<th>상품명</th>
 				<th>수량</th>
 				<th>총가격</th>
+				<th width="80px">삭제</th>
 			</tr>
 		  </thead>
 	  <%
@@ -53,17 +54,18 @@
 			<input type="hidden" name="product_name" value="<%=oneItem.product_name%>"/>
 			<td><input name="amount" value="<%=oneItem.amount%>" readonly="readonly"></td>
 			<td><input name="sum" value="<%=oneItem.sum%>" readonly="readonly"></td>
+			<td><input type="button" value="x" onClick="cart_delete(<%=i%>);"/></td>
 			</tr>
 	  <%  
 		}
 	  %>
 	  
 	  </table>
+		<input type="hidden" name="delete_index" value=""/>
 		<div align="center">
 			<button type="submit" class="btn" style="margin:10px;" onsubmit="onSubmit()">상품구매<i class="fa fa-check spaceLeft"></i></button>
 		</div>
 	  </form>
-	
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -96,6 +98,14 @@
 				alert("상품을 1개 이상 선택해주세요.");
 				return false;
 			}
+		}
+		
+		function cart_delete(s){
+		
+			alert(s+1 + "번째 항목을 삭제하였습니다.");
+			document.form.action = "/cart_delete";
+			document.form.delete_index.value = s;
+			document.form.submit();
 		}
 
 	</script>

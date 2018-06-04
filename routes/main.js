@@ -153,5 +153,14 @@ router.post('/cart', function(req,res,next){
 	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart, admin:req.session.admin});
 });
 
+router.post('/cart_delete', function(req,res,next){
+	
+	console.log(req.body);
+	var index = req.body.delete_index;
+	cart.splice(index, 1);
+	req.session.cart = cart;
+	
+	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart, admin:req.session.admin});
+});
 
 module.exports = router;
