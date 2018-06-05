@@ -32,11 +32,17 @@ router.get('/', function(req, res, next) {
 	  connection.query(sqlForSelectList, function (err, rows) {
 	  	if(err) console.error(err);
 	  	console.log("rows : " + JSON.stringify(rows));
-
-	  	res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, admin:req.session.admin, sale:req.session.sale});
-	  	connection.release();  
+	  sqlForSelectList = "SELECT product_code, amount FROM order_";
+	  connection.query(sqlForSelectList, function (err, rows2) {
+		  if(err) console.error(err);
+		  console.log("rows2 : " + JSON.stringify(rows2));
+		  connection.release();
+res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, rows2: rows2, admin:req.session.admin, sale:req.session.sale});		  
 	  });
+	  
 	});
+	});
+	
 });
 
 router.get('/salereqmanage', function(req, res, next) {
