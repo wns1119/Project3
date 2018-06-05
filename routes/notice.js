@@ -85,8 +85,7 @@ router.get('/', function(req, res) {
           title: 'notice',
           articles: Articles,
           username:req.session.username, 
-          admin:req.session.admin,
-          sale:req.session.sale
+          admin:req.session.admin
         });
       }
     }
@@ -103,7 +102,7 @@ router.get('/read', function(req, res){
     sql = "SELECT idx, title, date, content, hit FROM board1 WHERE idx = ?";
     connection.query(sql, idx, function(err, result){
       if(err) console.error(err);
-      res.render('noticeRead', {username:req.session.username, row:result[0], admin:req.session.admin, sale:req.session.sale});
+      res.render('noticeRead', {username:req.session.username, row:result[0], admin:req.session.admin});
       connection.release();
     });
   });
@@ -111,7 +110,7 @@ router.get('/read', function(req, res){
 
 router.get('/write', function(req, res){
   if(!req.session.username)res.redirect('/notice')
-  res.render('noticeWrite', {username:req.session.username, admin:req.session.admin, sale:req.session.sale});
+  res.render('noticeWrite', {username:req.session.username, admin:req.session.admin});
 });
 
 router.post('/write', function(req, res){
@@ -147,7 +146,7 @@ router.get('/update', function(req, res){
     connection.query(sql, idx, function(err, result){
       if(err) console.error(err);
       console.log(result[0])
-      res.render('noticeUpdate', {username:req.session.username, row:result[0], admin:req.session.admin, sale:req.session.sale});
+      res.render('noticeUpdate', {username:req.session.username, row:result[0], admin:req.session.admin});
       connection.release();
     });
   });

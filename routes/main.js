@@ -32,7 +32,7 @@ router.get('/', function(req, res, next) {
 		connection.query(sql, function(err, result){
 			if(err) console.error(err);
 			
-			res.render('main', { title: 'main', username:req.session.username, admin:req.session.admin, row:result, sale:req.session.sale});
+			res.render('main', { title: 'main', username:req.session.username, admin:req.session.admin, row:result});
 			connection.release();
 		});
 	});
@@ -41,7 +41,7 @@ router.get('/', function(req, res, next) {
 
 /* GET login page. */
 router.get('/login', function(req, res, next) {
-	res.render('login', { title: 'login', username:req.session.username , sale:req.session.sale});
+	res.render('login', { title: 'login', username:req.session.username });
 });
 
 // 로그인 DB 확인
@@ -83,7 +83,7 @@ router.post('/login', function(req,res,next){
 	
 });
 router.get('/userauth', function(req,res,next){
-	res.render('userauth', {username: req.session.username, admin:req.session.admin, sale:req.session.sale});
+	res.render('userauth', {username: req.session.username, admin:req.session.admin});
 });
 router.post('/userauth', function(req,res,next){
 	
@@ -116,7 +116,7 @@ router.get('/logout', function(req,res,next){
 
 router.get('/cart', function(req,res,next){
 	req.session.cart = cart;
-	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart, admin:req.session.admin, sale:req.session.sale});
+	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart, admin:req.session.admin});
 });
 
 router.post('/cart_add', function(req,res,next){
@@ -152,7 +152,7 @@ router.post('/cart', function(req,res,next){
 	console.log(cart);
 	req.session.cart = cart;
 	
-	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart, admin:req.session.admin, sale:req.session.sale});
+	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart, admin:req.session.admin});
 });
 
 router.post('/cart_delete', function(req,res,next){
@@ -162,7 +162,7 @@ router.post('/cart_delete', function(req,res,next){
 	cart.splice(index, 1);
 	req.session.cart = cart;
 	
-	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart, admin:req.session.admin, sale:req.session.sale});
+	res.render('cart', { title: '장바구니', username:req.session.username, cart:req.session.cart, admin:req.session.admin});
 });
 
 module.exports = router;

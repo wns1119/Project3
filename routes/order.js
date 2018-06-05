@@ -70,7 +70,7 @@ function recursive_func(res,req,i,count,product){
 				connection.query(sql, [req.session.email],function (err, rows) {
 					if(err) console.error(err);
 					
-					res.render('order',{title: 'notice',product:product,username:req.session.username,admin:req.session.admin,user:rows, sale:req.session.sale});
+					res.render('order',{title: 'notice',product:product,username:req.session.username,admin:req.session.admin,user:rows});	
 					connection.release();  
 				});
 			});
@@ -87,13 +87,13 @@ function order_func(req,res,i,count){
 
 			
 	if(i==count){
-		res.send("<script>alert('주문이 완료되었습니다.');location.href='/';</script>");
+		res.send("<script>alert('주문이 완료되었습니다..');location.href='/';</script>");
 	}
 	else{
 		pool.getConnection(function (err, connection) {
 			if (err) throw err;
 			// Use the connection
-			var sql = "INSERT INTO order_(product_code,purchaser,email,payment,price,amount,address,phone,date) VALUE(?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP)";
+			var sql = "INSERT INTO order_(product_code,purchaser,email,payment,price,amount,address,phone) VALUE(?,?,?,?,?,?,?,?)";
 			var code = req.body.code[i];
 			if(count == 1) code = req.body.code;
 			var name = req.body.r_name;
@@ -150,7 +150,7 @@ router.post('/', function(req, res, next) {
 							connection.query(sql, [req.session.email],function (err, rows) {
 								if(err) console.error(err);
 								// console.log(rows);
-								res.render('order',{title: 'notice',product:product,username:req.session.username,admin:req.session.admin,user:rows, sale:req.session.sale});
+								res.render('order',{title: 'notice',product:product,username:req.session.username,admin:req.session.admin,user:rows});	
 								connection.release();  
 							});
 						});

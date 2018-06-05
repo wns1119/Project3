@@ -33,7 +33,7 @@ router.get('/', function(req, res, next) {
 	  	if(err) console.error(err);
 	  	console.log("rows : " + JSON.stringify(rows));
 
-	  	res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, admin:req.session.admin, sale:req.session.sale});
+	  	res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, admin:req.session.admin});
 	  	connection.release();  
 	  });
 	});
@@ -50,7 +50,7 @@ router.get('/salereqmanage', function(req, res, next) {
 	  	if(err) console.error(err);
 	  	console.log("rows : " + JSON.stringify(rows));
 
-	  	res.render('salereqmanage', {username:req.session.username, title: '관리자용', rows: rows, admin:req.session.admin, sale:req.session.sale});
+	  	res.render('salereqmanage', {username:req.session.username, title: '관리자용', rows: rows, admin:req.session.admin});
 	  	connection.release();  
 	  });
 	});
@@ -64,7 +64,7 @@ router.get('/salereqmanage/:idx', function(req, res, next){
 		connection.query(sql,[req.params.idx], function(err, rows){
 			if(err) console.error(err);
 			//console.log("1개 글 조회 결과 확인 : ", row);
-			res.render('salereqmanageread', {username:req.session.username, title: '관리자용', rows: rows, admin:req.session.admin, sale:req.session.sale});
+			res.render('salereqmanageread', {username:req.session.username, title: '관리자용', rows: rows, admin:req.session.admin});
 			connection.release();		
 		});
 	});
