@@ -34,7 +34,7 @@ router.get('/', function(req, res, next) {
 
 function listcall(req, res, maxnum_page, sort, render_page, titleinfo, username) {
 	var CurrPage  = Number(req.query.page);   // 현재 페이지 인덱스
-  if(!CurrPage)CurrPage = 1;
+	if(!CurrPage)CurrPage = 1;
 	var TotalPage;  // 총 페이지 수
 	var articles = "";     // 게시판 내용
   var pageArticleNum = maxnum_page; // 한 페이지에 표시될 게시글의 개수
@@ -44,32 +44,32 @@ function listcall(req, res, maxnum_page, sort, render_page, titleinfo, username)
   var Articles;
   var total_count;
   async.waterfall([
-   function(callback){
+  	function(callback){
 
-    pool.getConnection(function (err, connection) {
-      if(sort >= 0 && sort<=3) var sql = "SELECT COUNT(*) AS count FROM product";
-	  else if(sort>=4 && sort<=7) var sql = "SELECT COUNT(*) AS count FROM product WHERE name LIKE '%"+req.query.Search+"%'";
-	  else if(sort>=8 && sort<=11) var sql = "SELECT COUNT(*) AS count FROM product WHERE category=1";
-	  else if(sort>=12 && sort<=15) var sql = "SELECT COUNT(*) AS count FROM product WHERE category=2";
-	  else if(sort>=16 && sort<=19) var sql = "SELECT COUNT(*) AS count FROM product WHERE category=3";
-	  else if(sort>=20 && sort<=23) var sql = "SELECT COUNT(*) AS count FROM product WHERE category=4";
-	  
-      connection.query(sql, function(err, result){
-        if(err) console.error(err);
-		total_count = result[0].count;
-        TotalPage = Math.ceil(result[0].count / pageArticleNum);
-        if(CurrPage>TotalPage)CurrPage=TotalPage;
-        connection.release();
-        totalpage = {
-          total:TotalPage,
-          Curr:CurrPage
-        }
-        callback(null, totalpage);
-      });
-    });
-  },
-  function(totalpage, callback){
-   pool.getConnection(function (err, connection) {
+  		pool.getConnection(function (err, connection) {
+  			if(sort >= 0 && sort<=3) var sql = "SELECT COUNT(*) AS count FROM product";
+  			else if(sort>=4 && sort<=7) var sql = "SELECT COUNT(*) AS count FROM product WHERE name LIKE '%"+req.query.Search+"%'";
+  			else if(sort>=8 && sort<=11) var sql = "SELECT COUNT(*) AS count FROM product WHERE category=1";
+  			else if(sort>=12 && sort<=15) var sql = "SELECT COUNT(*) AS count FROM product WHERE category=2";
+  			else if(sort>=16 && sort<=19) var sql = "SELECT COUNT(*) AS count FROM product WHERE category=3";
+  			else if(sort>=20 && sort<=23) var sql = "SELECT COUNT(*) AS count FROM product WHERE category=4";
+  			
+  			connection.query(sql, function(err, result){
+  				if(err) console.error(err);
+  				total_count = result[0].count;
+  				TotalPage = Math.ceil(result[0].count / pageArticleNum);
+  				if(CurrPage>TotalPage)CurrPage=TotalPage;
+  				connection.release();
+  				totalpage = {
+  					total:TotalPage,
+  					Curr:CurrPage
+  				}
+  				callback(null, totalpage);
+  			});
+  		});
+  	},
+  	function(totalpage, callback){
+  		pool.getConnection(function (err, connection) {
 		if(sort == 0) var sql = "SELECT * FROM product ORDER BY name asc LIMIT ?, ?";		// 이름순
         else if(sort == 1) var sql = "SELECT * FROM product ORDER BY price asc LIMIT ?, ?";		// 낮은가격순
 		else if(sort == 2) var sql = "SELECT * FROM product ORDER BY price desc LIMIT ?, ?";	// 높은가격순
@@ -94,57 +94,57 @@ function listcall(req, res, maxnum_page, sort, render_page, titleinfo, username)
 		else if(sort == 21) var sql = "SELECT * FROM product WHERE category=4 ORDER BY price asc LIMIT ?, ?";	// 낮은가격순
 		else if(sort == 22) var sql = "SELECT * FROM product WHERE category=4 ORDER BY price desc LIMIT ?, ?";	// 높은가격순
 		else if(sort == 23) var sql = "SELECT * FROM product WHERE category=4 ORDER BY sales desc LIMIT ?, ?";	// 판매순
-			
-    connection.query(sql, [(totalpage.Curr-1)*pageArticleNum, pageArticleNum], function(err, result){
-      if(err) console.error(err);
-      articles = result;
-      var temp = {
-        articles: articles,
-        total: totalpage.total,
-        Curr: totalpage.Curr
-      }
-      connection.release();
-      callback(null, temp);
-    });
-  });
- },
- function(data, callback){
-   console.log(data.Curr);
+		
+		connection.query(sql, [(totalpage.Curr-1)*pageArticleNum, pageArticleNum], function(err, result){
+			if(err) console.error(err);
+			articles = result;
+			var temp = {
+				articles: articles,
+				total: totalpage.total,
+				Curr: totalpage.Curr
+			}
+			connection.release();
+			callback(null, temp);
+		});
+	});
+  	},
+  	function(data, callback){
+  		console.log(data.Curr);
       // 현재 페이지의 페이지네이션 시작 번호
       startPage = ((Math.ceil(data.Curr/pageListNum)-1) * pageListNum) + 1;
       // 현재 페이지의 페이지네이션 끝 번호
       endPage = (startPage + pageListNum) - 1;
         // 만약 현재 페이지네이션 끝 번호가 페이지네이션 전체 카운트보다 높을 경우
         if(endPage > TotalPage){
-          endPage = TotalPage;
+        	endPage = TotalPage;
         }
         Articles = {
-          contents: data.articles,
-          Current: data.Curr,
-          Start: startPage,
-          End: endPage,
-          Total: data.total,
-          ListCount: pageListNum
+        	contents: data.articles,
+        	Current: data.Curr,
+        	Start: startPage,
+        	End: endPage,
+        	Total: data.total,
+        	ListCount: pageListNum
         };
         callback(null, Articles);
-      }
-      ],function(err, Articles){
-        if (err) {
-          throw err;
-        } else {
-          console.log(Articles.Start);
-          console.log(Articles.End);
-          res.render(render_page,{
-            title: titleinfo,
-            articles: Articles,
-            username:req.session.username,
-            search:req.query.Search, 
-            admin:req.session.admin,
-						sale:req.session.sale,
-						total_count:total_count
-          });
-        }
-      });
+    }
+    ],function(err, Articles){
+    	if (err) {
+    		throw err;
+    	} else {
+    		console.log(Articles.Start);
+    		console.log(Articles.End);
+    		res.render(render_page,{
+    			title: titleinfo,
+    			articles: Articles,
+    			username:req.session.username,
+    			search:req.query.Search, 
+    			admin:req.session.admin,
+    			sale:req.session.sale,
+    			total_count:total_count
+    		});
+    	}
+    });
 }
 
 

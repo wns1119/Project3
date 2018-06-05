@@ -240,11 +240,13 @@ function page(req, res, maximumpage, render, sql1, sql2, search, option){
          username:req.session.username, 
          admin:req.session.admin,
          sale:req.session.sale,
-         len:len
+         len:len,
+         search:req.query.Search
        });
       }
     });
   }
+
   router.get('/sellerinfo', function(req, res, next) {
   	if(req.session.admin==undefined || req.session.admin!=1)
   		res.redirect('/');
@@ -256,9 +258,24 @@ function page(req, res, maximumpage, render, sql1, sql2, search, option){
   router.get('/userinfo', function(req, res) {
   	if(req.session.admin==undefined || req.session.admin!=1)
   		res.redirect('/');
-  	var sql1 = "SELECT COUNT(*) AS count FROM user";
-  	var sql2 = "SELECT email, username, address, phone, date_format(date, '%y-%m-%d') as date, gender, sale, admin FROM user LIMIT ?, ?";
-  	page(req, res, 10, 'userinfo2', sql1, sql2, 0, 0);
+    console.log(req.query);
+    var sql1 = "SELECT COUNT(*) AS count FROM user";
+    var sql2 = "SELECT email, username, address, phone, date_format(date, '%y-%m-%d') as date, gender, sale, admin FROM user LIMIT ?, ?";
+    page(req, res, 10, 'userinfo2', sql1, sql2, 0, 0);
+  });
+
+  router.get('/userinfo/Search', function(req, res) {
+    if(req.session.admin==undefined || req.session.admin!=1)
+      res.redirect('/');
+    console.log(req.query);
+    var col;
+    if(req.query.SearchOption=="이름")
+      col="username";
+    else if(req.query.SearchOption=="이메일")
+      col="email";
+    var sql1 = "SELECT COUNT(*) AS count FROM user";
+    var sql2 = "SELECT email, username, address, phone, date_format(date, '%y-%m-%d') as date, gender, sale, admin FROM user where "+col+" LIKE'%"+req.query.Search+"%' LIMIT ?, ?";
+    page(req, res, 10, 'userinfo2', sql1, sql2, 0, 0);
   });
 
   router.get('/withdrawmanage', function(req, res) {

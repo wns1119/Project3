@@ -125,6 +125,23 @@
         <%if(len==0){%>
         <p style="text-align: center">조회된 데이터가 없습니다.</p>
         <%}%>
+        <form method="get" action="/admin/userinfo/Search?=<%=search%>">
+          <div class="form-row">
+            <div class="form-group col-4"></div>
+            <div class="form-group col-1.5">
+              <select style="height:80%;" class="form-control form-control-sm" id="SearchOption" name="SearchOption">
+                <option>이름</option>
+                <option>이메일</option>
+              </select>
+            </div>
+            <div class="form-group col-2">
+              <input type="text" class="form-control" id="Search" name="Search" placeholder="Search">
+            </div>
+            <div class="form-group col-3">
+              <button type="submit" class="btn btn-primary col-2">검색</button>
+            </div>
+          </div>
+        </form>
       </div>
       <%if(len!=0){%>
       <div class="text-center">
