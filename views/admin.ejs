@@ -64,11 +64,27 @@ function drawChart() {
         
         data.addRows([
         	<%
-        	var count = 0;
-        	for(var i=0; i<rows.length; i++)
+        	var count = 0; //rows2는 실제 시간에 따른 판매 데이터, rows는 product 테이블
+			var name=new Array();
+			var amountofname=new Array();
+			for(var z=0; z<rows.length; z++)
+			{
+				name[z]=rows[z].name;
+			}
+			for(var z=0; z<rows.length; z++)
+			{
+				amountofname[z]=0;
+			}
+			for(var z=0; z<rows2.length; z++)
+			{
+				amountofname[(rows2[z].product_code)-1] = amountofname[(rows2[z].product_code)-1]+rows2[z].amount;
+			}
+					
+			for(var i=0; i<rows2.length; i++)
         	{
+			
         		%>
-        		['<%=rows[i].name %>', <%=rows[i].sales%>],
+        		['<%=name[i]%>', <%=amountofname[i]%>],
         		<%}%>
         		]);
 

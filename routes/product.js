@@ -3,7 +3,7 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var multer = require('multer');
-var upload = multer({ dest: 'image/' });
+var upload = multer({ dest: 'public/image/' });
 var fs = require('fs');
 
 // MySQL 로드
@@ -31,6 +31,7 @@ router.post('/',  upload.single('img'), function(req, res, next) {
       var data = [req.session.username, req.body.name, req.body.category, req.body.price, req.body.spec, req.body.stock];
       connection.query(sql, data, function (err, result) {
         if (err) console.error(err);
+
 		sql="select code from product order by code desc limit 1";
 
         connection.query(sql, function (err, result) {
