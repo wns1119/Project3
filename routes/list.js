@@ -141,11 +141,10 @@ function listcall(req, res, maxnum_page, sort, render_page, titleinfo, username)
             search:req.query.Search, 
             admin:req.session.admin,
 						sale:req.session.sale,
-			total_count:total_count
+						total_count:total_count
           });
         }
-      }
-      );
+      });
 }
 
 
