@@ -284,7 +284,7 @@ router.get('/sellerOrder', function(req, res, next) {
 		if (err) throw err;
 	  // Use the connection
 
-		var sql = "select user.username, order_.price, order_.amount, order_.address, order_.phone, date_format(order_.date, '%y-%m-%d %r') as date, product.code, product.name, product.stock, product.sales from order_ " +
+		var sql = "select order_.purchaser, order_.price, order_.amount, order_.address, order_.phone, date_format(order_.date, '%y-%m-%d %r') as date, product.code, product.name, product.stock, product.sales from order_ " +
     "INNER JOIN product on product.code=order_.product_code where product_code " +
     "in (select code from product where seller=(select email from user where username=?));";
 	  connection.query(sql, [req.session.username], function (err, rows) {
