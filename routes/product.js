@@ -17,7 +17,7 @@ var pool = mysql.createPool({
 });
 
 router.get('/', function(req, res) {
-  if(!req.session.sale)res.redirect('/main');
+  if(!req.session.sale)res.redirect('/');
   res.render('product', {username:req.session.username, admin:req.session.admin, sale:req.session.sale});
 });
 
@@ -50,10 +50,36 @@ router.post('/',  upload.single('img'), function(req, res, next) {
 				fs.unlink(tmp_path);
 			}
 			
-			connection.release();
-			res.redirect('/');  
+				connection.release();
+				res.redirect('/');
         });
       });
     }));
+});
+router.get('/update', function(req, res) {
+  if(!req.session.sale)res.redirect('/');
+  var code=req.query.code;
+   pool.getConnection(function(err, connection) {
+     var sql = "SELECT * FROM product WHERE code=?";
+     connection.query(sql, [code], function (err, result) {
+       if (err) console.error(err);
+       console.log(result);
+       connection.release();
+       res.render('productUpdate', {username:req.session.username, admin:req.session.admin, sale:req.session.sale, row:result[0]});
+
+     });
+   });
+});
+router.post('/update', function(req, res) {
+  if(!req.session.sale)res.redirect('/');
+   pool.getConnection(function(err, connection) {
+     var sql = "SELECT * FROM product WHERE code=?";
+     connection.query(sql, [req.code], function (err, result) {
+       if (err) console.error(err);
+       connection.release();
+       res.redirect('/');
+
+     });
+   });
 });
 module.exports = router;
