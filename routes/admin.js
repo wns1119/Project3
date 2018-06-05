@@ -32,6 +32,7 @@ router.get('/', function(req, res, next) {
 	  connection.query(sqlForSelectList, function (err, rows) {
 	  	if(err) console.error(err);
 	  	console.log("rows : " + JSON.stringify(rows));
+
 	  sqlForSelectList = "SELECT product_code, amount FROM order_";
 	  connection.query(sqlForSelectList, function (err, rows2) {
 		  if(err) console.error(err);
