@@ -115,7 +115,7 @@
             <% for(var i=0; i < len; i++){ var rows=articles.contents[i];%>
             <tr>
               <td class="font-weight-bold text-center"><%=rows.code%></td>
-              <td><%=rows.name%></td>
+              <td class="font-weight-bold"><a href="/list/read/<%=rows.code%>"><%=rows.name%></td>
               <td class="text-center"><% switch(rows.category){
                     case 1:%>런닝머신<%break;
                     case 2:%>싸이클<%break;
