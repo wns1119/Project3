@@ -385,21 +385,4 @@ router.get('/sellerOrder', function(req, res, next) {
 	});
 });
 
-router.get('/productList', function(req, res, next) {
-	if(!req.session.username || !req.session.sale)
-		res.redirect('/');
-
-	pool.getConnection(function (err, connection) {
-		if (err) throw err;
-	  // Use the connection
-
-		var sql = "SELECT * FROM product WHERE seller=?"
-	  connection.query(sql, [req.session.email], function (err, rows) {
-	  	if(err) console.error(err);
-	  	console.log(rows);
-	  	res.render('productList', {username:req.session.username, title: '물품관리', rows: rows, admin:req.session.admin, sale:req.session.sale});
-	  	connection.release();
-	  });
-	});
-});
 module.exports = router;
