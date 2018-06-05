@@ -44,7 +44,7 @@
 			<input type="hidden" name="product_name" value="<%=row.name%>"/>
             <p class="mb">수량 :
               <input type="hidden" name="sell_price" value="<%=row.price%>">
-              <input type="text" name="amount" value="1" onchange="change();" size="3">
+              <input type="text" name="amount" value="1" onchange="change();" size="3" readonly="readonly">
               <input type="button" value=" - " onclick="del();">
               <input type="button" value=" + " onclick="add();">
               <br> </p>
@@ -237,6 +237,7 @@
 			return false;
 		}
 	}
+	
   </script>
 </body>
 
