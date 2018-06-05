@@ -9,7 +9,6 @@ var joinForm = require('./routes/joinForm');
 var user = require('./routes/user');
 var notice = require('./routes/notice');
 var list = require('./routes/list');
-var delivery = require('./routes/delivery');
 var admin = require('./routes/admin');
 var order = require('./routes/order');
 var inquiry = require('./routes/inquiry');
@@ -34,7 +33,6 @@ app.use('/join', joinForm);
 app.use('/user', user);
 app.use('/notice', notice);
 app.use('/list', list);
-app.use('/delivery', delivery);
 app.use('/admin', admin);
 app.use('/order', order);
 app.use('/inquiry', inquiry)

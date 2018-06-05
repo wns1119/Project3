@@ -8,6 +8,11 @@
  background-color: #e9ecef;
  padding: 30px 0px 30px 10px;
 }
+.container{
+  margin: 20px 0px 20px 10px;
+}
+.th:nth-of-type(1), td:nth-of-type(1) { width:950px; }
+.th:nth-of-type(2), td:nth-of-type(2) { width:150px; }
 </style>
 <head>
   <meta charset="utf-8">
@@ -29,34 +34,52 @@
     <div class="col-9">
       <div class="jumbotron">
         <h1>Admin Page</h1>
-        <p>판매자요청관리</p>      
+        <p>회원탈퇴요청관리</p>      
       </div> 
-      <div class="well"><h2>판매자요청목록</h2></div>
-      <div class="container" style="margin: 20px 0px 20px 200px;">       
-        <table class="table table-striped">
+      <div class="well"><h2><%=rows[0].email%>님의 탈퇴요청 정보</h2></div>
+      <div class="container">       
+        <table class="table">
           <tbody>
             <tr>
-              <th>이메일(email)</th>
-              <th>회사</th>
-              <th>담당자</th>
-              <th>전화번호</th>
+              <th>아이디(email)</th>
+              <td><%=rows[0].email%></td>
             </tr>
-            <% for(var i=0; i<rows.length; i++){ %>
             <tr>
-              <td><a class="font-weight-bold" href="/admin/salereqmanage/<%=rows[i].idx%>"><%=rows[i].email%></a></td>
-              <td><%=rows[i].company%></td>
-              <td><%=rows[i].manager%></td>
-              <td><%=rows[i].phone1%></td>
+              <th>이름</th>
+              <td><%=rows[0].username%></td>
             </tr>
-            <%}%>
+            <tr>
+              <th>주소</th>
+              <td><%=rows[0].address%></td>
+            </tr>
+            <tr>
+              <th>성</th>
+              <td><%=rows[0].gender%></td>
+            </tr>
+            <tr>
+              <th>전화번호</th>
+              <td><%=rows[0].phone%></td>
+            </tr>
+            <tr>
+              <th>전화번호</th>
+              <td><%=rows[0].date%></td>
+            </tr>
+            <tr>
+              <th>탈퇴사유</th>
+              <td><%=rows[0].content%></td>
+            </tr>
           </tbody>
         </table>
-        <%if(rows.length==0){%>
-        <p style="text-align: center">조회된 데이터가 없습니다.</p>
-        <%}%>
+        <div class="col-12 text-center">
+          <form action="/admin/withdrawpermit/<%=rows[0].idx%>" method="post">
+            <button type="submit" class="btn btn-primary btn-lg" style="background-color: lightgray">승인</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
+
+</div>
 </div>
 </body>
 

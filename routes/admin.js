@@ -25,26 +25,73 @@ router.use(session({
 router.get('/', function(req, res, next) {
 	if(req.session.admin==undefined || req.session.admin!=1)
 		res.redirect('/');
+	
+	console.log(req.body);
+	
+	var month = 01;
+	var day = 01;
+	var month_after = 12;
+	var day_after = 31;
+	var date = {month,day,month_after,day_after};
+	
 	pool.getConnection(function (err, connection) {
 		if (err) throw err;
 	  // Use the connection
 	  var sqlForSelectList = "SELECT * FROM product";
 	  connection.query(sqlForSelectList, function (err, rows) {
 	  	if(err) console.error(err);
-	  	console.log("rows : " + JSON.stringify(rows));
+	  	//console.log("rows : " + JSON.stringify(rows));
 
 	  sqlForSelectList = "SELECT product_code, amount FROM order_";
 	  connection.query(sqlForSelectList, function (err, rows2) {
 		  if(err) console.error(err);
 		  console.log("rows2 : " + JSON.stringify(rows2));
 		  connection.release();
-res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, rows2: rows2, admin:req.session.admin, sale:req.session.sale});		  
+		  res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, rows2: rows2, admin:req.session.admin, sale:req.session.sale, date:date});		  
 	  });
 	  
 	});
 	});
 	
 });
+
+router.post('/statistics', function(req, res, next) {
+	if(req.session.admin==undefined || req.session.admin!=1)
+		res.redirect('/');
+	
+	var month = 1*req.body.month;
+	var day=1*req.body.day;
+	var month_after=1*req.body.month_after;
+	var day_after=1*req.body.day_after;
+	
+	console.log(req.body);
+	if(req.body.month == 0) var month = 01;
+	if(req.body.day == 0) var day = 01;
+	if(req.body.month_after == 0) var month_after = 12;
+	if(req.body.day_after == 0) var day_after = 31;
+	var date = {month,day,month_after,day_after};
+	
+	pool.getConnection(function (err, connection) {
+		if (err) throw err;
+	  // Use the connection
+	  var sqlForSelectList = "SELECT * FROM product";
+	  connection.query(sqlForSelectList, function (err, rows) {
+	  	if(err) console.error(err);
+		//console.log("rows : " + JSON.stringify(rows));
+		
+		sqlForSelectList = "SELECT product_code, amount FROM order_ WHERE DATE(date) BETWEEN '2018-?-?' AND '2018-?-?'";
+		connection.query(sqlForSelectList, [month,day,month_after,day_after],function (err, rows2) {
+		  if(err) console.error(err);
+		  console.log("rows2 : " + JSON.stringify(rows2));
+		  connection.release();
+		  res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, rows2: rows2, admin:req.session.admin, sale:req.session.sale, date:date});		  
+	  });
+	  
+	});
+	});
+	
+});
+
 
 router.get('/salereqmanage', function(req, res, next) {
 	if(req.session.admin==undefined || req.session.admin!=1)
