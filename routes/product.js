@@ -6,10 +6,10 @@ var multer = require('multer');
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './image/')
+    cb(null, 'public/image/')
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname)
+    cb(null, Date.now()+file.originalname)
   }
 })
 
@@ -32,14 +32,13 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', upload.single('img'), function(req, res, next) {
-    console.log(storage.getFilename);
     var data = [req.session.username, req.body.name, req.body.category, req.body.price, req.body.spec, req.body.stock, req.file.filename];
     pool.getConnection(function(err, connection) {
       var sql = "INSERT INTO product(seller, name, category, price, spec, stock, image) " +
         "VALUES((select email from user where username=?), ?, ?, ?, ?, ?, ?)";
       connection.query(sql, data, function (err, result) {
         if (err) console.error(err);
-        res.redirect('/main');
+        res.redirect('/');
         connection.release();
       });
     });
