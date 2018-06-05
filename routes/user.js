@@ -308,15 +308,15 @@ function page(req, res, maximumpage, render, sql1, sql2){
   				var sql = sql2;
   				connection.query(sql, [req.session.email, (totalpage.Curr-1)*pageArticleNum, pageArticleNum], function(err, result){
   					if(err) console.error(err);
-            articles = result;
-            var temp = {
-              articles: articles,
-              total: totalpage.total,
-              Curr: totalpage.Curr
-            }
-            connection.release();
-            callback(null, temp);
-          });
+  					articles = result;
+  					var temp = {
+  						articles: articles,
+  						total: totalpage.total,
+  						Curr: totalpage.Curr
+  					}
+  					connection.release();
+  					callback(null, temp);
+  				});
   			});
   		},
   		function(data, callback){
@@ -337,45 +337,76 @@ function page(req, res, maximumpage, render, sql1, sql2){
         	ListCount: pageListNum
         };
         callback(null, Articles);
-      }
-      ],function(err, Articles){
-       if (err) {
-        throw err;
-      } else {
-        var len=0;
-        if(Articles.contents!=undefined)
-          len=Articles.contents.length;
-        res.render(render,{
-         title: render,
-         articles: Articles,
-         username:req.session.username, 
-         admin:req.session.admin,
-         sale:req.session.sale,
-         len:len,
-         search:req.query.Search
-       });
-      }
+    }
+    ],function(err, Articles){
+    	if (err) {
+    		throw err;
+    	} else {
+    		var len=0;
+    		if(Articles.contents!=undefined)
+    			len=Articles.contents.length;
+    		res.render(render,{
+    			title: render,
+    			articles: Articles,
+    			username:req.session.username, 
+    			admin:req.session.admin,
+    			sale:req.session.sale,
+    			len:len,
+    			search:req.query.Search
+    		});
+    	}
     });
   }
-router.get('/productmanage', function(req, res, next) {
-	if(!req.session.username || !req.session.sale)
-		res.redirect('/');
-	var sql1 = "select COUNT(*) as count from product where seller=?";
-	var sql2 = "select * from product where seller=? LIMIT ?, ?";
-	page(req, res, 10, 'productmanage', sql1, sql2);
-});
+  router.get('/productmanage', function(req, res, next) {
+  	if(!req.session.username || !req.session.sale)
+  		res.redirect('/');
+  	var sql1 = "select COUNT(*) as count from product where seller=?";
+  	var sql2 = "select * from product where seller=? LIMIT ?, ?";
+  	page(req, res, 10, 'productmanage', sql1, sql2);
+  });
 
-router.get('/sellerOrder', function(req, res, next) {
-	if(!req.session.username || !req.session.sale)
-		res.redirect('/');
+  router.get('/productmanage/Search', function(req, res) {
+  	if(req.session.username==undefined || req.session.sale!=1)
+  		res.redirect('/');
+  	console.log(req.query);
+  	var col;
+  	var category="";
 
-	pool.getConnection(function (err, connection) {
-		if (err) throw err;
+  	if(req.query.SearchOption=="판매량순")
+  		col="sales desc";
+  	else if(req.query.SearchOption=="재고순")
+  		col="stock desc";
+  	else if(req.query.SearchOption=="높은가격순")
+  		col="price desc";
+  	else if(req.query.SearchOption=="낮은가격순")
+  		col="price asc";
+
+  	if(req.query.Category=="런닝머신")
+  		category="category="+1+" and";
+  	else if(req.query.Category=="싸이클")
+  		category="category="+2+" and";
+  	else if(req.query.Category=="보충제")
+  		category="category="+3+" and";
+  	else if(req.query.Category=="보호대")
+  		category="category="+4+" and";
+
+  	console.log(category);
+  	var sql1 = "select COUNT(*) as count from product where seller=? and "+category+" name LIKE'%"+req.query.Search+"%'";
+  	var sql2 = "SELECT * FROM product where seller=? and "+category+" name LIKE'%"+req.query.Search+"%' ORDER BY "+col+" LIMIT ?, ?";
+  	page(req, res, 10, 'productmanage', sql1, sql2);
+  });
+
+  router.get('/sellerOrder', function(req, res, next) {
+  	if(!req.session.username || !req.session.sale)
+  		res.redirect('/');
+
+  	pool.getConnection(function (err, connection) {
+  		if (err) throw err;
 	  // Use the connection
 
-		var sql = "select order_.purchaser, order_.price, order_.amount, order_.address, order_.phone, date_format(order_.date, '%y-%m-%d %r') as date, product.code, product.name, product.stock, product.sales from order_ " +
-    "INNER JOIN product on product.code=order_.product_code where product_code " +
-    "in (select code from product where seller=(select email from user where username=?));";
+	  var sql = "select order_.purchaser, order_.price, order_.amount, order_.address, order_.phone, date_format(order_.date, '%y-%m-%d %r') as date, product.code, product.name, product.stock, product.sales from order_ " +
+	  "INNER JOIN product on product.code=order_.product_code where product_code " +
+	  "in (select code from product where seller=(select email from user where username=?));";
 	  connection.query(sql, [req.session.username], function (err, rows) {
 	  	if(err) console.error(err);
 	  	console.log(rows);
@@ -383,6 +414,6 @@ router.get('/sellerOrder', function(req, res, next) {
 	  	connection.release();
 	  });
 	});
-});
+  });
 
-module.exports = router;
+  module.exports = router;

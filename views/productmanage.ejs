@@ -132,20 +132,31 @@
         <%if(len==0){%>
         <p style="text-align: center">조회된 데이터가 없습니다.</p>
         <%}%>
-        <form method="get" action="/admin/userinfo/Search?=<%=search%>">
+        <form method="get" action="/user/productmanage/Search?=<%=search%>">
           <div class="form-row">
             <div class="form-group col-4"></div>
+            <div class="form-group col-1">
+              <select style="height:90%;" class="form-control form-control-sm" id="Category" name="Category">
+                <option>전체</option>
+                <option>런닝머신</option>
+                <option>싸이클</option>
+                <option>보충제</option>
+                <option>보호대</option>
+              </select>
+            </div>
             <div class="form-group col-1.5">
-              <select style="height:80%;" class="form-control form-control-sm" id="SearchOption" name="SearchOption">
-                <option>이름</option>
-                <option>이메일</option>
+              <select style="height:90%;" class="form-control form-control-sm" id="SearchOption" name="SearchOption">
+                <option>판매량순</option>
+                <option>재고순</option>
+                <option>높은가격순</option>
+                <option>낮은가격순</option>
               </select>
             </div>
             <div class="form-group col-2">
               <input type="text" class="form-control" id="Search" name="Search" placeholder="Search">
             </div>
             <div class="form-group col-3">
-              <button type="submit" class="btn btn-primary col-2">검색</button>
+              <button type="submit" class="btn btn-primary btn-sm col-2">검색</button>
             </div>
           </div>
         </form>
