@@ -104,21 +104,27 @@
         <table class="table table-striped">
           <tbody>
             <tr>
-              <th>상품코드</th>
+              <th class="text-center">상품코드</th>
               <th>제품명</th>
-              <th>카테고리</th>
-              <th>가격</th>
-              <th>재고</th>
-              <th>판매량</th>
+              <th class="text-center">카테고리</th>
+              <th class="text-center">가격</th>
+              <th class="text-center">재고</th>
+              <th class="text-center">판매량</th>
             </tr>
             <% for(var i=0; i < len; i++){ var rows=articles.contents[i];%>
             <tr>
-              <td class="font-weight-bold"><%=rows.code%></td>
+              <td class="font-weight-bold text-center"><%=rows.code%></td>
               <td><%=rows.name%></td>
-              <td><%=rows.category%></td>
-              <td><%=rows.price%></td>
-              <td><%=rows.stock%></td>
-              <td><%=rows.sales%></td>
+              <td class="text-center"><% switch(rows.category){
+                    case 1:%>런닝머신<%break;
+                    case 2:%>싸이클<%break;
+                    case 3:%>보충제<%break;
+                    case 4:%>보호대<%break;
+                    default:break;
+                }%></td>
+              <td class="text-center"><%=rows.price%></td>
+              <td class="text-center"><%=rows.stock%></td>
+              <td class="text-center"><%=rows.sales%></td>
             </tr>
             <%}%>
           </tbody>
