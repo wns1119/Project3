@@ -3,7 +3,7 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var multer = require('multer');
-var upload = multer({ dest: 'image/' });
+var upload = multer({ dest: 'public/image/' });
 var fs = require('fs');
 
 // MySQL 로드
@@ -15,7 +15,6 @@ var pool = mysql.createPool({
 	database: 'SE',
 	password: '1234qwer'
 });
-
 
 router.get('/', function(req, res) {
   if(!req.session.sale)res.redirect('/main');
