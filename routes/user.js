@@ -137,18 +137,25 @@ router.post('/modify/3', function(req, res, next) {
 });
 
 router.get('/saleauthreq', function(req, res, next) {
-	var sql="Select * from user where email=?"
+	var sql="Select * from SaleAuthReq where email=?"
 
 	pool.getConnection(function (err, connection) {
 		if (err) throw err;
-	  // Use the connection
-	  connection.query(sql, [req.session.email], function (err, rows) {
-	  	if(err) console.error(err);
 
-	  	res.render('saleauthreq', {username:req.session.username, title: '판매자등록요청', rows: rows, admin:req.session.admin, sale:req.session.sale});
-	  	connection.release();
-	  	
-	  });
+		connection.query(sql, [req.session.email], function (err, rows) {
+			if(err) console.error(err);
+			if(rows[0]==undefined){
+				sql="Select * from user where email=?";
+				connection.query(sql, [req.session.email], function (err, rows) {
+					if(err) console.error(err);
+					res.render('saleauthreq', {username:req.session.username, rows: rows, admin:req.session.admin, sale:req.session.sale});
+				});
+			}
+			else{
+				res.send("<script>alert('이미 판매자등록이 요청이 된 상태입니다.');history.back();</script>");
+			}
+			connection.release();		
+		});
 	});
 });
 
@@ -202,19 +209,16 @@ router.post('/saleauthdel', function(req, res, next) {
 
 		connection.query(sql,[0, req.session.email], function (err, rows) {
 			if(err) console.error(err);
+			sql="delete from SaleAuthReq where email=?"
+			connection.query(sql,[req.session.email], function (err, rows) {
+				if(err) console.error(err);
 
-			connection.release();
+				connection.release();
+			});			
 		});
 	});
-	pool.getConnection(function (err, connection) {
-		if (err) throw err;
-		sql="delete from SaleAuthReq where email=?"
-		connection.query(sql,[req.session.email], function (err, rows) {
-			if(err) console.error(err);
-
-			connection.release();
-		});
-	});
+	delete req.session.sale;
+	req.session.sale=0;
 	res.redirect('/user');
 });
 
