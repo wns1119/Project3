@@ -111,7 +111,7 @@
               <th>가입일</th>
               <th>구분</th>
             </tr>
-            <% for(var i=0; i < articles.contents.length; i++){ var rows=articles.contents[i]; %>
+            <% for(var i=0; i<len; i++){ var rows=articles.contents[i]; %>
             <tr>
               <td><a class="font-weight-bold" href="/admin/withdrawmanage/<%=rows.idx%>"><%=rows.email%></a></td>
               <td><%=rows.username%></td>
@@ -123,7 +123,11 @@
             <%}%>
           </tbody>
         </table>
+        <%if(len==0){%>
+        <p style="text-align: center">조회된 데이터가 없습니다.</p>
+        <%}%>
       </div>
+      <%if(len!=0){%>
       <div class="text-center">
 
         <ul class="pagination" id="new_page">
@@ -146,7 +150,7 @@
          <li><a href="/admin/withdrawmanage?page=<%=articles.Current+articles.ListCount%>"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
          <%}%>
        </ul>
-     </div>
+     </div><%}%>
     </div>
   </div>
 </body>
