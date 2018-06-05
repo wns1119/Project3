@@ -124,4 +124,21 @@ router.get('/sellerinfo/:idx', function(req, res, next){
 		});
 	});
 });
+
+router.get('/userinfo', function(req, res, next) {
+	if(req.session.admin==undefined || req.session.admin!=1)
+		res.redirect('/');
+	pool.getConnection(function (err, connection) {
+		if (err) throw err;
+	  // Use the connection
+	  var sqlForSelectList = "SELECT email, username, address, phone, date_format(date, '%y-%m-%d') as date, sale, admin FROM user";
+	  connection.query(sqlForSelectList, function (err, rows) {
+	  	if(err) console.error(err);
+	  	console.log("rows : " + JSON.stringify(rows));
+
+	  	res.render('userinfo', {username:req.session.username, title: '관리자용', rows: rows, admin:req.session.admin, sale:req.session.sale});
+	  	connection.release();  
+	  });
+	});
+});
 module.exports = router;
