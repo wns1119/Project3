@@ -5,7 +5,9 @@
 		<a class="list-group-item" href="/user/orderinquiry" style="background-color: rgb(240, 240, 240)">주문정보</a>
 		<a class="list-group-item" href="/user/modify"  style="background-color: rgb(240, 240, 240)">회원정보수정</a>
 		<% if(sale){ %>
-        <a class="list-group-item" href="/product" style="background-color: rgb(240, 240, 240)">상품등록</a><%}%>
+        <a class="list-group-item" href="/product" style="background-color: rgb(240, 240, 240)">상품등록</a>
+		<a class="list-group-item" href="/user/sellerOrder" style="background-color: rgb(240, 240, 240)">구매요청</a>
+		<%}%>
 		<% if(admin!=1){%>
 		<% if(sale!=1){%>
 		<a class="list-group-item" href="/user/saleauthreq" style="background-color: rgb(240, 240, 240)">판매자권한요청</a>

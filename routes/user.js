@@ -275,4 +275,24 @@ router.post('/withdrawreq', function(req, res, next) {
 	  });
 	});
 });
+
+router.get('/sellerOrder', function(req, res, next) {
+	if(!req.session.username || !req.session.sale)
+		res.redirect('/');
+
+	pool.getConnection(function (err, connection) {
+		if (err) throw err;
+	  // Use the connection
+
+		var sql = "select order_.purchaser, order_.price, order_.amount, order_.address, order_.phone, date_format(order_.date, '%y-%m-%d %r') as date, product.code, product.name, product.stock, product.sales from order_ " +
+    "INNER JOIN product on product.code=order_.product_code where product_code " +
+    "in (select code from product where seller=(select email from user where username=?));";
+	  connection.query(sql, [req.session.username], function (err, rows) {
+	  	if(err) console.error(err);
+	  	console.log(rows);
+	  	res.render('sellerOrder', {username:req.session.username, title: '구매요청', rows: rows, admin:req.session.admin, sale:req.session.sale});
+	  	connection.release();
+	  });
+	});
+});
 module.exports = router;
