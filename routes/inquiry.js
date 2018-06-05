@@ -15,7 +15,7 @@ var pool = mysql.createPool({
 });
 
 router.get('/', function(req, res) {
-  if(req.session.admin)res.redirect('/inquiry/admin')
+  if(req.session.admin)res.redirect('/inquiry/admin');
   if(!req.session.username)res.redirect('/login')
   var CurrPage  = Number(req.query.page);   // 현재 페이지 인덱스
   if(!CurrPage)CurrPage = 1;
@@ -34,6 +34,7 @@ router.get('/', function(req, res) {
         connection.query(sql, [req.session.username], function(err, result){
           if(err) console.error(err);
           TotalPage = Math.ceil(result[0].count / pageArticleNum);
+          if(!TotalPage)TotalPage=1;
           if(CurrPage>TotalPage)CurrPage=TotalPage;
           connection.release();
           totalpage = {
@@ -45,6 +46,7 @@ router.get('/', function(req, res) {
       });
     },
     function(totalpage, callback){
+	  console.log(totalpage.Curr);
        pool.getConnection(function (err, connection) {
         var sql = "SELECT idx, title, content, answer, date_format(date, '%m-%d') as date FROM inquiry WHERE creator=(select email from user where username=?) ORDER BY idx desc LIMIT ?, ?";
         connection.query(sql, [req.session.username, (totalpage.Curr-1)*pageArticleNum, pageArticleNum], function(err, result){
@@ -157,6 +159,7 @@ router.get('/admin', function(req, res) {
         connection.query(sql, [req.session.username], function(err, result){
           if(err) console.error(err);
           TotalPage = Math.ceil(result[0].count / pageArticleNum);
+          if(!TotalPage)TotalPage=1;
           if(CurrPage>TotalPage)CurrPage=TotalPage;
           connection.release();
           totalpage = {

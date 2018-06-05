@@ -110,6 +110,7 @@
           <thread>
             <tr>
               <th class="text-center" style="width:10%">번호</th>
+              <th class="text-center" style="width:10%">작성자</th>
               <th >제목</th>
               <th class="text-center" style="width:10%">조회수</th>
               <th class="text-center" style="width:10%">날짜</th>
@@ -122,6 +123,7 @@
       %>
             <tr>
               <td class="text-center" style="width:10%"><%=oneItem.idx%></td>
+              <td class="text-center" style="width:10%">관리자</td>
               <td class="tb-title"><a href="/notice/read?idx=<%=oneItem.idx%>"><%=oneItem.title%></a></td>
               <td class="text-center" style="width:10%"><%=oneItem.hit%></td>
               <td class="text-center" style="width:10%"><%=oneItem.date%></td>

@@ -164,7 +164,7 @@ router.get('/sellerinfo/:idx', function(req, res, next){
 	});
 });
 
-function page(req, res, maximumpage, render, sql1, sql2, search, option){
+function page(req, res, maximumpage, render, sql1, sql2){
 	var CurrPage  = Number(req.query.page);   // 현재 페이지 인덱스
 	if(!CurrPage)CurrPage = 1;
 	var TotalPage;  // 총 페이지 수
@@ -252,7 +252,7 @@ function page(req, res, maximumpage, render, sql1, sql2, search, option){
   		res.redirect('/');
   	var sql1 = "SELECT COUNT(*) AS count FROM SaleAuthReq where permitted=1";
   	var sql2 = "SELECT idx, email, company, manager, phone1 FROM SaleAuthReq where permitted=1 LIMIT ?, ?";
-  	page(req, res, 10, 'sellerinfo', sql1, sql2, 0, 0);
+  	page(req, res, 10, 'sellerinfo', sql1, sql2);
   });
 
   router.get('/userinfo', function(req, res) {
@@ -261,7 +261,7 @@ function page(req, res, maximumpage, render, sql1, sql2, search, option){
     console.log(req.query);
     var sql1 = "SELECT COUNT(*) AS count FROM user";
     var sql2 = "SELECT email, username, address, phone, date_format(date, '%y-%m-%d') as date, gender, sale, admin FROM user LIMIT ?, ?";
-    page(req, res, 10, 'userinfo2', sql1, sql2, 0, 0);
+    page(req, res, 10, 'userinfo2', sql1, sql2);
   });
 
   router.get('/userinfo/Search', function(req, res) {
@@ -275,7 +275,7 @@ function page(req, res, maximumpage, render, sql1, sql2, search, option){
       col="email";
     var sql1 = "SELECT COUNT(*) AS count FROM user";
     var sql2 = "SELECT email, username, address, phone, date_format(date, '%y-%m-%d') as date, gender, sale, admin FROM user where "+col+" LIKE'%"+req.query.Search+"%' LIMIT ?, ?";
-    page(req, res, 10, 'userinfo2', sql1, sql2, 0, 0);
+    page(req, res, 10, 'userinfo2', sql1, sql2);
   });
 
   router.get('/withdrawmanage', function(req, res) {
@@ -283,7 +283,7 @@ function page(req, res, maximumpage, render, sql1, sql2, search, option){
   		res.redirect('/');
   	var sql1 = "SELECT COUNT(*) AS count FROM WithdrawReq";
   	var sql2 = "SELECT user.email, user.username, user.address, user.phone, date_format(user.date, '%y-%m-%d') as date, user.sale, user.admin, WithdrawReq.idx FROM user, WithdrawReq where user.email=WithdrawReq.email LIMIT ?, ?";
-  	page(req, res, 10, 'withdrawmanage', sql1, sql2, 0, 0);
+  	page(req, res, 10, 'withdrawmanage', sql1, sql2);
   });
 
   router.get('/withdrawmanage/:idx', function(req, res, next){
