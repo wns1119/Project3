@@ -2,7 +2,7 @@
 	<div class="list-group">
 		<li class="list-group-item font-weight-bold" style="background-color: rgb(240, 240, 240)"> MyPage</li>
 		<a class="list-group-item" href="/user" style="background-color: rgb(240, 240, 240)">나의정보</a>
-		<a class="list-group-item" href="/user/orderinquiry" style="background-color: rgb(240, 240, 240)">주문 및 배송정보</a>
+		<a class="list-group-item" href="/user/orderinquiry" style="background-color: rgb(240, 240, 240)">주문정보</a>
 		<a class="list-group-item" href="/user/modify"  style="background-color: rgb(240, 240, 240)">회원정보수정</a>
 		<% if(admin!=1){%>
 		<% if(sale!=1){%>
@@ -10,5 +10,6 @@
 		<% } else{%>
 		<a class="list-group-item" href="/user/saleauthdel" style="background-color: rgb(240, 240, 240)">판매자권한삭제</a>
 		<%}}%>
+		<a class="list-group-item" href="/user/withdrawreq"  style="background-color: rgb(240, 240, 240)">회원탈퇴</a>
 	</div>
 </div>
