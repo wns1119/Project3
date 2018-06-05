@@ -22,7 +22,7 @@
  .btn {
   font-size:0.8rem;
 }
-  #new_page {
+#new_page {
   display: inline-block;
   padding-left: 0;
   margin: 20px 0;
@@ -110,7 +110,7 @@
               <th>가입일</th>
               <th>구분</th>
             </tr>
-            <% for(var i=0; i < articles.contents.length; i++){ var rows=articles.contents[i]; %>
+            <% for(var i=0; i < len; i++){ var rows=articles.contents[i]; %>
             <tr>
               <td class="font-weight-bold"><%=rows.email%></td>
               <td><%=rows.username%></td>
@@ -122,7 +122,11 @@
             <%}%>
           </tbody>
         </table>
+        <%if(len==0){%>
+        <p style="text-align: center">조회된 데이터가 없습니다.</p>
+        <%}%>
       </div>
+      <%if(len!=0){%>
       <div class="text-center">
 
         <ul class="pagination" id="new_page">
@@ -145,7 +149,8 @@
          <li><a href="/admin/userinfo?page=<%=articles.Current+articles.ListCount%>"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
          <%}%>
        </ul>
-     </div>
+     </div><%}%>
    </div>
- </body>
- </html>
+ </div>
+</body>
+</html>

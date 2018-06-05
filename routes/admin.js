@@ -33,15 +33,15 @@ router.get('/', function(req, res, next) {
 	  	if(err) console.error(err);
 	  	console.log("rows : " + JSON.stringify(rows));
 
-	  sqlForSelectList = "SELECT product_code, amount FROM order_";
-	  connection.query(sqlForSelectList, function (err, rows2) {
-		  if(err) console.error(err);
-		  console.log("rows2 : " + JSON.stringify(rows2));
-		  connection.release();
-res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, rows2: rows2, admin:req.session.admin, sale:req.session.sale});		  
-	  });
-	  
-	});
+     sqlForSelectList = "SELECT product_code, amount FROM order_";
+     connection.query(sqlForSelectList, function (err, rows2) {
+      if(err) console.error(err);
+      console.log("rows2 : " + JSON.stringify(rows2));
+      connection.release();
+      res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, rows2: rows2, admin:req.session.admin, sale:req.session.sale});		  
+    });
+
+   });
 	});
 	
 });
@@ -148,15 +148,15 @@ function page(req, res, maximumpage, render, sql1, sql2, search, option){
   				var sql = sql2;
   				connection.query(sql, [(totalpage.Curr-1)*pageArticleNum, pageArticleNum], function(err, result){
   					if(err) console.error(err);
-  					articles = result;
-  					var temp = {
-  						articles: articles,
-  						total: totalpage.total,
-  						Curr: totalpage.Curr
-  					}
-  					connection.release();
-  					callback(null, temp);
-  				});
+            articles = result;
+            var temp = {
+              articles: articles,
+              total: totalpage.total,
+              Curr: totalpage.Curr
+            }
+            connection.release();
+            callback(null, temp);
+          });
   			});
   		},
   		function(data, callback){
@@ -177,19 +177,23 @@ function page(req, res, maximumpage, render, sql1, sql2, search, option){
         	ListCount: pageListNum
         };
         callback(null, Articles);
-    }
-    ],function(err, Articles){
-    	if (err) {
-    		throw err;
-    	} else {
-    		res.render(render,{
-    			title: render,
-    			articles: Articles,
-    			username:req.session.username, 
-    			admin:req.session.admin,
-    			sale:req.session.sale
-    		});
-    	}
+      }
+      ],function(err, Articles){
+       if (err) {
+        throw err;
+      } else {
+        var len=0;
+        if(Articles.contents!=undefined)
+          len=Articles.contents.length;
+        res.render(render,{
+         title: render,
+         articles: Articles,
+         username:req.session.username, 
+         admin:req.session.admin,
+         sale:req.session.sale,
+         len:len
+       });
+      }
     });
   }
   router.get('/sellerinfo', function(req, res, next) {
