@@ -32,32 +32,34 @@
     <div class="col-9">
       <div class="jumbotron">
         <h1>Admin Page</h1>
-        <p>판매자정보관리</p>      
+        <p>회원정보관리</p>      
       </div> 
-      <div class="well"><h2>판매자목록</h2></div>
-      <div class="container">       
+      <div class="well"><h2>회원목록</h2></div>
+      <div class="col-9 container">       
         <table class="table table-striped">
           <tbody>
             <tr>
-              <th >이메일(email)</th>
-              <th>회사</th>
-              <th>담당자</th>
+              <th>이메일(email)</th>
+              <th>이름</th>
+              <th>주소</th>
               <th>전화번호</th>
+              <th>가입일</th>
+              <th>구분</th>
             </tr>
-            <% for(var i=0; i < rows.length; i++){ %>
+            <% for(var i=0; i < rows.length; i++){%>
             <tr>
-              <td><a class="font-weight-bold" href="/admin/sellerinfo/<%=rows[i].idx%>"><%=rows[i].email%></a></td>
-              <td><%=rows[i].company%></td>
-              <td><%=rows[i].manager%></td>
-              <td><%=rows[i].phone1%></td>
+              <td class="font-weight-bold"><%=rows[i].email%></td>
+              <td><%=rows[i].username%></td>
+              <td><%=rows[i].address%></td>
+              <td><%=rows[i].phone%></td>
+              <td><%=rows[i].date%></td>
+              <td><% if(rows[i].admin==1){ %>판매자<%}else if(rows[i].sale==1){%>관리자<%}else{%>일반회원<%}%></td>
             </tr>
             <%}%>
           </tbody>
         </table>
       </div>
-
     </div>
-
   </div>
 </div>
 </body>
