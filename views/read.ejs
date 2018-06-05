@@ -20,13 +20,12 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 p-0">
-          <img class="d-block mx-auto" src="/image/<%=row.image%>" width="400" height="400"> </div>
+          <img class="d-block mx-auto" src="/image/<%=row.code%>.jpg" width="400" height="400"> </div>
         <div class="align-self-center col-md-6">
           <h2 class="mb-4 text-left"><strong><%=row.name%></strong></h2>
           <p class="mb-3"><%=row.spec%></p>
           <p class="mb-3">상품 가격 : <%=row.price%>원</p>
-          <p class="mb-4">배송 가격 : 2500원 (5만원 이상 구매시 무료)</p>
-		  <p class="">평점 : 
+          <p class="mb-2">배송 가격 : 2500원 (5만원 이상 구매시 무료)</p>
 		  <%   
 			  var total_score=0;
 			  for(var i=0; i<review.length; i++)
@@ -38,13 +37,18 @@
 			  total_score = total_score.toFixed(2);
 			  if(review.length == 0) total_score=0;
 		  %>
-		  <%=total_score%>점</p>
+		  
+		  <div style="text-align:left; CLEAR: both; PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: url(/icon_star2.gif) 0px 0px; FLOAT: left; PADDING-BOTTOM: 0px; MARGIN: 0px; WIDTH: 90px; PADDING-TOP: 0px; HEIGHT: 18px;">
+			 <p style="WIDTH: <%=total_score*20%>%; PADDING-RIGHT:0px; PADDING-LEFT:0px; BACKGROUND: url(/icon_star.gif) 0px 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; HEIGHT: 18px;">
+			 </p>
+		  </div>&nbsp;평점 :&nbsp;<%=total_score%>점
+		  <br><br>
           <form name="form" action="/order" method="post">
 			<input type="hidden" name="code" value="<%=row.code%>"/>
 			<input type="hidden" name="product_name" value="<%=row.name%>"/>
             <p class="mb">수량 :
               <input type="hidden" name="sell_price" value="<%=row.price%>">
-              <input type="text" name="amount" value="1" onchange="change();" size="3">
+              <input type="text" name="amount" value="1" onchange="change();" size="3" readonly="readonly">
               <input type="button" value=" - " onclick="del();">
               <input type="button" value=" + " onclick="add();">
               <br> </p>
@@ -237,6 +241,7 @@
 			return false;
 		}
 	}
+	
   </script>
 </body>
 
