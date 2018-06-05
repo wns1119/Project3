@@ -4,9 +4,9 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>쇼핑몰</title>
+	<title>판매량통계</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
-	<link rel="stylesheet" href="theme.css" type="text/css"> 
+	<link rel="stylesheet" href="/theme.css" type="text/css"> 
 	<style type="text/css">
 	<!--
 	.btn-group {
@@ -30,31 +30,7 @@
       // Callback that creates and populates a data table,
       // instantiates the pie chart, passes in the data and
       // draws it.
-	  /*function loadData(){
-	  var mysql = require('mysql');
-	var pool = mysql.createPool({
-		connectionLimit: 5,
-		host: 'malid.cgvtbxiixr2x.ap-northeast-2.rds.amazonaws.com',
-		user: 'MALID',
-		database: 'SE',
-		password: '1234qwer'
-		});
-		
-		pool.getConnection(function (err, connection) {
-   if (err) throw err;
-	  // Use the connection
-
-	  var sql = "SELECT * FROM product";
-	  connection.query(sql,, function (err, row) {
-      if(err) console.error(err);
-      console.log("1개 글 조회 결과 확인 : ", row);
-      
-      //res.render('read', {username:req.session.username, title:"상품정보", row:row[0], admin:req.session.admin});
-      connection.release();
-      
-    });
-	});
-}*/
+	  
 function drawChart() {
 
         // Create the data table.
@@ -89,7 +65,7 @@ function drawChart() {
         		]);
 
         // Set chart options
-        var options = {'title':'상품별 판매량',
+        var options = {'title':'상품별 판매량(<%=date.month%>월-<%=date.day%>일 ~ <%=date.month_after%>월-<%=date.day_after%>일)',
         'width':1200,
         'height':800};
 
@@ -109,118 +85,137 @@ function drawChart() {
 				<h1>Admin Page</h1>
 				<p>제품 판매량 통계</p>      
 			</div> 
-
+			<form method="post" action="/admin/statistics" onsubmit="return onSubmit()">
 			<div class="text-center">
 				<div class="container">
 					<h1>제품 판매량 통계</h1>
-					<select name='month'>
+					<select name='month' id="month">
 						<option value='0' selected>전체 기간</option>
-						<option value='1'>1</option>
-						<option value='2'>2</option>
-						<option value='3'>3</option>
-						<option value='4'>4</option>
-						<option value='5'>5</option>
-						<option value='6'>6</option>
-						<option value='7'>7</option>
-						<option value='8'>8</option>
-						<option value='9'>9</option>
+						<option value='01'>1</option>
+						<option value='02'>2</option>
+						<option value='03'>3</option>
+						<option value='04'>4</option>
+						<option value='05'>5</option>
+						<option value='06'>6</option>
+						<option value='07'>7</option>
+						<option value='08'>8</option>
+						<option value='09'>9</option>
 						<option value='10'>10</option>
 						<option value='11'>11</option>
 						<option value='12'>12</option>
 					</select> 월
-					<select name='day'>
+					<select name='day' id="day">
 						<option value='0' selected>전체 기간</option>
-						<option value='1'>1</option>
-						<option value='2'>2</option>
-						<option value='3'>3</option>
-						<option value='4'>4</option>
-						<option value='5'>5</option>
-						<option value='6'>6</option>
-						<option value='7'>7</option>
-						<option value='8'>8</option>
-						<option value='9'>9</option>
+						<option value='01'>1</option>
+						<option value='02'>2</option>
+						<option value='03'>3</option>
+						<option value='04'>4</option>
+						<option value='05'>5</option>
+						<option value='06'>6</option>
+						<option value='07'>7</option>
+						<option value='08'>8</option>
+						<option value='09'>9</option>
 						<option value='10'>10</option>
 						<option value='11'>11</option>
 						<option value='12'>12</option>
-						<option value='12'>13</option>
-						<option value='12'>14</option>
-						<option value='12'>15</option>
-						<option value='12'>16</option>
-						<option value='12'>17</option>
-						<option value='12'>18</option>
-						<option value='12'>19</option>
-						<option value='12'>20</option>
-						<option value='12'>21</option>
-						<option value='12'>22</option>
-						<option value='12'>23</option>
-						<option value='12'>24</option>
-						<option value='12'>25</option>
-						<option value='12'>26</option>
-						<option value='12'>27</option>
-						<option value='12'>28</option>
-						<option value='12'>29</option>
-						<option value='12'>30</option>
-						<option value='12'>31</option>
+						<option value='13'>13</option>
+						<option value='14'>14</option>
+						<option value='15'>15</option>
+						<option value='16'>16</option>
+						<option value='17'>17</option>
+						<option value='18'>18</option>
+						<option value='19'>19</option>
+						<option value='20'>20</option>
+						<option value='21'>21</option>
+						<option value='22'>22</option>
+						<option value='23'>23</option>
+						<option value='24'>24</option>
+						<option value='25'>25</option>
+						<option value='26'>26</option>
+						<option value='27'>27</option>
+						<option value='28'>28</option>
+						<option value='29'>29</option>
+						<option value='30'>30</option>
+						<option value='31'>31</option>
 					</select> 일
 					&nbsp&nbsp&nbsp~&nbsp&nbsp
-					<select name='month_after'>
+					<select name='month_after' id="month_after">
 						<option value='0' selected>전체 기간</option>
-						<option value='1'>1</option>
-						<option value='2'>2</option>
-						<option value='3'>3</option>
-						<option value='4'>4</option>
-						<option value='5'>5</option>
-						<option value='6'>6</option>
-						<option value='7'>7</option>
-						<option value='8'>8</option>
-						<option value='9'>9</option>
+						<option value='01'>1</option>
+						<option value='02'>2</option>
+						<option value='03'>3</option>
+						<option value='04'>4</option>
+						<option value='05'>5</option>
+						<option value='06'>6</option>
+						<option value='07'>7</option>
+						<option value='08'>8</option>
+						<option value='09'>9</option>
 						<option value='10'>10</option>
 						<option value='11'>11</option>
 						<option value='12'>12</option>
 					</select> 월
-					<select name='day_after'>
+					<select name='day_after' id="day_after">
 						<option value='0' selected>전체 기간</option>
-						<option value='1'>1</option>
-						<option value='2'>2</option>
-						<option value='3'>3</option>
-						<option value='4'>4</option>
-						<option value='5'>5</option>
-						<option value='6'>6</option>
-						<option value='7'>7</option>
-						<option value='8'>8</option>
-						<option value='9'>9</option>
+						<option value='01'>1</option>
+						<option value='02'>2</option>
+						<option value='03'>3</option>
+						<option value='04'>4</option>
+						<option value='05'>5</option>
+						<option value='06'>6</option>
+						<option value='07'>7</option>
+						<option value='08'>8</option>
+						<option value='09'>9</option>
 						<option value='10'>10</option>
 						<option value='11'>11</option>
 						<option value='12'>12</option>
-						<option value='12'>13</option>
-						<option value='12'>14</option>
-						<option value='12'>15</option>
-						<option value='12'>16</option>
-						<option value='12'>17</option>
-						<option value='12'>18</option>
-						<option value='12'>19</option>
-						<option value='12'>20</option>
-						<option value='12'>21</option>
-						<option value='12'>22</option>
-						<option value='12'>23</option>
-						<option value='12'>24</option>
-						<option value='12'>25</option>
-						<option value='12'>26</option>
-						<option value='12'>27</option>
-						<option value='12'>28</option>
-						<option value='12'>29</option>
-						<option value='12'>30</option>
-						<option value='12'>31</option>
+						<option value='13'>13</option>
+						<option value='14'>14</option>
+						<option value='15'>15</option>
+						<option value='16'>16</option>
+						<option value='17'>17</option>
+						<option value='18'>18</option>
+						<option value='19'>19</option>
+						<option value='20'>20</option>
+						<option value='21'>21</option>
+						<option value='22'>22</option>
+						<option value='23'>23</option>
+						<option value='24'>24</option>
+						<option value='25'>25</option>
+						<option value='26'>26</option>
+						<option value='27'>27</option>
+						<option value='28'>28</option>
+						<option value='29'>29</option>
+						<option value='30'>30</option>
+						<option value='31'>31</option>
 					</select> 일
-					<input type='button' value = "조회">
+					<input type='submit' value = "조회">
 					<div id="chart_div"></div>
 				</div>
 			</div>
+			</form>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script>
+		function onSubmit()
+		{
+			if( $("#month").val() > $("#month_after").val())
+			{
+				var message = "날짜 범위를 다시 설정해주세요.";
+				alert(message);
+				return false;
+			}
+			
+			if( ($("#month").val() == $("#month_after").val()) && ($("#day").val() > $("#day_after").val()))
+			{
+					var message = "날짜 범위를 다시 설정해주세요.";
+					alert(message);
+					return false;
+			}
+		}
+	</script>
 </body>
 
 </html>
