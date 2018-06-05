@@ -25,7 +25,7 @@ function leadingZeros(n, digits) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('joinForm', { title: 'joinForm', username:req.session.username });
+  res.render('joinForm', { title: 'joinForm', username:req.session.username, admin:req.session.admin, sale:req.session.sale });
 });
 
 router.post('/', function(req,res,next){
