@@ -20,7 +20,7 @@
       <div class="col-md-6">
         <table class="table table-bordered">
             <tbody>
-                <form action="/notice/update" method="post" encType="multiplart/form-data">
+                <form action="/notice/update?idx=<%=row.idx%>" method="post" encType="multiplart/form-data">
                     <tr>
                         <th>제목: </th>
                         <td><input type="text" placeholder="제목을 입력하세요. " name="title" class="form-control" value="<%=row.title%>"/></td>
@@ -31,9 +31,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <input class="btn btn-dark" type="button" name="버튼" value="수정하기" onclick="location.href='/notice/update'"; style="vertical-align: left;">
+                            <input class="btn btn-dark" type="submit" name="버튼" value="수정하기" style="vertical-align: left;">
                             <input class="btn btn-dark" type="button" name="버튼" value="이전으로" onclick="location.href='javascript:history.back();'"; style="vertical-align: left;">
-                            <input type="submit" value="등록" class="pull-right"/>
                         </td>
                     </tr>
                 </form>

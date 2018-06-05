@@ -97,11 +97,11 @@ router.get('/read', function(req, res){
   var idx=req.query.idx;
   pool.getConnection(function(err, connection){
     var sql = "update board1 set hit=hit+1 where idx=?"
-    connection.query(sql, idx, function(err, result){
+    connection.query(sql, [idx], function(err, result){
       if(err) console.error(err);
     });
     sql = "SELECT idx, title, date, content, hit FROM board1 WHERE idx = ?";
-    connection.query(sql, idx, function(err, result){
+    connection.query(sql, [idx], function(err, result){
       if(err) console.error(err);
       res.render('noticeRead', {username:req.session.username, row:result[0], admin:req.session.admin, sale:req.session.sale});
       connection.release();
@@ -148,6 +148,22 @@ router.get('/update', function(req, res){
       if(err) console.error(err);
       console.log(result[0])
       res.render('noticeUpdate', {username:req.session.username, row:result[0], admin:req.session.admin, sale:req.session.sale});
+      connection.release();
+    });
+  });
+});
+
+router.post('/update', function(req, res){
+  if(!req.session.username)res.redirect('/notice')
+  var idx=req.query.idx;
+      console.log(req.body.title);
+      console.log(req.body.content);
+      console.log(idx);
+  pool.getConnection(function(err, connection){
+    var sql = "UPDATE board1 SET title=?, date=CURRENT_TIMESTAMP, content=? WHERE idx = ?";
+    connection.query(sql, [req.body.title, req.body.content, idx], function(err, result){
+      if(err) console.error(err);
+      res.redirect('/notice');
       connection.release();
     });
   });
