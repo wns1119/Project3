@@ -103,13 +103,14 @@
   <div class="text-center">
   <div class="text-center">
     <div class="container" onload="change()";>
-	  <strong>검색결과 : <%=articles.contents.length%>개</strong><br><br>
+	  <strong>검색결과 : <%=total_count%>개</strong><br><br>
 	  <%
 		var count = 0;
-		if(articles.contents.length == 0){
+		if(total_count == 0){
 	  %>검색된 결과가 없습니다.
 	  <%
 		}
+		else{
 		for(var i=0; i<articles.contents.length; i++)
 		{
 			var oneItem = articles.contents[i];
@@ -144,6 +145,7 @@
 				}
 			}
 		}
+		
 	  %>
     </div>
   </div>
@@ -167,7 +169,8 @@
       <li class="disabled"><a href="#"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
       <%}else{%>
       <li><a href="/list?page=<%=articles.Current+articles.ListCount%>"><span aria-hidden="true">»</span><span class="sr-only">Next</span></a></li>
-      <%}%>
+      <%}
+	  }%>
     </ul>
   </div>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
