@@ -70,7 +70,7 @@ function recursive_func(res,req,i,count,product){
 				connection.query(sql, [req.session.email],function (err, rows) {
 					if(err) console.error(err);
 					
-					res.render('order',{title: 'notice',product:product,username:req.session.username,admin:req.session.admin,user:rows});	
+					res.render('order',{title: 'notice',product:product,username:req.session.username,admin:req.session.admin,user:rows, sale:req.session.sale});
 					connection.release();  
 				});
 			});
@@ -150,7 +150,7 @@ router.post('/', function(req, res, next) {
 							connection.query(sql, [req.session.email],function (err, rows) {
 								if(err) console.error(err);
 								// console.log(rows);
-								res.render('order',{title: 'notice',product:product,username:req.session.username,admin:req.session.admin,user:rows});	
+								res.render('order',{title: 'notice',product:product,username:req.session.username,admin:req.session.admin,user:rows, sale:req.session.sale});
 								connection.release();  
 							});
 						});

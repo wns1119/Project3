@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>쇼핑몰</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/theme.css" type="text/css">
+  <style>
+	#textform {
+		height:350px;
+	}
+  </style>
+</head>
+<body class="Head_nav">
+  <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
+  <div class="py-5">
+      <div class="container">
+  <div class="row">
+      <div class="col-md-8">
+        <table class="table table-bordered">
+            <tbody>
+                <form action="/product" method="post" encType="multipart/form-data">
+                    <tr>
+                        <th>상품명: </th>
+                        <td><input type="text" placeholder="상품명을 입력하세요. " name="name" class="form-control"/></td>
+                    </tr>
+                    <tr>
+                        <th>설명: </th>
+                        <td><textarea cols="10" placeholder="내용을 입력하세요. " name="spec" class="form-control" id="textform" style="resize:none;"></textarea></td>
+                    </tr>
+                    <tr>
+                        <th>상품 이미지: </th>
+                        <td><input type="file" name="img"></td>
+                    </tr>
+                    <tr>
+                        <th>상품 가격: </th>
+                        <td><input type="text" placeholder="가격을 입력하세요. " name="price" class="form-control"/></td>
+                    </tr>
+                    <tr>
+                        <th>재고: </th>
+                        <td><input type="text" placeholder="재고를 입력하세요. " name="stock" class="form-control"/></td>
+                    </tr>
+                    <tr>
+                        <th>상품분류: </th>
+                        <td>
+                            <select name="category" id="category">
+                                <option value="1" selected="selected">런닝머신</option>
+                                <option value="2">싸이클</option>
+                                <option value="3">보충제</option>
+                                <option value="4">보호대</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div align="right" style="margin:0 5%;">
+                            <input type="submit" class="btn btn-dark" type="button" name="버튼" value="등록하기" style="vertical-align: left;">
+                            <input class="btn btn-dark" type="button" name="버튼" value="취소" onclick="location.href='javascript:history.back();'"; style="vertical-align: left;">
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+            </tbody>
+        </table>
+      </div>
+  </div>
+      </div>
+  </div>
+</body>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</html>
