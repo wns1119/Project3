@@ -8,9 +8,6 @@
  background-color: #e9ecef;
  padding: 30px 0px 30px 10px;
 }
-.container{
-  margin: 20px 0px 20px 10px;
-}
 textarea.autosize { min-height: 50px; }
 </style>
 <head>
@@ -35,7 +32,7 @@ textarea.autosize { min-height: 50px; }
         <p>판매자 권한요청</p>      
       </div>
       <div class="well"><h2>판매자등록요청서 작성</h2></div>
-      <div class="container">
+      <div class="container" style="margin: 20px 0px 20px 200px;">
         <form method="post" action="/user/saleauthreq" onsubmit="return onSubmit()">
           <div class="form-group row">
             <label for="staticEmail" class="col-md-1 col-form-label">Email</label>
