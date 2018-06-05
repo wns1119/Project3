@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>쇼핑몰</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/theme.css" type="text/css">
+  <style>
+	#textform {
+		height:350px;
+	}
+  </style>
+</head>
+<body class="Head_nav">
+  <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
+  <div class="py-5">
+      <div class="container">
+  <div class="row">
+      <div class="col-md-8">
+        <table class="table table-bordered">
+            <tbody>
+                <form action="/product/update?code=<%=row.code%>" method="post" encType="multipart/form-data">
+                    <tr>
+                        <th>상품명: </th>
+                        <td><input type="text" placeholder="상품명을 입력하세요. " name="name" class="form-control" value="<%=row.name%>"/></td>
+                    </tr>
+                    <tr>
+                        <th>설명: </th>
+                        <td><textarea cols="10" placeholder="내용을 입력하세요. " name="spec" class="form-control" id="textform" style="resize:none;"><%=row.spec%></textarea></td>
+                    </tr>
+                    <tr>
+                        <th>상품 이미지: </th>
+                        <td><input type="file" name="img">
+                        <input type="checkbox" name="imageDelete">이미지 교체시 클릭</td>
+                    </tr>
+                    <tr>
+                        <th>상품 가격: </th>
+                        <td><input type="text" placeholder="가격을 입력하세요. " name="price" class="form-control" value="<%=row.price%>"/></td>
+                    </tr>
+                    <tr>
+                        <th>재고: </th>
+                        <td><input type="text" placeholder="재고를 입력하세요. " name="stock" class="form-control" value="<%=row.stock%>"/></td>
+                    </tr>
+                    <tr>
+                        <th>상품분류: </th>
+                        <td>
+                            <select name="category" id="category">
+                                <%for(var i=1;i<5;i++){%>
+                                <option value="<%i%>" <% if(row.category==i){%>selected="selected"<%}%>><%
+                                    switch(row.category){
+                                        case 1:%>런닝머신<%break;
+                                        case 2:%>싸이클<%break;
+                                        case 3:%>보충제<%break;
+                                        case 4:%>보호대<%break;
+                                    default:break;
+                                }%></option>
+                                <%}%>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div align="right" style="margin:0 5%;">
+                                <input type="submit" class="btn btn-dark" type="button" name="버튼" value="수정" style="vertical-align: left;">
+                                <input class="btn btn-dark" type="button" name="버튼" value="취소" onclick="location.href='javascript:history.back();'"; style="vertical-align: left;">
+                                <input class="btn btn-dark" type="button" name="버튼" value="삭제하기" data-toggle="modal" data-target="#myModal" style="vertical-align: left;">
+                            </div>
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel">삭제하기</h4>
+                                    <button type="button" class="close" data-dismiss="modal">
+                                      <span aria-hidden="true">×</span>
+                                      <span class="sr-only">Close</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body"> 삭제하시겠습니까? </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+                                    <button type="button" class="btn btn-primary" onclick="location.href='/product/delete?code=<%=row.code%>'">삭제</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+            </tbody>
+        </table>
+      </div>
+  </div>
+      </div>
+  </div>
+</body>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</html>
