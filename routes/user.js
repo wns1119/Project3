@@ -232,4 +232,43 @@ router.get('/orderinquiry', function(req, res, next) {
 	  });
 	});
 });
+
+router.get('/withdrawreq', function(req, res, next) {
+	var sql="Select * from WithdrawReq where email=?";
+
+	pool.getConnection(function (err, connection) {
+		if (err) throw err;
+	  // Use the connection
+	  connection.query(sql, [req.session.email], function (err, rows) {
+	  	if(err) console.error(err);
+	  	console.log(rows);
+	  	if(rows[0]==undefined){
+	  		sql="Select * from user where email=?";
+	  		connection.query(sql, [req.session.email], function (err, rows) {
+	  			if(err) console.error(err);
+	  			res.render('withdrawreq', {username:req.session.username, title: '회원탈퇴', rows: rows, admin:req.session.admin, sale:req.session.sale});
+	  		});
+	  	}
+	  	else{
+	  		res.send("<script>alert('이미 회원탈퇴 요청이 된 상태입니다.');history.back();</script>");
+	  	}
+	  	connection.release();
+	  });
+	});
+});
+
+router.post('/withdrawreq', function(req, res, next) {
+	var sql="insert into WithdrawReq(email, content) values(?, ?)";
+
+	pool.getConnection(function (err, connection) {
+		if (err) throw err;
+	  // Use the connection
+	  connection.query(sql, [req.session.email, req.body.contents], function (err, rows) {
+	  	if(err) console.error(err);
+
+	  	connection.release();
+	  	res.redirect('/user');
+	  });
+	});
+});
 module.exports = router;

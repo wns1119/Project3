@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<style>
+.well {
+ height: 100px;
+ width: 100%;
+ color: black;
+ background-color: #e9ecef;
+ padding: 30px 0px 30px 10px;
+}
+.container{
+  margin: 20px 0px 20px 10px;
+}
+.th:nth-of-type(1), td:nth-of-type(1) { width:950px; }
+.th:nth-of-type(2), td:nth-of-type(2) { width:150px; }
+</style>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminPage</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href='/theme.css' type="text/css"> 
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body class="Head_nav">
+  <td><!--상단 메뉴 인클루드--><% include ./top.ejs %></td>
+  <div class="row">
+
+    <td><!--상단 메뉴 인클루드--><% include ./adminside.ejs %></td>
+
+    <div class="col-9">
+      <div class="jumbotron">
+        <h1>Admin Page</h1>
+        <p>회원탈퇴요청관리</p>      
+      </div> 
+      <div class="well"><h2><%=rows[0].email%>님의 탈퇴요청 정보</h2></div>
+      <div class="container">       
+        <table class="table">
+          <tbody>
+            <tr>
+              <th>아이디(email)</th>
+              <td><%=rows[0].email%></td>
+            </tr>
+            <tr>
+              <th>이름</th>
+              <td><%=rows[0].username%></td>
+            </tr>
+            <tr>
+              <th>주소</th>
+              <td><%=rows[0].address%></td>
+            </tr>
+            <tr>
+              <th>성</th>
+              <td><%=rows[0].gender%></td>
+            </tr>
+            <tr>
+              <th>전화번호</th>
+              <td><%=rows[0].phone%></td>
+            </tr>
+            <tr>
+              <th>전화번호</th>
+              <td><%=rows[0].date%></td>
+            </tr>
+            <tr>
+              <th>탈퇴사유</th>
+              <td><%=rows[0].content%></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="col-12 text-center">
+          <form action="/admin/withdrawpermit/<%=rows[0].idx%>" method="post">
+            <button type="submit" class="btn btn-primary btn-lg" style="background-color: lightgray">승인</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</body>
+
+</html>
