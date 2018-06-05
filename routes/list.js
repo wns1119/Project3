@@ -140,11 +140,11 @@ function listcall(req, res, maxnum_page, sort, render_page, titleinfo, username)
             username:req.session.username,
             search:req.query.Search, 
             admin:req.session.admin,
-			total_count:total_count
+						sale:req.session.sale,
+						total_count:total_count
           });
         }
-      }
-      );
+      });
 }
 
 
@@ -276,21 +276,68 @@ router.get('/no-4/sales', function(req, res) {
 router.get('/read/:code', function(req, res, next) {
 	
 	var code = req.params.code;
+	var product;
+	pool.getConnection(function (err, connection) {
+		if (err) throw err;
+		// Use the connection
+
+		var sql = "SELECT * FROM product WHERE code=?";
+		connection.query(sql,[code], function (err, row) {
+			if(err) console.error(err);
+			console.log("1개 글 조회 결과 확인 : ", row);
+			product = row[0];
+			connection.release();
+			
+			pool.getConnection(function (err, connection) {
+				if (err) throw err;
+				
+				var sql = "SELECT idx,name,content,score,date_format(date, '%Y/%m/%d %H:%i') as date,email FROM review WHERE code=?";
+				connection.query(sql,[code], function (err, result) {
+					if (err) console.error(err);
+					
+					console.log("리뷰조회 : ", result);
+					connection.release();
+					res.render('read', {username:req.session.username, title:"상품정보", row:product, review:result, admin:req.session.admin, email:req.session.email, sale:req.session.sale});
+					
+				});
+			});
+		});
+	});
+});
+
+/* 리뷰조회 */
+router.post('/review', function(req, res) {
+	
+	console.log(req.body);
 	
 	pool.getConnection(function (err, connection) {
-   if (err) throw err;
-	  // Use the connection
-
-	  var sql = "SELECT * FROM product WHERE code=?";
-	  connection.query(sql,[code], function (err, row) {
-      if(err) console.error(err);
-      console.log("1개 글 조회 결과 확인 : ", row);
-      
-      res.render('read', {username:req.session.username, title:"상품정보", row:row[0], admin:req.session.admin});
-      connection.release();
-      
-    });
+		var sql = "INSERT INTO review(code,name,content,score,email,date) VALUE(?,?,?,?,?,CURRENT_TIMESTAMP)";
+		connection.query(sql,[req.body.code,req.body.r_name,req.body.r_content,req.body.score,req.session.email], function (err, row) {
+			if(err) console.error(err);
+			var URL = "/list/read/"+req.body.code;
+			res.redirect(URL);
+			connection.release();
+		});
+		
 	});
+});
+
+/* 리뷰삭제 */
+router.post('/review/delete', function(req, res) {
+	
+	console.log(req.body);
+	
+	pool.getConnection(function (err, connection) {
+		var sql = "DELETE FROM review  WHERE idx=?";
+		connection.query(sql,[req.body.index], function (err, row) {
+			if(err) console.error(err);
+			var URL = "/list/read/"+req.body.code;
+			res.redirect(URL);
+			connection.release();
+		});
+		
+	});
+
 });
 
 

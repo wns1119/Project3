@@ -211,6 +211,7 @@ router.get('/admin', function(req, res) {
           articles: Articles,
           username:req.session.username,
           admin:req.session.admin
+          , sale:req.session.sale
         });
       }
     }
@@ -224,7 +225,7 @@ router.get('/answer', function(req, res){
     connection.query(sql, idx, function(err, result){
       if(err) console.error(err);
       console.log(result[0])
-      res.render('inquiryAnswer', {username:req.session.username, row:result[0], admin:req.session.admin});
+      res.render('inquiryAnswer', {username:req.session.username, row:result[0], admin:req.session.admin, sale:req.session.sale});
       connection.release();
     });
   });
@@ -251,7 +252,7 @@ router.get('/update', function(req, res){
     connection.query(sql, idx, function(err, result){
       if(err) console.error(err);
       console.log(result[0])
-      res.render('inquiryUpdate', {username:req.session.username, row:result[0], admin:req.session.admin});
+      res.render('inquiryUpdate', {username:req.session.username, row:result[0], admin:req.session.admin, sale:req.session.sale});
       connection.release();
     });
   });
