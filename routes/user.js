@@ -219,7 +219,7 @@ router.post('/saleauthdel', function(req, res, next) {
 });
 
 router.get('/orderinquiry', function(req, res, next) {
-	var sql = "SELECT product.code, order_.purchaser, product.name as name, order_.price, order_.amount, order_.address FROM product, order_ where order_.email=? and product.code=order_.product_code";
+	var sql = "SELECT product.code, order_.purchaser, product.name as name, order_.price, order_.amount, order_.address, date_format(order_.date, '%y-%m-%d') as date FROM product, order_ where order_.email=? and product.code=order_.product_code";
 	pool.getConnection(function (err, connection) {
 		if (err) throw err;
 	  // Use the connection

@@ -42,16 +42,16 @@
               <th>가격</th>
               <th>수량</th>
               <th>배송지</th>
+              <th>주문날짜</th>
             </tr>
-            <%
-            for(var i=0; i<rows.length; i++){
-            %>
+            <% for(var i=0; i< rows.length; i++){ %>
             <tr>
               <td><%=rows[i].purchaser%></td>
-              <td class="tb-title"><a href="/list/read/<%=rows[i].code%>"><%=rows[i].name%></a></td>
+              <td class="font-weight-bold"><a href="/list/read/<%=rows[i].code%>"><%=rows[i].name%></a></td>
               <td><%=rows[i].price%></td>
               <td><%=rows[i].amount%></td>
               <td><%=rows[i].address%></td>
+              <td><%=rows[i].date%></td>
             </tr>
             <%}%>
           </tbody>
