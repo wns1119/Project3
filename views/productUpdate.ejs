@@ -21,7 +21,7 @@
       <div class="col-md-8">
         <table class="table table-bordered">
             <tbody>
-                <form action="/product/update" method="post" encType="multipart/form-data">
+                <form action="/product/update?code=<%=row.code%>" method="post" encType="multipart/form-data">
                     <tr>
                         <th>상품명: </th>
                         <td><input type="text" placeholder="상품명을 입력하세요. " name="name" class="form-control" value="<%=row.name%>"/></td>
@@ -32,8 +32,8 @@
                     </tr>
                     <tr>
                         <th>상품 이미지: </th>
-                        <td><input type="file" name="img"></td>
-                        <td><input type="checkbox" name="imageDelete">이미지 교체시 클릭</td>
+                        <td><input type="file" name="img">
+                        <input type="checkbox" name="imageDelete">이미지 교체시 클릭</td>
                     </tr>
                     <tr>
                         <th>상품 가격: </th>
@@ -63,8 +63,27 @@
                     <tr>
                         <td colspan="2">
                             <div align="right" style="margin:0 5%;">
-                            <input type="submit" class="btn btn-dark" type="button" name="버튼" value="수정" style="vertical-align: left;">
-                            <input class="btn btn-dark" type="button" name="버튼" value="취소" onclick="location.href='javascript:history.back();'"; style="vertical-align: left;">
+                                <input type="submit" class="btn btn-dark" type="button" name="버튼" value="수정" style="vertical-align: left;">
+                                <input class="btn btn-dark" type="button" name="버튼" value="취소" onclick="location.href='javascript:history.back();'"; style="vertical-align: left;">
+                                <input class="btn btn-dark" type="button" name="버튼" value="삭제하기" data-toggle="modal" data-target="#myModal" style="vertical-align: left;">
+                            </div>
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel">삭제하기</h4>
+                                    <button type="button" class="close" data-dismiss="modal">
+                                      <span aria-hidden="true">×</span>
+                                      <span class="sr-only">Close</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body"> 삭제하시겠습니까? </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+                                    <button type="button" class="btn btn-primary" onclick="location.href='/product/delete?code=<%=row.code%>'">삭제</button>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                         </td>
                     </tr>

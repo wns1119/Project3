@@ -51,7 +51,7 @@ router.post('/',  upload.single('img'), function(req, res, next) {
 			}
 			
 				connection.release();
-				res.redirect('/');
+				res.redirect('/user/productmanage');
         });
       });
     }));
@@ -70,16 +70,43 @@ router.get('/update', function(req, res) {
      });
    });
 });
-router.post('/update', function(req, res) {
+router.post('/update', upload.single('img'), function(req, res) {
+	var code=req.query.code;
   if(!req.session.sale)res.redirect('/');
    pool.getConnection(function(err, connection) {
-     var sql = "SELECT * FROM product WHERE code=?";
-     connection.query(sql, [req.code], function (err, result) {
-       if (err) console.error(err);
-       connection.release();
-       res.redirect('/');
+     var sql = "UPDATE product SET name=? category=? price=? spec=? stock=? WHERE code=?";
+     connection.query(sql, [req.query.code], function (err, result) {
+				if(req.body.imageDelete) {
+          fs.unlink('public/image/'+req.query.code + '.jpg', function (err) {
+            if (err) throw err;
 
+            var tmp_path = req.file.path;
+            var target_path = 'public/image/' + code + ".jpg";	// index로 파일이름 지정
+						var src = fs.createReadStream(tmp_path);
+						var dest = fs.createWriteStream(target_path);
+						src.pipe(dest);
+						fs.unlink(tmp_path);
+          });
+        }
+       connection.release();
+       res.redirect('/user/productmanage');
      });
    });
+});
+
+router.get('/delete', function(req, res){
+  if(!req.session.username || !req.session.sale)res.redirect('/')
+  var code=req.query.code;
+  pool.getConnection(function(err, connection){
+    var sql = "delete from product WHERE code = ?";
+    connection.query(sql, code, function(err, result){
+      if(err) console.error(err);
+      fs.unlink('public/image/'+req.query.code + '.jpg', function (err) {
+      	if (err) throw err;
+      });
+      res.redirect('/user/productmanage');
+      connection.release();
+    });
+  });
 });
 module.exports = router;

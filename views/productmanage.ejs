@@ -110,6 +110,7 @@
               <th class="text-center">가격</th>
               <th class="text-center">재고</th>
               <th class="text-center">판매량</th>
+              <td></td>
             </tr>
             <% for(var i=0; i < len; i++){ var rows=articles.contents[i];%>
             <tr>
@@ -125,6 +126,9 @@
               <td class="text-center"><%=rows.price%></td>
               <td class="text-center"><%=rows.stock%></td>
               <td class="text-center"><%=rows.sales%></td>
+              <td class="text-center">
+                <input class="btn" type="button" name="버튼" value="수정" onclick="location.href='/product/update?code=<%=rows.code%>'"; style="vertical-align: left;">
+              </td>
             </tr>
             <%}%>
           </tbody>
