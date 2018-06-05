@@ -159,6 +159,7 @@ router.get('/admin', function(req, res) {
         connection.query(sql, [req.session.username], function(err, result){
           if(err) console.error(err);
           TotalPage = Math.ceil(result[0].count / pageArticleNum);
+          if(!TotalPage)TotalPage=1;
           if(CurrPage>TotalPage)CurrPage=TotalPage;
           connection.release();
           totalpage = {
