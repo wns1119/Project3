@@ -16,7 +16,6 @@ var pool = mysql.createPool({
 	password: '1234qwer'
 });
 
-
 router.get('/', function(req, res) {
   if(!req.session.sale)res.redirect('/main');
   res.render('product', {username:req.session.username, admin:req.session.admin, sale:req.session.sale});
