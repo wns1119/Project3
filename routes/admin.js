@@ -43,15 +43,15 @@ router.get('/', function(req, res, next) {
 	  	//console.log("rows : " + JSON.stringify(rows));
 
 
-	  sqlForSelectList = "SELECT product_code, amount FROM order_";
-	  connection.query(sqlForSelectList, function (err, rows2) {
-		  if(err) console.error(err);
-		  console.log("rows2 : " + JSON.stringify(rows2));
-		  connection.release();
-		  res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, rows2: rows2, admin:req.session.admin, sale:req.session.sale, date:date});		  
-	  });
-	  
-	});
+     sqlForSelectList = "SELECT product_code, amount FROM order_";
+     connection.query(sqlForSelectList, function (err, rows2) {
+      if(err) console.error(err);
+      console.log("rows2 : " + JSON.stringify(rows2));
+      connection.release();
+      res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, rows2: rows2, admin:req.session.admin, sale:req.session.sale, date:date});		  
+    });
+
+   });
 	});
 	
 });
@@ -82,12 +82,12 @@ router.post('/statistics', function(req, res, next) {
 		
 		sqlForSelectList = "SELECT product_code, amount FROM order_ WHERE DATE(date) BETWEEN '2018-?-?' AND '2018-?-?'";
 		connection.query(sqlForSelectList, [month,day,month_after,day_after],function (err, rows2) {
-		  if(err) console.error(err);
-		  console.log("rows2 : " + JSON.stringify(rows2));
-		  connection.release();
-		  res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, rows2: rows2, admin:req.session.admin, sale:req.session.sale, date:date});		  
-	  });
-	  
+      if(err) console.error(err);
+      console.log("rows2 : " + JSON.stringify(rows2));
+      connection.release();
+      res.render('admin', {username:req.session.username, title: '관리자용', rows: rows, rows2: rows2, admin:req.session.admin, sale:req.session.sale, date:date});		  
+    });
+
 	});
 
 	});
@@ -319,8 +319,12 @@ function page(req, res, maximumpage, render, sql1, sql2){
   				sql="delete from user where email=?";
   				connection.query(sql,[email], function (err, rows) {
   					if(err) console.error(err);
-  					connection.release();
-  				});
+            sql="delete from shipaddress where email=?";
+            connection.query(sql,[email], function (err, rows) {
+              if(err) console.error(err);
+              connection.release();
+            });
+          });
   			});
   		});
   	});
