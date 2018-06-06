@@ -74,9 +74,10 @@ router.post('/update', upload.single('img'), function(req, res) {
 	var code=req.query.code;
   if(!req.session.sale)res.redirect('/');
    pool.getConnection(function(err, connection) {
-     var sql = "UPDATE product SET name=? category=? price=? spec=? stock=? WHERE code=?";
-     connection.query(sql, [req.query.code], function (err, result) {
-				if(req.body.imageDelete) {
+     var sql = "UPDATE product SET name=?, category=?, price=?, spec=?, stock=? WHERE code=?";
+     connection.query(sql, [req.body.name, req.body.category, req.body.price, req.body.spec, req.body.stock, req.query.code], function (err, result) {
+			  if(err)console.log(err);
+       if(req.body.imageDelete) {
           fs.unlink('public/image/'+req.query.code + '.jpg', function (err) {
             if (err) throw err;
 
