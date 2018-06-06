@@ -31,27 +31,33 @@ router.post('/',  upload.single('img'), function(req, res, next) {
       connection.query(sql, data, function (err, result) {
         if (err) console.error(err);
 
-		sql="select code from product order by code desc limit 1";
+		    sql="select code from product order by code desc limit 1";
 
         connection.query(sql, function (err, result) {
-			if (err) console.error(err);
-			
-			if(req.file != null){	// 전송한 파일이 존재하는 경우
-				var tmp_path = req.file.path;
-				target_path = 'public/image/' + result[0].code + ".jpg";	// index로 파일이름 지정
-				console.log("tmp_path :"+ tmp_path);
-				console.log("target path :"+ target_path);
+          if (err) console.error(err);
 
-				// 서버에 파일 저장
-				var src = fs.createReadStream(tmp_path);
-				var dest = fs.createWriteStream(target_path);
-				src.pipe(dest);
-				
-				fs.unlink(tmp_path);
-			}
-			
-				connection.release();
-				res.redirect('/user/productmanage');
+          if(req.file != null){	// 전송한 파일이 존재하는 경우
+            var tmp_path = req.file.path;
+            target_path = 'public/image/' + result[0].code + ".jpg";	// index로 파일이름 지정
+            console.log("tmp_path :"+ tmp_path);
+            console.log("target path :"+ target_path);
+
+            // 서버에 파일 저장
+            var src = fs.createReadStream(tmp_path, function(err){
+              if(err) throw err;
+            });
+            var dest = fs.createWriteStream(target_path, function(err){
+              if(err) throw err;
+            });
+            src.pipe(dest);
+            src.on('close', function(){
+              fs.unlink(tmp_path, function(err){
+                if(err)throw err;
+              });
+            });
+          }
+          connection.release();
+          res.redirect('/user/productmanage');
         });
       });
     }));
