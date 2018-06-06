@@ -48,8 +48,8 @@
                         <td>
                             <select name="category" id="category">
                                 <%for(var i=1;i<5;i++){%>
-                                <option value="<%i%>" <% if(row.category==i){%>selected="selected"<%}%>><%
-                                    switch(row.category){
+                                <option value="<%=i%>" <% if(row.category==i){%>selected="selected"<%}%>><%
+                                    switch(i){
                                         case 1:%>런닝머신<%break;
                                         case 2:%>싸이클<%break;
                                         case 3:%>보충제<%break;
