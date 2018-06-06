@@ -120,7 +120,7 @@
 			<td><%=oneItem.date%></td>
 			<td>
 			<%
-				if(review[i].email == email || email == "admin@kw.ac.kr")
+				if(review[i].email == email || (admin == 1))
 				{
 			%>
 				<form action="/list/review/delete" method="post">
