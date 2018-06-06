@@ -68,7 +68,9 @@
 			<td width="250px" align="center">배송지선택</td>
 			<td>
 				<input type="radio" name="chk_info" value="기본주소" checked="checked" style="margin-left:50px;" onclick="radio_fun(1);"/>기본주소
-				<input type="radio" name="chk_info" value="기본주소" style="margin-left:50px;" onclick="radio_fun(0);"/>새로입력
+				<input type="radio" name="chk_info" value="배송지주소1" style="margin-left:50px;" onclick="radio_fun(2);"/>배송지주소1
+				<input type="radio" name="chk_info" value="배송지주소2" style="margin-left:50px;" onclick="radio_fun(3);"/>배송지주소2
+				<input type="radio" name="chk_info" value="새로입력" style="margin-left:50px;" onclick="radio_fun(0);"/>새로입력
 			</td>
 		  </tr>
 		  <input type="hidden" name="r_name" value="<%=user[0].username%>"/>
@@ -107,14 +109,24 @@
   <script>
 	function init(){
 		$('#r_name').val('<%=user[0].username%>');
-		$('#r_address').val('<%=user[0].address%>');
+		$('#r_address').val('<%=ship[0].address1%>');
 		$('#r_phone').val('<%=user[0].phone%>');
 	}
 	
 	function radio_fun(val){
 		if(val == 1){
 			$('#r_name').val('<%=user[0].username%>');
-			$('#r_address').val('<%=user[0].address%>');
+			$('#r_address').val('<%=ship[0].address1%>');
+			$('#r_phone').val('<%=user[0].phone%>');
+		}
+		else if(val == 2){
+			$('#r_name').val('<%=user[0].username%>');
+			$('#r_address').val('<%=ship[0].address2%>');
+			$('#r_phone').val('<%=user[0].phone%>');
+		}
+		else if(val == 3){
+			$('#r_name').val('<%=user[0].username%>');
+			$('#r_address').val('<%=ship[0].address3%>');
 			$('#r_phone').val('<%=user[0].phone%>');
 		}
 		else{
