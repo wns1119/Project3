@@ -69,9 +69,15 @@ function recursive_func(res,req,i,count,product){
 				var sql = "SELECT * FROM user WHERE email=?";
 				connection.query(sql, [req.session.email],function (err, rows) {
 					if(err) console.error(err);
-					
-					res.render('order',{title: 'notice',product:product,username:req.session.username,admin:req.session.admin,user:rows, sale:req.session.sale});
-					connection.release();  
+					var user = rows;
+								
+					var sql = "SELECT * FROM shipaddress WHERE email=?";
+					connection.query(sql, [req.session.email],function (err, result) {
+						if(err) console.error(err);
+									
+						res.render('order',{title: 'notice',product:product,username:req.session.username,admin:req.session.admin,user:user,ship:result, sale:req.session.sale});
+						connection.release();  
+					});
 				});
 			});
 			
