@@ -232,8 +232,10 @@ function page(req, res, maximumpage, render, sql1, sql2){
         throw err;
       } else {
         var len=0;
-        if(Articles.contents!=undefined)
+        if(Articles.contents!=undefined && Articles.contents.length<maximumpage)
           len=Articles.contents.length;
+        else if(Articles.contents!=undefined && Articles.contents.length>=maximumpage)
+          len=maximumpage;
         res.render(render,{
          title: render,
          articles: Articles,

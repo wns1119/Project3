@@ -292,6 +292,7 @@ function page(req, res, maximumpage, render, sql1, sql2){
   				var sql = sql1;
   				connection.query(sql, [req.session.email], function(err, result){
   					if(err) console.error(err);
+  					console.log(result, CurrPage);
   					TotalPage = Math.ceil(result[0].count / pageArticleNum);
   					if(CurrPage>TotalPage)CurrPage=TotalPage;
   					connection.release();
@@ -343,8 +344,10 @@ function page(req, res, maximumpage, render, sql1, sql2){
     		throw err;
     	} else {
     		var len=0;
-    		if(Articles.contents!=undefined)
+    		if(Articles.contents!=undefined && Articles.contents.length<maximumpage)
     			len=Articles.contents.length;
+    		else if(Articles.contents!=undefined && Articles.contents.length>=maximumpage)
+    			len=maximumpage;
     		res.render(render,{
     			title: render,
     			articles: Articles,
@@ -375,7 +378,7 @@ function page(req, res, maximumpage, render, sql1, sql2){
   	if(req.query.SearchOption=="판매량순")
   		col="sales desc";
   	else if(req.query.SearchOption=="재고순")
-  		col="stock desc";
+  		col="stock asc";
   	else if(req.query.SearchOption=="높은가격순")
   		col="price desc";
   	else if(req.query.SearchOption=="낮은가격순")
@@ -399,21 +402,51 @@ function page(req, res, maximumpage, render, sql1, sql2){
   router.get('/sellerOrder', function(req, res, next) {
   	if(!req.session.username || !req.session.sale)
   		res.redirect('/');
+/*
+  	var sql1="select COUNT(*) as count from order_ INNER JOIN product on product.code=order_.product_code where product_code " +
+  	"in (select code from product where seller=?)";
 
-  	pool.getConnection(function (err, connection) {
-  		if (err) throw err;
-	  // Use the connection
+  	var sql2 = "select order_.purchaser, order_.price, order_.amount, order_.address, order_.phone, date_format(order_.date, '%y-%m-%d %r') as date, product.code, product.name, product.stock, product.sales from order_ " +
+  	"INNER JOIN product on product.code=order_.product_code where order_.product_code " +
+  	"in (select code from product where seller=?) LIMIT ?, ?";
+*/
+	var col="";
 
-	  var sql = "select order_.purchaser, order_.price, order_.amount, order_.address, order_.phone, date_format(order_.date, '%y-%m-%d %r') as date, product.code, product.name, product.stock, product.sales from order_ " +
-	  "INNER JOIN product on product.code=order_.product_code where product_code " +
-	  "in (select code from product where seller=(select email from user where username=?));";
-	  connection.query(sql, [req.session.username], function (err, rows) {
-	  	if(err) console.error(err);
-	  	console.log(rows);
-	  	res.render('sellerOrder', {username:req.session.username, title: '구매요청', rows: rows, admin:req.session.admin, sale:req.session.sale});
-	  	connection.release();
-	  });
-	});
+  	if(req.query.Search==undefined)
+  		req.query.Search="";
+
+  	if(req.query.SearchOption=="구매자")
+  		col="order_.purchaser";
+  	else if(req.query.SearchOption=="상품명")
+  		col="product.name";
+
+  	var sql1="select COUNT(*) as count from order_ INNER JOIN product on product.code=order_.product_code where product_code " +
+  	"in (select code from product where seller=?);"
+
+  	var sql2 = "select order_.purchaser, order_.price, order_.amount, order_.address, order_.phone, date_format(order_.date, '%y-%m-%d %r') as date, product.code, product.name, product.stock, product.sales from order_ " +
+  	"INNER JOIN product on product.code=order_.product_code where product_code " +
+  	"in (select code from product where seller=?)";
+  	page(req, res, 10, 'sellerOrder', sql1, sql2);
   });
+
+  router.get('/sellerOrder/Search', function(req, res, next) {
+  	if(!req.session.username || !req.session.sale)
+  		res.redirect('/');
+
+  	var col;
+
+  	if(req.query.SearchOption=="구매자")
+  		col="order_.purchaser";
+  	else if(req.query.SearchOption=="상품명")
+  		col="product.name";
+
+  	var sql1="select COUNT(*) as count from order_ INNER JOIN product on product.code=order_.product_code where product_code " +
+  	"in (select code from product where seller=?) and "+col+" LIKE'%"+req.query.Search+"%'";
+
+  	var sql2 = "select order_.purchaser, order_.price, order_.amount, order_.address, order_.phone, date_format(order_.date, '%y-%m-%d %r') as date, product.code, product.name, product.stock, product.sales from order_ " +
+  	"INNER JOIN product on product.code=order_.product_code where product_code " +
+  	"in (select code from product where seller=?) and "+col+" LIKE'%"+req.query.Search+"%' LIMIT ?, ?";
+  	page(req, res, 10, 'sellerOrderSearch', sql1, sql2);
+});
 
   module.exports = router;
