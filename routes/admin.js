@@ -316,12 +316,16 @@ function page(req, res, maximumpage, render, sql1, sql2){
   			sql="delete from WithdrawReq where idx=?"
   			connection.query(sql,[req.params.idx], function (err, rows) {
   				if(err) console.error(err);
-  				sql="delete from user where email=?";
+  				sql="delete from SaleAuthReq where email=?";
   				connection.query(sql,[email], function (err, rows) {
   					if(err) console.error(err);
             sql="delete from shipaddress where email=?";
             connection.query(sql,[email], function (err, rows) {
               if(err) console.error(err);
+              sql="delete from user where email=?";
+              connection.query(sql,[email], function (err, rows) {
+                if(err) console.error(err);
+              });
               connection.release();
             });
           });
